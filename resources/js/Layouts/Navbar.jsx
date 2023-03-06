@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react';
 import { Link } from '@inertiajs/inertia-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleLeft, faUser, faFileArchive, faFileAlt, faArchive, faMoneyCheck, faBookBookmark, faFileClipboard, faBarChart, faFileCircleExclamation, faSignOut} from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars} from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/Components/Dropdown';
 import { Inertia } from '@inertiajs/inertia';
 import SideLink from '@/Components/SideLink';
@@ -54,128 +54,48 @@ const Navbar = ({auth,children}) => {
     }
 
     const navBarLink = {
-        'reportes' : [
-                { 'titulo' : 'Reportes' },
-                { 'icono' : faBarChart },
+        'reporte' : [
+                { 'titulo' : 'Reporte' },
+                { 'icono' : faChartColumn },
                 { 'elementos' :
                     [
                         {   
                             'id' : 0,
-                            'nombre' : 'Constancia de No adeudo',
+                            'nombre' : 'reporte 1',
                             'ruta' : 'admin',
                         },
                     ]
                 }
             ],
 
-        'solicitudes' : [
-            { 'titulo' : 'Solicitudes' },
-            { 'icono' : faFileAlt },
+        'tipos' : [
+            { 'titulo' : 'Tipos' },
+            { 'icono' : faCube },
             { 'elementos' :
                 [
                     {   
                         'id' : 0,
-                        'nombre' : 'Pendientes',
-                        'ruta' : 'd.solicituds.estadoPR',
-                        'subruta' : 'pendiente',
-                    },
-                    {   
-                        'id' : 1,
-                        'nombre' : 'En proceso',
-                        'ruta' : 'd.solicituds.estado',
-                        'subruta' : 'proceso',
-                    },
-                    {   
-                        'id' : 2,
-                        'nombre' : 'Rechazadas',
-                        'ruta' : 'd.solicituds.estadoPR',
-                        'subruta' : 'rechazado',
-                    },
-                    {   
-                        'id' : 3,
-                        'nombre' : 'Finalizadas',
-                        'ruta' : 'd.solicituds.estado',
-                        'subruta' : 'finalizado',
+                        'nombre' : 'Tipo1',
+                        'ruta' : 'admin',
                     },
                 ]
             }
         ],
 
-        'archivoEstudiantil' : [
-            { 'titulo' : 'Archivo Estudiantil - ORyM'},
-            { 'icono' : faArchive},
+        'usuarios' : [
+            { 'titulo' : 'Usuarios'},
+            { 'icono' : faUser},
             { 'elementos' :
                 [
                     {   
                         'id' : 0,
-                        'nombre' : 'Solicitudes Pendientes',
-                        'ruta' : 'd.archivoEstudiantil',
-                    },
-                    {   
-                        'id' : 1,
-                        'nombre' : 'Validados',
-                        'ruta' : 'd.archivoEstudiantil.validado',
+                        'nombre' : 'Usuario 1',
+                        'ruta' : 'admin',
                     },
                 ]
             }
         ],
 
-        'durs' : [
-            { 'titulo' : 'Proyección Social - DURS'},
-            { 'icono' : faFileClipboard},
-            { 'elementos' :
-                [
-                    {   
-                        'id' : 0,
-                        'nombre' : 'Solicitudes Pendientes',
-                        'ruta' : 'd.durs',
-                    },
-                    {   
-                        'id' : 1,
-                        'nombre' : 'Validados',
-                        'ruta' : 'd.durs.validado',
-                    },
-                ]
-            }
-        ],
-
-        'oefc' : [
-            { 'titulo' : 'Caja - OEyF'},
-            { 'icono' : faMoneyCheck},
-            { 'elementos' :
-                [
-                    {   
-                        'id' : 0,
-                        'nombre' : 'Solicitudes Pendientes',
-                        'ruta' : 'd.oefc',
-                    },
-                    {   
-                        'id' : 1,
-                        'nombre' : 'Validados',
-                        'ruta' : 'd.oefc.validado',
-                    },
-                ]
-            }
-        ],
-
-        'facultades' : [
-            { 'titulo' : 'Facultades'},
-            { 'icono' : faBookBookmark},
-            { 'elementos' :
-                [
-                    {   
-                        'id' : 0,
-                        'nombre' : 'Solicitudes Pendientes',
-                        'ruta' : 'd.facultades',
-                    },
-                    {   
-                        'id' : 1,
-                        'nombre' : 'Validados',
-                        'ruta' : 'd.facultades.validado',
-                    },
-                ]
-            }
-        ],
     };
 
     return (
@@ -198,7 +118,7 @@ const Navbar = ({auth,children}) => {
                                 </div>
                                 <div className="grow text-center" style={open ? styleOpen : styleClose} >
                                     <strong className="text-4xl text-white md:inline min-[200px]:hidden bold font-mirza">
-                                        TRÁMITE NO ADEUDO
+                                        RESOLUCIONES
                                     </strong>
                                 </div>
                             </div>
@@ -207,73 +127,91 @@ const Navbar = ({auth,children}) => {
                     </div>
                 </div>
 
-                <div onClick={() => setOpen(!open)} className='absolute md:block w-10 h-10 text-lg text-white cursor-pointer top-2/4 -right-3 flex items-center justify-center rounded-full bg-[#007CBC] pt-2'>
-                    <FontAwesomeIcon className=" h-5 w-10"  icon={faCircleLeft} style={open?{transform: 'rotate(0deg)',}:{transform: 'rotate(180deg)'}} /> 
+                <div onClick={() => setOpen(!open)} className='absolute md:block w-10 h-10 text-lx text-[#007CBC] cursor-pointer top-2 -right-12 flex items-center justify-center rounded-full pt-2'>
+                    <FontAwesomeIcon className=" h-5 w-10"  icon={faBars} /> 
                 </div>
 
-                <hr />
 
                 <div className="overflow-y-auto mt-3">
                     
                     <ul className="space-y-2 ">
 
-                        <NavBarElement elementos = {navBarLink.reportes} estado = {open} widthLista = {'w-60'}/>
-
-                        <hr />
-                        
-                        {/* <li className='px-3'>
-                                <SideLink href={route('d.solicituds')} active={route().current('d.solicituds')}>
-                                    <FontAwesomeIcon className="h-5 w-6 "  icon={faFilePen} />
-                                    <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
-                                        <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center' >General</span>
-                                    </div>
-                                </SideLink>
-                            </li> */}
-
+                        <div style={open ? styleOpen : styleClose} className='text-white font-play mx-3 text-xl'>
+                            <strong>General</strong>
+                        </div>
+    
                         <li className='px-3'>
-                            <SideLink href={route('d.solicitud.secretaria')} active={route().current('d.solicitud.secretaria')}>
-                                <FontAwesomeIcon className="h-5 w-6"  icon={faFileCircleExclamation} />
+                            <SideLink href={route('r.resoluciones')} active={route().current('r.resoluciones')}>
+                                <FontAwesomeIcon className="h-5 w-6"  icon={faFileWord} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
-                                        <strong>Secretaría - ORyM</strong>
+                                        <strong>Resolución</strong>
                                     </span>
                                 </div>
                             </SideLink>
                         </li>
 
                         <li className='px-3'>
-                            <SideLink href={route('d.solicitud.jefatura')} active={route().current('d.solicitud.jefatura')}>
-                                <FontAwesomeIcon className="h-5 w-6 "  icon={faFileArchive} />
+                            <SideLink href='#' active=''>
+                                <FontAwesomeIcon className="h-5 w-6"  icon={faSuitcase} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
-                                        <strong>Jefatura Oficina - ORyM</strong>
+                                        <strong>Contrato</strong>
                                     </span>
                                 </div>
                             </SideLink>
                         </li>
 
-                        {// Solicitudes
-                        <NavBarElement elementos = {navBarLink.solicitudes} estado = {open} widthLista = {'w-40'}/>
+                        <li className='px-3'>
+                            <SideLink href='#' active=''>
+                                <FontAwesomeIcon className="h-5 w-6"  icon={faBinoculars} />
+                                <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
+                                    <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
+                                        <strong>Convenio</strong>
+                                    </span>
+                                </div>
+                            </SideLink>
+                        </li>
+
+                        <li className='px-3'>
+                            <SideLink href='#' active=''>
+                                <FontAwesomeIcon className="h-5 w-6"  icon={faToggleOn} />
+                                <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
+                                    <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
+                                        <strong>Adenda</strong>
+                                    </span>
+                                </div>
+                            </SideLink>
+                        </li>
+
+                        <li className='px-3'>
+                            <SideLink href='#' active=''>
+                                <FontAwesomeIcon className="h-5 w-6"  icon={faArrowsToDot} />
+                                <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
+                                    <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
+                                        <strong>Asunto</strong>
+                                    </span>
+                                </div>
+                            </SideLink>
+                        </li>
+
+
+                        {// Tipos
+                        <NavBarElement elementos = {navBarLink.tipos} estado = {open} widthLista = {'w-56'}/>
+                        }
+
+                        {// Usuarios
+                        <NavBarElement elementos = {navBarLink.usuarios} estado = {open} widthLista = {'w-56'}/>
                         }
 
                         <hr />
-                        
-                        {// ArchivoEstudiantil
-                        <NavBarElement elementos = {navBarLink.archivoEstudiantil} estado = {open} widthLista = {'w-56'}/>
-                        }
 
-                        {// Durs
-                        <NavBarElement elementos = {navBarLink.durs} estado = {open} widthLista = {'w-56'}/>
+                        <div style={open ? styleOpen : styleClose} className='text-white font-play mx-3 text-xl'>
+                            <strong>Reportes</strong>
+                        </div>
+                        {// Reportes
+                        <NavBarElement elementos = {navBarLink.reporte} estado = {open} widthLista = {'w-56'}/>
                         }
-
-                        {// Oefc
-                        <NavBarElement elementos = {navBarLink.oefc} estado = {open} widthLista = {'w-56'}/>
-                        }
-
-                        {//  Facultades
-                        <NavBarElement elementos = {navBarLink.facultades} estado = {open} widthLista = {'w-56'}/>
-                        }
-                        <hr />
                         
                     </ul>
                         
@@ -281,13 +219,13 @@ const Navbar = ({auth,children}) => {
             </div>
                 
                 <div className='bg-white' style={open ?{width:'82%'}:{width:'95%'}}>
-                    <div className='flex p-5 justify-between items-center h-14 border-b border-neutral-100 shadow-md'>
+                    <div className='flex py-5 pr-5 pl-16 justify-between items-center h-14 border-b border-neutral-100 shadow-md'>
                         <div className='text-slate-400'>
                             <label className='hidden md:block'>Bienvenido(a) {auth.user.username}</label>
                         </div>
 
                         <div className='flex flex-row gap-2 md:gap-6'>
-                            
+                            {/*
                             <NotificacionBell 
                                 cantidad={auth.cantidad_secretaria}
                                 titulo={'Secretaría'}
@@ -335,7 +273,7 @@ const Navbar = ({auth,children}) => {
                                 texto = {'Caja'}
                                 datos={'no-adeudo'}
                             />
-
+                            */}
 
                             <div className='rounded-md px-2 font-bold text-slate-200 text-md border border-[#007CBC]'>
                             <Dropdown>
@@ -377,7 +315,7 @@ const Navbar = ({auth,children}) => {
                     </div>
                     <div className='flex justify-center bg-slate-100 overflow-y-auto ' style={{height:'calc(100% - 112px)'}}>
                         <div className='w-11/12 flex flex-col'>
-                        {children}
+                            {children}
                         </div>  
                     </div>
                     <div className=' h-14 flex items-center justify-center text-slate-400 border-t-2 border-neutral-100'>

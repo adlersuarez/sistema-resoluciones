@@ -30,7 +30,7 @@ export default function Login({ status, canResetPassword, cantidad}) {
     };
     
     return (
-        <GuestLayout label='TRÁMITE DOCUMENTARIO'>
+        <GuestLayout label='SISTEMA RESOLUCIONES'>
             <Head title="Inicio Sesión" />
             {/*status && <div className="mb-4 font-medium text-sm text-[#007CBC]">{status}</div>*/}
             
@@ -39,12 +39,12 @@ export default function Login({ status, canResetPassword, cantidad}) {
             <form onSubmit={submit}>
                 <div className="mt-0 flex">
                     <div className='flex-col w-full'>
-                        <InputLabel className="font-black" forInput="email" value="Email" />
+                        <InputLabel className="font-black" forInput="email" value="Correo Institucional" />
                         <TextInput
                             type="email"
                             name="email"
                             value={data.email}
-                            placeholder="Ingresar Usuario"
+                            placeholder="Ingresar Correo Institucional"
                             className="mt-1 w-full"
                             autoComplete="email"
                             isFocused={true}
@@ -108,7 +108,7 @@ export default function Login({ status, canResetPassword, cantidad}) {
                     </div>
                 </div>
                 <div className='block text-center pt-4 text-xs text-gray-600'>
-                    OFICINA GENERAL DE TRÁMITES ADMINISTRATIVOS
+                    SECRETARÍA GENERAL
                 </div>
 
             </form>

@@ -36,7 +36,7 @@ export default function Admin({auth,estado_solicitudes,constancias_fecha,cantida
     return (
         <Navbar auth={auth} >
             <Head title='Admin'/>
-
+            {/*
             <div className='w-full flex justify-between mt-10 mb-5'>
                 
                 <TitlePages texto={'REPORTE - Constancia No Adeudo'} icono={faChartPie}/>
@@ -146,7 +146,8 @@ export default function Admin({auth,estado_solicitudes,constancias_fecha,cantida
                         datos={facultades}
                        />
                     </div>
-                    */}
+                    *   /}
+                    
 
                     <div className='h-90'>
                        <ReporteBarrasHorizontal
@@ -167,6 +168,8 @@ export default function Admin({auth,estado_solicitudes,constancias_fecha,cantida
                 </div>
 
             </div>
+            */}
+            
         </Navbar>
     );
 }

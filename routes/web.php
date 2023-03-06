@@ -38,6 +38,8 @@ use Illuminate\Support\Facades\Route;
 //
 use App\Http\Controllers\DemoController;
 
+//sistema resoluciones
+use App\Http\Controllers\ResolucionController;
 //
 use App\Mail\EnviarConfirmacionMailable;
 use Illuminate\Support\Facades\Mail;
@@ -156,6 +158,9 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
     /* Route::controller(AdminNotificacionController::class)->group(function (){
         Route::get('/tramite-documentario/noti','index')->name('notificacion.index');
     }); */
+    Route::controller(ResolucionController::class)->group(function (){
+        Route::get('/resoluciones', 'index')->name('r.resoluciones');
+    });
 
     Route::controller(RolController::class)->group(function (){
         Route::get('/tramite-documentario/roles','index')->name('d.roles.index');
