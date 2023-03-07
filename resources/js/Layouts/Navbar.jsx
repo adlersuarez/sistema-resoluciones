@@ -105,7 +105,7 @@ const Navbar = ({auth,children}) => {
                     <div className="pt-4 px-6">
                         <a href="#">
                             {/*<div className="space-x-3 flex lg:flex-row min-[200px]:flex-col cursor-auto items-center pb-4 border-b border-gray-200">*/}
-                            <div className="flex lg:flex-row min-[200px]:flex-col items-center justify-center w-full p-2 text-base font-normal text-white rounded-lg transition duration-300 ease-in-out gap-5">
+                            <div className="flex lg:flex-col min-[200px]:flex-col items-center justify-center w-full p-2 text-base font-normal text-white rounded-lg transition duration-300 ease-in-out gap-5">
 
                                 <div className="shrink-0">
                                     
