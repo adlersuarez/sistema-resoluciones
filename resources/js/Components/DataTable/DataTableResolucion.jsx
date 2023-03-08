@@ -9,8 +9,11 @@ const customStyles = {
         color: 'rgba(107, 114, 128, 1))',
         letterSpacing: '0.05em',
         fontSize: '0.75rem',
-        fontWeight: '500',
-        lineHeight: '1rem'
+        fontWeight: '900',
+        lineHeight: '1rem',
+        
+        borderTop: '2px solid rgba(0, 0, 0, .13)',
+        borderBottom: '2px solid rgba(0, 0, 0, .13)',
       }
     },
     cells: {
@@ -76,10 +79,9 @@ export default function DataTableResolucion({}) {
             sortable: true,
         },
         {
-            name: 'action',
-            button: true,
+            name: 'Acción',
             cell: (row) => (
-            <div className='flex'>
+            <div className='flex gap-2'>
                 <button className="bg-blue-500 text-white w-[50px] rounded-sm " > {row.id} </button>
                 <button className="bg-red-500 text-white w-[50px] rounded-sm " > {row.id} </button>
             </div>
@@ -98,7 +100,6 @@ export default function DataTableResolucion({}) {
             archivo: '-',
             fecha: '2023-03-07',
         },
-
         {
             id: 2,
             titulo: '02-2022-AU',
@@ -107,21 +108,24 @@ export default function DataTableResolucion({}) {
             tipoSesion: '-',
             usuarios: '-',
             archivo: '-',
-            fecha: '2023-03-07',
+            fecha: '2023-03-06',
         },
+        
     ]
 
-    //console.log(data[0].titulo)
-
+    //Filtro de texto
     const [filterText, setFilterText] = useState('');
-
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-
     const filteredItems = data.filter(
-        item => item.titulo.includes(filterText) 
-            //  ||item.year.toLowerCase().includes(filterText.toLowerCase())
-        ,
+        item => item.titulo.toLowerCase().includes(filterText.toLowerCase()) 
+            ||  item.fecha.toLowerCase().includes(filterText.toLowerCase())
     );
+
+    const minusculasTexto = () => {
+
+
+        return texto
+    };
 
     const handleClear = () => {
         if (filterText) {
@@ -139,6 +143,7 @@ export default function DataTableResolucion({}) {
                     id='search'
                     onChange={(e) => setFilterText(e.target.value)}
                     placeholder='Search'
+                    value={filterText}
                 />
                 <button onClick={handleClear}>
                     X

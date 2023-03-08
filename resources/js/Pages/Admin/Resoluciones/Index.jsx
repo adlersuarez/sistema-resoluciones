@@ -20,7 +20,7 @@ export default function Index({resoluciones,auth}) {
                     Registrar
                 </a>
             </div>
-            <div className="overflow-x-auto relative shadow-md rounded-lg mt-5">
+            <div className="overflow-x-auto relative shadow-md rounded-lg mt-5 p-4 bg-[#F9FAFB]">
                 <DataTableResolucion />
             </div>
             
