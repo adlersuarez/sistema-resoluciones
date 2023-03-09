@@ -21,8 +21,8 @@ export default function Guest({ children, label }) {
                     <img src="/images/fondoPantalla/fondo-documentos.jpg" alt="Fondo Pantalla" className='object-cover h-full' />
 
                     <div className='absolute h-full inset-0 flex flex-col justify-center items-center text-white bg-[#00000025] z-10'>
-                        <h3 className='font-[50] text-[35px]'>Bienvenido a la</h3>
-                        <h1 className='text-6xl font-montserrat'>INTRANET UPLA</h1>
+                        <h3 className='font-[50] text-[35px]'>Bienvenido a</h3>
+                        <h1 className='text-6xl font-montserrat'>RESOLUCIONES UPLA</h1>
                     </div>
 
                 </div>

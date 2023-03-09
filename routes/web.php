@@ -159,7 +159,8 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::get('/tramite-documentario/noti','index')->name('notificacion.index');
     }); */
     Route::controller(ResolucionController::class)->group(function (){
-        Route::get('/resoluciones', 'index')->name('r.resoluciones');
+        Route::get('/tramite-documentario/resoluciones', 'index')->name('r.resoluciones');
+        Route::get('/tramite-documentario/resoluciones/registrar','create')->name('r.resoluciones.registrar');
     });
 
     Route::controller(RolController::class)->group(function (){

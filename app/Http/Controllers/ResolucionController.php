@@ -15,4 +15,9 @@ class ResolucionController extends Controller
             'resoluciones' => $resoluciones,
         ]);
     }
+
+    public function create() 
+    {
+        return Inertia::render('Admin/Resoluciones/Registrar');
+    }
 }

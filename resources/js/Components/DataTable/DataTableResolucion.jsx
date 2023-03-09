@@ -1,3 +1,6 @@
+import { faDownload, faFilePdf, faPen, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from '@inertiajs/inertia-react';
 import React, { useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
 
@@ -65,12 +68,24 @@ export default function DataTableResolucion({}) {
         },
         {
             name: 'Usuarios',
-            selector: row => row.usuarios,
+            cell: (row) => (
+                <div className='flex'>
+                    <Link href="#" className="text-center text-slate-500 focus:outline-none">
+                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faUsers} />
+                    </Link>
+                </div>
+                ),
             
         },
         {
             name: 'Archivo',
-            selector: row => row.archivo,
+            cell: (row) => (
+                <div className='flex'>
+                    <Link href="#" className="text-center text-red-600 focus:outline-none">
+                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faFilePdf} />
+                    </Link>
+                </div>
+                ),
             
         },
         {
@@ -82,8 +97,12 @@ export default function DataTableResolucion({}) {
             name: 'Acción',
             cell: (row) => (
             <div className='flex gap-2'>
-                <button className="bg-blue-500 text-white w-[50px] rounded-sm " > {row.id} </button>
-                <button className="bg-red-500 text-white w-[50px] rounded-sm " > {row.id} </button>
+                <Link href="#" className="text-center text-green-400 focus:outline-none">
+                    <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faPen} />
+                </Link>
+                <Link href="#" className="text-center text-blue-900 focus:outline-none">
+                    <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faDownload} />
+                </Link>
             </div>
             ),
         },
@@ -94,20 +113,16 @@ export default function DataTableResolucion({}) {
             id: 1,
             titulo: '01-2022-AU',
             asunto: '-',
-            tipoResolucion: '-',
-            tipoSesion: '-',
-            usuarios: '-',
-            archivo: '-',
+            tipoResolucion: 'Asamblea Universitaria',
+            tipoSesion: 'Extraordinaria',
             fecha: '2023-03-07',
         },
         {
             id: 2,
             titulo: '02-2022-AU',
             asunto: '-',
-            tipoResolucion: '-',
-            tipoSesion: '-',
-            usuarios: '-',
-            archivo: '-',
+            tipoResolucion: 'Consejo Universitario',
+            tipoSesion: 'Ordinaria',
             fecha: '2023-03-06',
         },
         
