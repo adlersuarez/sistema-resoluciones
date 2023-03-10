@@ -6,14 +6,17 @@ import TitlePages from '@/Components/Titulo/TitlePages';
 import { faFileWord } from '@fortawesome/free-solid-svg-icons';
 
 
-const Registrar = ({ auth, estado_adeudo }) => {
+const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
     const [preview, setPreview] = useState('');
 
     //console.log(estado_adeudo)
 
     const { data, setData, errors, put, progress } = useForm({
-
+        nombre_completo : '',
+        id_persona : '',
     });
+    
+    //if(data.id_persona != '') { setData('nombre_completo', 'aea')}
 
     //console.log(data.estado_AE)
     function handleSubmit(e) {
@@ -68,7 +71,7 @@ const Registrar = ({ auth, estado_adeudo }) => {
                                             <input
                                                 type="text"
                                                 className="w-full px-4 py-2 text-gray-500"
-                                            //value={data.nombre_completo.toUpperCase()}
+                                                
                                             />
                                         </div>
                                         <div className="flex flex-col my-auto col-span-5">
@@ -83,6 +86,13 @@ const Registrar = ({ auth, estado_adeudo }) => {
                                                 required
                                             >
                                                 <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
+                                                {
+                                                    persona.map(per => {
+                                                        return (
+                                                            <option key={per.id_persona} value={per.id_persona}>{per.c_apellidoP + " " + per.c_apellidoM + ", " + per.c_nombres}</option>
+                                                        )
+                                                    })
+                                                }
                                             </select>
                                         </div>
                                         <div className="flex flex-col my-auto col-span-1">
@@ -157,6 +167,13 @@ const Registrar = ({ auth, estado_adeudo }) => {
                                                 required
                                             >
                                                 <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
+                                                {
+                                                    tipo_sesion.map(ses => {
+                                                        return (
+                                                            <option key={ses.id_tipoSesion} value={ses.id_tipoSesion}>{ses.nombreSesion}</option>
+                                                        )
+                                                    })
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -174,6 +191,13 @@ const Registrar = ({ auth, estado_adeudo }) => {
                                                 required
                                             >
                                                 <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
+                                                {
+                                                    tipo_resolucion.map(res => {
+                                                        return (
+                                                            <option key={res.id_tipoResolucion} value={res.id_tipoResolucion}>{res.nombreTipoResolucion}</option>
+                                                        )
+                                                    })
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -222,7 +246,7 @@ const Registrar = ({ auth, estado_adeudo }) => {
                                 </div>
                             </form>
 
-                            
+
 
 
                         </div>

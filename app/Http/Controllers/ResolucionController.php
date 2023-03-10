@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resolucion;
+use App\Models\Persona;
+use App\Models\TipoResolucion;
+use App\Models\TipoSesion;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -29,6 +32,14 @@ class ResolucionController extends Controller
 
     public function create() 
     {
-        return Inertia::render('Admin/Resoluciones/Registrar');
+        $persona = Persona::all();
+        $tipo_resolucion= TipoResolucion::all();
+        $tipo_sesion= TipoSesion::all();
+
+        return Inertia::render('Admin/Resoluciones/Registrar',[
+            'persona' => $persona,
+            'tipo_resolucion' => $tipo_resolucion,
+            'tipo_sesion' => $tipo_sesion,
+        ]);
     }
 }
