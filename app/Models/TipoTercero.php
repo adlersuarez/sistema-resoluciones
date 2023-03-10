@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EstadoSolicitud extends Model
+class TipoTercero extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'c_nomEstadoSol',  
+        'nombreTercero',
+        'descripcionTercero',
     ];
 
-    public $timestamps = true;
-
-    //Solicitud
-    public function Solicitud()
+    
+    //Tercero
+    public function Tercero()
     {
-        return $this->belongsTo(Solicitud::class); 
+        return $this->belongsTo(Tercero::class); 
     }
 }

@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_solicituds', function (Blueprint $table) {
-            $table->id('id_tipoSolicitud');
-            $table->string('c_nomSolicitud',100)->unique();
-            $table->string('c_guiaTramite',200)->unique();
-            $table->string('c_acroTipoSolicitud',20)->unique();
-            $table->float('f_montoPagoTipo');
+        Schema::create('tipo_sesions', function (Blueprint $table) {
+            $table->id('id_tipoSesion');
+            $table->string('nombreSesion',100);
+            $table->string('descripcionSesion',100)->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_solicituds');
+        Schema::dropIfExists('tipo_sesions');
     }
 };

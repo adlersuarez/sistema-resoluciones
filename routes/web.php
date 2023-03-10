@@ -6,37 +6,37 @@ use App\Http\Controllers\AdminController;
 //use App\Http\Controllers\AdminEspecificacionSoftwareController;
 //use App\Http\Controllers\AdminTipoEquipoController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\TipoEquipoController;
-use App\Http\Controllers\UserTipoEquipoController;
+//use App\Http\Controllers\TipoEquipoController;
+//use App\Http\Controllers\UserTipoEquipoController;
 //use App\Http\Controllers\SoftwareController;
 //use App\Http\Controllers\AdminUsoEquipoController;
-use App\Http\Controllers\InfoSoftwareController;
+//use App\Http\Controllers\InfoSoftwareController;
 
-use App\Http\Controllers\AdminSolicitudController;
-use App\Http\Controllers\AdminNotificacionController;
+//use App\Http\Controllers\AdminSolicitudController;
+//use App\Http\Controllers\AdminNotificacionController;
 
-use App\Http\Controllers\SecretariaSolicitudController;
-use App\Http\Controllers\JefaturaSolicitudController;
+//use App\Http\Controllers\SecretariaSolicitudController;
+//use App\Http\Controllers\JefaturaSolicitudController;
 
 //Estado no adeudo especifico
-use App\Http\Controllers\ArchivoEstudiantilController;
-use App\Http\Controllers\DursController;
-use App\Http\Controllers\FacultadesController;
-use App\Http\Controllers\OefcController;
+//use App\Http\Controllers\ArchivoEstudiantilController;
+//use App\Http\Controllers\DursController;
+//use App\Http\Controllers\FacultadesController;
+//use App\Http\Controllers\OefcController;
 
-use App\Http\Controllers\CartEquipoController;
+//use App\Http\Controllers\CartEquipoController;
 //use App\Http\Controllers\EspecificacionEquipoController;
 //use App\Http\Controllers\NotificacionController;
-use App\Http\Controllers\OficinaController;
-use App\Http\Controllers\RolController;
+//use App\Http\Controllers\OficinaController;
+//use App\Http\Controllers\RolController;
 //use App\Http\Controllers\SolicitudController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserSoftwareController;
-use App\Http\Controllers\UserSolicitudController;
+//use App\Http\Controllers\UserController;
+//use App\Http\Controllers\UserSoftwareController;
+//use App\Http\Controllers\UserSolicitudController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 //
-use App\Http\Controllers\DemoController;
+//use App\Http\Controllers\DemoController;
 
 //sistema resoluciones
 use App\Http\Controllers\ResolucionController;
@@ -60,11 +60,11 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
 
     Route::controller(AdminController::class)->group(function (){
        Route::get('/tramite-documentario', 'index')->name('admin');
-       Route::get('/tramite-documentario/exportReporte', 'generarReporte')->name('reporte');
+       //Route::get('/tramite-documentario/exportReporte', 'generarReporte')->name('reporte');
     });
 
 
-    Route::controller(AdminSolicitudController::class)->group(function (){
+    /*Route::controller(AdminSolicitudController::class)->group(function (){
         Route::get('/tramite-documentario/solicitudes', 'index')->name('d.solicituds');
         //Route::get('/tramite-documentario/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
         //
@@ -163,7 +163,7 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::get('/tramite-documentario/resoluciones/registrar','create')->name('r.resoluciones.registrar');
     });
 
-    Route::controller(RolController::class)->group(function (){
+    /*Route::controller(RolController::class)->group(function (){
         Route::get('/tramite-documentario/roles','index')->name('d.roles.index');
         Route::get('/tramite-documentario/roles/create','create')->name('d.roles.create');
         Route::post('/tramite-documentario/roles/store','store')->name('d.roles.store');
@@ -193,7 +193,7 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
 
 
 
-    //Route::get('/tramite-documentario/especificacion/{id}', [EspecificacionEquipoController::class,'show'])->name('d.especificacion.show');
+    //Route::get('/tramite-documentario/especificacion/{id}', [EspecificacionEquipoController::class,'show'])->name('d.especificacion.show');*/
 
 });
 
@@ -203,11 +203,11 @@ Route::middleware(['auth', 'verified','solouser'])->group(function () {
     Route::get('/inicio', [UsuarioController::class,'index'])//tipoequipocontroller
         ->name('user');
 
-    Route::get('/inicio/{id}',[UsuarioController::class,'show'])//tipoequipocontroller
-        ->name('inicio.show');
+    /*Route::get('/inicio/{id}',[UsuarioController::class,'show'])//tipoequipocontroller
+        ->name('inicio.show');*/
 
 
-    
+    /*
     Route::controller(UserSolicitudController::class)->group(function(){
         Route::get('/user/solicitud/tramitar','show')->name('cargarsolicitud');
         Route::post('/user/fut','store')->name('guardarsolicitud');
@@ -220,7 +220,7 @@ Route::middleware(['auth', 'verified','solouser'])->group(function () {
         Route::get('/user/documentos','verDocumentos')->name('mostrarDocumentos');
         Route::put('/user/documentos/subirDocumento/{id_persona}','subirDocumentos')->name('actulizarDocumentos');
 
-    });
+    });*/
 
 });
 

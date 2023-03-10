@@ -49,12 +49,4 @@ class Estudiante extends Model
         return $this->belongsTo(Sede::class,'id_sede','id_sede');
     }
 
-    //Pagos
-    public function PagosNa()
-    {
-        return $this->belongsTo(PagosNa::class);
-    }
-
-
-
 }

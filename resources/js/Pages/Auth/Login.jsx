@@ -28,6 +28,9 @@ export default function Login({ status, canResetPassword, cantidad}) {
 
         post(route('login'));
     };
+
+    //console.log(data)
+    //console.log(errors)
     
     return (
         <GuestLayout label='SISTEMA RESOLUCIONES'>

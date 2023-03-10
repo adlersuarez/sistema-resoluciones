@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('finalidad_solicituds', function (Blueprint $table) {
-            $table->id('id_finalidadSolicitud');
-            $table->string('c_nomFinalidadSolicitud',100)->unique();
-            $table->string('c_acroFinalSolicitud',20)->unique();
+        Schema::create('tipo_resolucions', function (Blueprint $table) {
+            $table->id('id_tipoResolucion');
+            $table->string('nombreResolucion',100);
+            $table->string('acronimoResolucion',100);
+            $table->string('descripcionResolucion',100)->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('finalidad_solicituds');
+        Schema::dropIfExists('tipo_resolucions');
     }
 };

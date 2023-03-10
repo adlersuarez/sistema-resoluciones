@@ -26,12 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AdministrativoSeeder::class);
 
         $this->call(EstudianteSeeder::class);
-
-        $this->call(PagosNaSeeder::class);
-        $this->call(PagosNaAeSeeder::class);
-        $this->call(PagosNaFacSeeder::class);
-        $this->call(PagosNaOefcSeeder::class);
-        $this->call(PagosNaPaiSeeder::class);
        
         $this->call(PersonaSeeder::class);
         $this->call(TipoPersonaSeeder::class);
@@ -39,14 +33,17 @@ class DatabaseSeeder extends Seeder
         
         $this->call(RolSeeder::class);
         $this->call(UserSeeder::class);
-        
-        $this->call(EstadoSolicitudSeeder::class);
-        $this->call(FinalidadSolicitudSeeder::class);
-        $this->call(TipoSolicitudSeeder::class);
-        $this->call(SolicitudSeeder::class);
-        $this->call(DetalleSolicitudSeeder::class);
-        
-        $this->call(DocumentoSeeder::class);
+
+        $this->call(TipoTerceroSeeder::class);
+        $this->call(TerceroSeeder::class);
+
+        $this->call(TipoSesionSeeder::class);
+        $this->call(TipoResolucionSeeder::class);
+
+        $this->call(ResolucionSeeder::class);
+
+        $this->call(MiembrosResolucionSeeder::class);
+        $this->call(ExternosResolucionSeeder::class);
         
     }
 }

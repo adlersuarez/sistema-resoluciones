@@ -26,6 +26,12 @@ class Persona extends Model
         return $this->belongsTo(User::class); 
     }
 
+    //ExternosResolucion
+    public function ExternosResolucion()
+    {
+        return $this->belongsTo(ExternosResolucion::class); 
+    }
+
     //DetalleTipoPersona
     public function DetalleTipoPersona()
     {

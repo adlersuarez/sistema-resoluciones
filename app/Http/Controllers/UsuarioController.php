@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Especificacion_Equipo;
-use App\Models\Solicitud;
-use App\Models\Tipo_Equipo;
+//use App\Models\Especificacion_Equipo;
+//use App\Models\Solicitud;
+//use App\Models\Tipo_Equipo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +16,7 @@ class UsuarioController extends Controller{
     public function index(){
         
         return Inertia::render('User/Index',[
-            'solicitudes' => Solicitud::all()
+            //'solicitudes' => Solicitud::all()
             //->where('id','=','2'),
         ]);
     }

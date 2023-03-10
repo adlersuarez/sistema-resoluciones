@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('estado_solicituds', function (Blueprint $table) {
-            $table->id('id_estadoSolicitud');
-            $table->string('c_nomEstadoSol',100)->unique();
+        Schema::create('tipo_terceros', function (Blueprint $table) {
+            $table->id('id_tipoTercero');
+            $table->string('nombreTercero',100);
+            $table->string('descripcionTercero',100)->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estado_solicituds');
+        Schema::dropIfExists('tipo_terceros');
     }
 };

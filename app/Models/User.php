@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -41,10 +41,10 @@ class User extends Authenticatable
         return $this->belongsTo(Rol::class,'id_rol','id_rol');
     }
 
-    //Solicitud
-    public function Solicitud()
+    //Resolucion
+    public function Resolucion()
     {
-        return $this->belongsTo(Solicitud::class);
+        return $this->belongsTo(Resolucion::class);
     }
 
 

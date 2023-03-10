@@ -7,6 +7,8 @@ import DataTableResolucion from '@/Components/DataTable/DataTableResolucion';
 
 export default function Index({resoluciones,auth}) {
 
+    console.log(resoluciones)
+
     return (
         <Navbar auth={auth}>
             <Head title='Resoluciones'/>

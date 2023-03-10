@@ -105,7 +105,7 @@ const Navbar = ({auth,children}) => {
                             </li> */}
 
                         <li className='px-3'>
-                            <SideLink href={route('cargarsolicitud')} active={route().current('cargarsolicitud')}>
+                            <SideLink href={route('user')} active={route().current('user')}>
                                 <FontAwesomeIcon className="h-5 w-6"  icon={faFilePen} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
@@ -118,7 +118,7 @@ const Navbar = ({auth,children}) => {
                         <hr />
 
                         <li className='px-3'>
-                            <SideLink href={route('verSolicitud')} active={route().current('verSolicitud')}>
+                            <SideLink href={route('user')} active={route().current('user')}>
                                 <FontAwesomeIcon className="h-5 w-6 "  icon={faFolderOpen} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
@@ -129,7 +129,7 @@ const Navbar = ({auth,children}) => {
                         </li>
 
                         <li className='px-3'>
-                            <SideLink href={route('mostrarDocumentos')} active={route().current('mostrarDocumentos')}>
+                            <SideLink href={route('user')} active={route().current('user')}>
                                 <FontAwesomeIcon className="h-5 w-6 "  icon={faFolderTree} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>

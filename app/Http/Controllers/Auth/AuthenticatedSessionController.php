@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\Solicitud;
+//use App\Models\Solicitud;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;

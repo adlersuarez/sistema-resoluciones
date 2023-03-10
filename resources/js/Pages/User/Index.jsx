@@ -11,19 +11,19 @@ const User = ({ auth }) => {
             id: 1,
             tramite: "TRAMITAR SOLICITUD",
             icono: faFilePen,
-            direccion: "cargarsolicitud",
+            direccion: "user",
         },
         {
             id: 2,
             tramite: "GESTOR DE SOLICITUDES",
             icono: faFolderOpen,
-            direccion: "verSolicitud",
+            direccion: "user",
         },
         {
             id: 3,
             tramite: "DOCUMENTOS",
             icono: faFolderTree,
-            direccion: "mostrarDocumentos",
+            direccion: "user",
         },
     ]
 
@@ -37,7 +37,7 @@ const User = ({ auth }) => {
                 <strong>TRÁMITE DOCUMENTARIO</strong>
             </div>
             <div className="flex-wrap gap-5 w-full flex justify-center item-center " >
-                {
+                {/*
                     lista.map(list => {
                         return (
                             <UserTarjetaLink
@@ -49,7 +49,7 @@ const User = ({ auth }) => {
 
                         )
                     })
-                }
+                */}
             </div>
 
         </NavbarUser>
