@@ -7,7 +7,7 @@ import DataTableResolucion from '@/Components/DataTable/DataTableResolucion';
 
 export default function Index({resoluciones,auth}) {
 
-    console.log(resoluciones)
+    //console.log(resoluciones)
 
     return (
         <Navbar auth={auth}>
@@ -22,7 +22,7 @@ export default function Index({resoluciones,auth}) {
                 </Link>
             </div>
             <div className="overflow-x-auto relative shadow-md rounded-lg mt-5 p-4 bg-[#F9FAFB]">
-                <DataTableResolucion />
+                <DataTableResolucion datos={resoluciones}/>
             </div>
             
         </Navbar>

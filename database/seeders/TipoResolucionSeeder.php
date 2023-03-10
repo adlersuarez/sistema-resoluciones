@@ -16,21 +16,21 @@ class TipoResolucionSeeder extends Seeder
     public function run()
     {
         $tipoResolucion = TipoResolucion::create([
-            'nombreResolucion'=>'Asamblea Universitaria',
-            'acronimoResolucion'=>'AU',
-            'descripcionResolucion'=>'Descripcion de AU',
+            'nombreTipoResolucion'=>'Asamblea Universitaria',
+            'acronimoTipoResolucion'=>'AU',
+            'descripcionTipoResolucion'=>'Descripcion de AU',
         ]);
 
         $tipoResolucion = TipoResolucion::create([
-            'nombreResolucion'=>'Rectorado',
-            'acronimoResolucion'=>'R',
-            'descripcionResolucion'=>'Descripcion de R',
+            'nombreTipoResolucion'=>'Rectorado',
+            'acronimoTipoResolucion'=>'R',
+            'descripcionTipoResolucion'=>'Descripcion de R',
         ]);
 
         $tipoResolucion = TipoResolucion::create([
-            'nombreResolucion'=>'Consejo Universitario',
-            'acronimoResolucion'=>'CU',
-            'descripcionResolucion'=>'Descripcion de CU',
+            'nombreTipoResolucion'=>'Consejo Universitario',
+            'acronimoTipoResolucion'=>'CU',
+            'descripcionTipoResolucion'=>'Descripcion de CU',
         ]);
     }
 }

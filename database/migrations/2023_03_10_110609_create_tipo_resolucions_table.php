@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('tipo_resolucions', function (Blueprint $table) {
             $table->id('id_tipoResolucion');
-            $table->string('nombreResolucion',100);
-            $table->string('acronimoResolucion',100);
-            $table->string('descripcionResolucion',100)->nullable();
+            $table->string('nombreTipoResolucion',100);
+            $table->string('acronimoTipoResolucion',100);
+            $table->string('descripcionTipoResolucion',100)->nullable();
             $table->timestamps();
         });
     }

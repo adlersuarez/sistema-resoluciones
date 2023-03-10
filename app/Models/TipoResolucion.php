@@ -10,9 +10,9 @@ class TipoResolucion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nombreResolucion',
-        'acronimoResolucion',
-        'descripcionResolucion',
+        'nombreTipoResolucion',
+        'acronimoTipoResolucion',
+        'descripcionTipoResolucion',
     ];
 
     
