@@ -62,7 +62,22 @@ const Navbar = ({ auth, children }) => {
                     [
                         {
                             'id': 0,
-                            'nombre': 'reporte 1',
+                            'nombre': 'Fecha',
+                            'ruta': 'admin',
+                        },
+                        {
+                            'id': 1,
+                            'nombre': 'Usuario',
+                            'ruta': 'admin',
+                        },
+                        {
+                            'id': 2,
+                            'nombre': 'Tipo Resolución',
+                            'ruta': 'admin',
+                        },
+                        {
+                            'id': 3,
+                            'nombre': 'Asunto',
                             'ruta': 'admin',
                         },
                     ]
@@ -77,7 +92,17 @@ const Navbar = ({ auth, children }) => {
                     [
                         {
                             'id': 0,
-                            'nombre': 'Tipo1',
+                            'nombre': 'Resolución',
+                            'ruta': 't.tipoResolucion',
+                        },
+                        {
+                            'id': 1,
+                            'nombre': 'Sesión',
+                            'ruta': 't.tipoSesion',
+                        },
+                        {
+                            'id': 2,
+                            'nombre': 'Personal',
                             'ruta': 'admin',
                         },
                     ]
@@ -92,7 +117,17 @@ const Navbar = ({ auth, children }) => {
                     [
                         {
                             'id': 0,
-                            'nombre': 'Usuario 1',
+                            'nombre': 'Administradores',
+                            'ruta': 'admin',
+                        },
+                        {
+                            'id': 1,
+                            'nombre': 'Personal',
+                            'ruta': 'admin',
+                        },
+                        {
+                            'id': 2,
+                            'nombre': 'Estudiantes',
                             'ruta': 'admin',
                         },
                     ]

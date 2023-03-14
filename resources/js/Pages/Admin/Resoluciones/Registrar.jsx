@@ -3,26 +3,36 @@ import Navbar from '@/Layouts/Navbar'
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
 import BotonVolver from '@/Components/Botones/BotonVolver';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faFileWord } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faArrowAltCircleLeft, faArrowRotateBack, faArrowRotateLeft, faCircleArrowUp, faCirclePlus, faCircleXmark, faDeleteLeft, faFileWord, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Swal from 'sweetalert2'
 
+var listaMiembros = []
+
+localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
 
 const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
     const [preview, setPreview] = useState('');
 
-    //console.log(estado_adeudo)
+    console.log(persona)
 
     const { data, setData, errors, put, progress } = useForm({
-        nombre_completo : '',
-        id_persona : '',
+        nombre_codigo: '',
+        id_persona: '',
     });
-    
-    //if(data.id_persona != '') { setData('nombre_completo', 'aea')}
 
-    //console.log(data.estado_AE)
+    const [filterText, setFilterText] = useState('');
+    const filtroPersona = persona.filter(
+        item => item.c_dni.toLowerCase().includes(filterText.toLowerCase())
+            || item.c_apellidoP.toLowerCase().includes(filterText.toLowerCase())
+            || item.c_apellidoM.toLowerCase().includes(filterText.toLowerCase())
+            || item.c_nombres.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+
     function handleSubmit(e) {
         e.preventDefault();
 
-        //post(route(''))
 
         Swal.fire({
             icon: 'success',
@@ -31,25 +41,28 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
         })
     }
 
-    var listaMiembros = [
-        {
-            'id': 1,
-            'codigo': '2018200462k',
-            'nombre': 'John Suarez Orihuela',
-        },
-        {
-            'id': 2,
-            'codigo': '2018214526L',
-            'nombre': 'Joham Jurado Baldeon',
-        },
-    ]
+    function agregar_participantes(id) {
 
-    /*listaMiembros.push({
-        'id': 3,
-        'codigo': '2018214123L',
-        'nombre': 'Terry Jurado Baldeon',
-    }) */
-    //console.log(listaMiembros.length)
+        if (id) {
+            const busqueda = persona.find(element => element.id_persona == id);
+            const repetido = listaMiembros.find(lista => lista.id == id);
+            if (!repetido) {
+                listaMiembros.push({
+                    'id': busqueda.id_persona,
+                    'codigo': busqueda.c_dni,
+                    'nombre': busqueda.c_nombres + ' ' + busqueda.c_apellidoP + ' ' + busqueda.c_apellidoM,
+                })
+            }
+            localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
+        }
+    }
+
+    function eliminar_participante(id) {
+
+        var indiceBorrado = listaMiembros.findIndex(item => item.id === id)
+        listaMiembros.splice(indiceBorrado, 1)
+        localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
+    }
 
     return (
         <Navbar auth={auth}>
@@ -63,6 +76,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-4 border-b border-gray-200">
                             <hr className='my-4' />
+
                             <form name="createForm">
                                 <div className="">
                                     <div className='grid grid-cols-12 gap-4 my-2'>
@@ -70,8 +84,10 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
                                         <div className="flex flex-col my-auto col-span-4">
                                             <input
                                                 type="text"
+                                                required
                                                 className="w-full px-4 py-2 text-gray-500"
-                                                
+                                                placeholder="Nombre o DNI"
+                                                onChange={(e) => setFilterText(e.target.value)}
                                             />
                                         </div>
                                         <div className="flex flex-col my-auto col-span-5">
@@ -87,16 +103,19 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
                                             >
                                                 <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
                                                 {
-                                                    persona.map(per => {
+                                                    filtroPersona.map(per => {
                                                         return (
-                                                            <option key={per.id_persona} value={per.id_persona}>{per.c_apellidoP + " " + per.c_apellidoM + ", " + per.c_nombres}</option>
+                                                            <option key={per.id_persona} value={per.id_persona}>{per.c_apellidoP + " " + per.c_apellidoM + ", " + per.c_nombres + " - " + per.c_dni}</option>
                                                         )
                                                     })
                                                 }
                                             </select>
                                         </div>
+
                                         <div className="flex flex-col my-auto col-span-1">
-                                            <button className='border-2 '>Agregar</button>
+                                            <Link onClick={() => agregar_participantes(data.id_persona)} className='flex m-auto text-green-600'>
+                                                <FontAwesomeIcon className="h-8 w-10" icon={faCirclePlus} />
+                                            </Link>
                                         </div>
                                     </div>
                                     {
@@ -110,6 +129,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
                                                         <tr className='font-bold'>
                                                             <th className='text-center'>Código</th>
                                                             <th className='text-left'>Nombre Completo</th>
+                                                            <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -118,6 +138,11 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
                                                                 <tr key={miembro.id}>
                                                                     <td className='text-center'>{miembro.codigo}</td>
                                                                     <td className='text-left'>{miembro.nombre}</td>
+                                                                    <td>
+                                                                        <Link onClick={() => eliminar_participante(miembro.id)} className='flex m-auto text-red-600'>
+                                                                            <FontAwesomeIcon className="h-4 w-5" icon={faCircleXmark} />
+                                                                        </Link>
+                                                                    </td>
                                                                 </tr>
                                                             )
                                                         }

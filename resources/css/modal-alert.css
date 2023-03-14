@@ -2,6 +2,37 @@
     height: 800px;
   }
 
-#exto-enviarMail {
-   color: red,
+.custom-title{
+  margin: auto;
+  font-size: 16px;
+  margin-top: 0;
+  background-color: rgb(39, 52, 199);
+  color: white !important;
+  text-align: left !important;
+  border-radius: 5px 5px 0 0;
+  height: 90px;
+}
+
+.swal2-html-container .div-input-modal{
+  display: flex;
+  justify-content: space-between;
+}
+
+.swal2-html-container .label-input-modal{
+  margin-top: 25px;
+  margin-left: 15px;
+}
+
+.swal2-html-container #tipo,#acronimo{
+  width: 74%;
+}
+
+.swal2-html-container #descripcion{
+  width: 74%;
+  height: 200px;
+  padding-top: 10px;
+}
+
+.swal2-html-container #close-button{
+  outline:none;
 }

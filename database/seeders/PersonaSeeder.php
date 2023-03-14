@@ -17,12 +17,12 @@ class PersonaSeeder extends Seeder
     {
         $persona = Persona::create([
             'c_dni'=>'96872456',
-            'c_apellidoP'=>'Astete',
-            'c_apellidoM'=>'Montalvo',
-            'c_nombres'=>'Milagros',
+            'c_apellidoP'=>'Nuñez',
+            'c_apellidoM'=>'-',
+            'c_nombres'=>'Amaya',
             'c_numTelefono'=>'475132',
             'c_numCelular'=>'965004343',
-            'c_email'=>'a_Milagros@upla.edu.pe',
+            'c_email'=>'a_Amayas@upla.edu.pe',
         ]);
 
         $persona = Persona::create([

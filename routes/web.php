@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Route;
 
 //sistema resoluciones
 use App\Http\Controllers\ResolucionController;
+use App\Http\Controllers\TipoController;
 //
 use App\Mail\EnviarConfirmacionMailable;
 use Illuminate\Support\Facades\Mail;
@@ -161,6 +162,20 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
     Route::controller(ResolucionController::class)->group(function (){
         Route::get('/tramite-documentario/resoluciones', 'index')->name('r.resoluciones');
         Route::get('/tramite-documentario/resoluciones/registrar','create')->name('r.resoluciones.registrar');
+    });
+
+    Route::controller(TipoController::class)->group(function (){
+        //Tipo Resolucion
+        Route::get('/tipos/resoluciones', 'indexResolucion')->name('t.tipoResolucion');
+        Route::put('/tipos/resoluciones/update/{id}','updateResolucion')->name('t.tipoResolucion.update');
+        Route::post('/tipos/resoluciones/store','createResolucion')->name('t.tipoResolucion.create');
+        Route::delete('/tipos/resoluciones/delete/{id}','deleteResolucion')->name('t.tipoResolucion.delete');
+
+        //Tipo Sesion
+        Route::get('/tipos/sesiones', 'indexSesion')->name('t.tipoSesion');
+        Route::put('/tipos/sesiones/update/{id}','updateSesion')->name('t.tipoSesion.update');
+        Route::post('/tipos/sesiones/store','createSesion')->name('t.tipoSesion.create');
+        Route::delete('/tipos/sesiones/delete/{id}','deleteSesion')->name('t.tipoSesion.delete');
     });
 
     /*Route::controller(RolController::class)->group(function (){
