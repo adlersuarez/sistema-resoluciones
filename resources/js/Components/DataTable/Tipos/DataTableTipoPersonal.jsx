@@ -45,12 +45,12 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTableTipoSesion({ datos }) {
+export default function DataTableTipoPersonal({ datos }) {
 
     const editar_tipo = (row) => {
 
         Swal.fire({
-            title: 'Actualizar Tipo de Sesión',
+            title: 'Actualizar Tipo de Personal',
             html: `<div class="div-input-modal"><label class="label-input-modal">Tipo</label><input type="text" value="${row.titulo}" id="tipo" class="swal2-input" placeholder="Tipo"></div>
             <div class="div-input-modal"><label class="label-input-modal">Descripción</label><textarea type="textarea" id="descripcion" class="swal2-input" placeholder="Descripción">${row.descripcion}</textarea></div>`,
             confirmButtonText: 'Editar',
@@ -73,15 +73,15 @@ export default function DataTableTipoSesion({ datos }) {
         }).then((result) => {
             if (result.isConfirmed) {
 
-                Inertia.put(route('t.tipoSesion.update',`${row.id}`),{
+                Inertia.put(route('t.tipoPersona.update',`${row.id}`),{
                     _method: 'put',
-                    nombreSesion: result.value.tipo,
-                    descripcionSesion: result.value.descripcion,
+                    nombreTipoPersona: result.value.tipo,
+                    descripcionPersona: result.value.descripcion,
                 })
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Tipo de Sesión Actualizada',
+                    title: 'Tipo de Personal Actualizado',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -92,7 +92,7 @@ export default function DataTableTipoSesion({ datos }) {
     const eliminar_tipo = (row) => {
 
         Swal.fire({
-            title: `¿Está seguro(a) de eliminar el tipo de sesión: <br><b>${row.titulo.toUpperCase()}</b>?`,
+            title: `¿Está seguro(a) de eliminar el tipo de Personal: <br><b>${row.titulo.toUpperCase()}</b>?`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Eliminar',
@@ -100,11 +100,11 @@ export default function DataTableTipoSesion({ datos }) {
           }).then((result) => {
             
             if (result.isConfirmed) {
-                Inertia.delete(route('t.tipoSesion.delete',`${row.id}`))
+                Inertia.delete(route('t.tipoPersona.delete',`${row.id}`))
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Tipo de Sesión Eliminada',
+                    title: 'Tipo de Personal Eliminado',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -115,7 +115,7 @@ export default function DataTableTipoSesion({ datos }) {
 
     const columns = [
         {
-            name: 'Tipo de Resolución',
+            name: 'Tipo de Personal',
             selector: row => row.titulo,
             sortable: true,
 
@@ -150,9 +150,9 @@ export default function DataTableTipoSesion({ datos }) {
 
     datos.map((elemento) =>
         data.push({
-            id: elemento.id_tipoSesion,
-            titulo: elemento.nombreSesion,
-            descripcion: elemento.descripcionSesion,
+            id: elemento.id_tipoPersona,
+            titulo: elemento.nombreTipoPersona,
+            descripcion: elemento.descripcionPersona,
         })
     )
 

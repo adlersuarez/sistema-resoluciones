@@ -10,7 +10,8 @@ class TipoPersona extends Model
     use HasFactory;
 
     protected $fillable = [
-        'c_nomTipoPer',
+        'nombreTipoPersona',
+        'descripcionPersona',
     ];
 
     

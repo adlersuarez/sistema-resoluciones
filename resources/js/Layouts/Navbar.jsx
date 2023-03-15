@@ -103,7 +103,7 @@ const Navbar = ({ auth, children }) => {
                         {
                             'id': 2,
                             'nombre': 'Personal',
-                            'ruta': 'admin',
+                            'ruta': 't.tipoPersona',
                         },
                     ]
             }
@@ -118,7 +118,7 @@ const Navbar = ({ auth, children }) => {
                         {
                             'id': 0,
                             'nombre': 'Administradores',
-                            'ruta': 'admin',
+                            'ruta': 'p.personalAdministrador',
                         },
                         {
                             'id': 1,

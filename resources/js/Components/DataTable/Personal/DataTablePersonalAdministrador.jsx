@@ -45,43 +45,64 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTableTipoSesion({ datos }) {
+export default function DataTablePersonalAdministrador({ datos }) {
 
     const editar_tipo = (row) => {
 
         Swal.fire({
-            title: 'Actualizar Tipo de Sesión',
-            html: `<div class="div-input-modal"><label class="label-input-modal">Tipo</label><input type="text" value="${row.titulo}" id="tipo" class="swal2-input" placeholder="Tipo"></div>
-            <div class="div-input-modal"><label class="label-input-modal">Descripción</label><textarea type="textarea" id="descripcion" class="swal2-input" placeholder="Descripción">${row.descripcion}</textarea></div>`,
+            title: 'Actualizar Datos de Administrador',
+            html: `<h1 class="h1-form">DATOS PERSONALES</h1>
+            <div class="div-form">
+            <div class="div-input-form"><label class="label-input-form">DNI</label><input type="number" id="dni" class="swal2-input" maxlength="8" size="8" value="${row.dni}"></div>
+            <div class="div-input-form"><label class="label-input-form">Nombres</label><input type="text" id="nombre" class="swal2-input" value="${row.c_nom}"></div>
+            </div>
+            <div class="div-form">
+            <div class="div-input-form"><label class="label-input-form">Apellido Paterno</label><input type="text" id="apellidoP" class="swal2-input" value="${row.c_apP}"></div>
+            <div class="div-input-form"><label class="label-input-form">Apellido Materno</label><input type="text" id="apellidoM" class="swal2-input" value="${row.c_apM}"></div>
+            </div>
+            <hr class="hr-form"/>
+            <h1 class="h1-form">DATOS DE CONTACTO</h1>
+            <div class="div-form">
+            <div class="div-input-form"><label class="label-input-form">Teléfono</label><input type="number" id="telefono" class="swal2-input" value="${row.telefono}"></div>
+            <div class="div-input-form"><label class="label-input-form">Correo</label><input type="email" id="email" class="swal2-input" value="${row.correo}"></div>
+            </div>`,
             confirmButtonText: 'Editar',
             focusConfirm: false,
             showCloseButton: true,
-            width: '800px',
+            width: '1000px',
             customClass: {
                title: 'custom-title',
                closeButton: 'close-button',
             },
             preConfirm: () => {
-                const tipo = Swal.getPopup().querySelector('#tipo').value
-                const descripcion = Swal.getPopup().querySelector('#descripcion').value
+                const dni = Swal.getPopup().querySelector('#dni').value
+                const nombre = Swal.getPopup().querySelector('#nombre').value
+                const apellidoP = Swal.getPopup().querySelector('#apellidoP').value
+                const apellidoM = Swal.getPopup().querySelector('#apellidoM').value
+                const telefono = Swal.getPopup().querySelector('#telefono').value
+                const email = Swal.getPopup().querySelector('#email').value
 
-                if (!tipo || !descripcion) {
+                if (!dni || !nombre || !apellidoP || !apellidoM || !telefono || !email) {
                     Swal.showValidationMessage(`Por favor ingrese todos los campos`)
                 }
-                return { tipo: tipo, descripcion: descripcion }
+                return { dni: dni, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, telefono: telefono, email: email }
             }
         }).then((result) => {
             if (result.isConfirmed) {
 
-                Inertia.put(route('t.tipoSesion.update',`${row.id}`),{
+                Inertia.put(route('p.personalAdministrador.update',`${row.id}`),{
                     _method: 'put',
-                    nombreSesion: result.value.tipo,
-                    descripcionSesion: result.value.descripcion,
+                    c_dni: result.value.dni,
+                    c_apellidoP: result.value.apellidoP,
+                    c_apellidoM: result.value.apellidoM,
+                    c_nombres: result.value.nombre,
+                    c_numTelefono: result.value.telefono,
+                    c_email: result.value.email,
                 })
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Tipo de Sesión Actualizada',
+                    title: 'Datos de administrador actualizados',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -92,7 +113,7 @@ export default function DataTableTipoSesion({ datos }) {
     const eliminar_tipo = (row) => {
 
         Swal.fire({
-            title: `¿Está seguro(a) de eliminar el tipo de sesión: <br><b>${row.titulo.toUpperCase()}</b>?`,
+            title: `¿Está seguro(a) de eliminar al personal: <br><b>${row.nombre.toUpperCase()}</b>?`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Eliminar',
@@ -100,11 +121,11 @@ export default function DataTableTipoSesion({ datos }) {
           }).then((result) => {
             
             if (result.isConfirmed) {
-                Inertia.delete(route('t.tipoSesion.delete',`${row.id}`))
+                Inertia.delete(route('p.personalAdministrador.delete',`${row.id}`))
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Tipo de Sesión Eliminada',
+                    title: 'Personal eliminado',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -115,14 +136,26 @@ export default function DataTableTipoSesion({ datos }) {
 
     const columns = [
         {
-            name: 'Tipo de Resolución',
-            selector: row => row.titulo,
+            name: 'DNI',
+            selector: row => row.dni,
             sortable: true,
 
         },
         {
-            name: 'Descripción',
-            selector: row => row.descripcion,
+            name: 'Nombre',
+            selector: row => row.nombre,
+            sortable: true,
+
+        },
+        {
+            name: 'Teléfono',
+            selector: row => row.telefono,
+            sortable: true,
+
+        },
+        {
+            name: 'Correo',
+            selector: row => row.correo,
             sortable: true,
 
         },
@@ -150,9 +183,14 @@ export default function DataTableTipoSesion({ datos }) {
 
     datos.map((elemento) =>
         data.push({
-            id: elemento.id_tipoSesion,
-            titulo: elemento.nombreSesion,
-            descripcion: elemento.descripcionSesion,
+            id: elemento.id_persona,
+            dni: elemento.c_dni,
+            nombre: elemento.c_apellidoP+" "+elemento.c_apellidoM+", "+elemento.c_nombres,
+            c_nom: elemento.c_nombres,
+            c_apP: elemento.c_apellidoP,
+            c_apM: elemento.c_apellidoM,
+            telefono: elemento.c_numTelefono,
+            correo: elemento.c_email,
         })
     )
 
@@ -160,8 +198,10 @@ export default function DataTableTipoSesion({ datos }) {
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter(
-        item => item.titulo.toLowerCase().includes(filterText.toLowerCase())
-           || item.descripcion.toLowerCase().includes(filterText.toLowerCase())
+        item => item.dni.toLowerCase().includes(filterText.toLowerCase())
+           || item.nombre.toLowerCase().includes(filterText.toLowerCase())
+           || item.telefono.toLowerCase().includes(filterText.toLowerCase())
+           || item.correo.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleClear = () => {

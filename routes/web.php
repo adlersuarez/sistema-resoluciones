@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\Route;
 //sistema resoluciones
 use App\Http\Controllers\ResolucionController;
 use App\Http\Controllers\TipoController;
+use App\Http\Controllers\PersonalController;
 //
 use App\Mail\EnviarConfirmacionMailable;
 use Illuminate\Support\Facades\Mail;
@@ -176,6 +177,21 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::put('/tipos/sesiones/update/{id}','updateSesion')->name('t.tipoSesion.update');
         Route::post('/tipos/sesiones/store','createSesion')->name('t.tipoSesion.create');
         Route::delete('/tipos/sesiones/delete/{id}','deleteSesion')->name('t.tipoSesion.delete');
+
+        //Tipo Persona
+        Route::get('/tipos/personas', 'indexPersona')->name('t.tipoPersona');
+        Route::put('/tipos/personas/update/{id}','updatePersona')->name('t.tipoPersona.update');
+        Route::post('/tipos/personas/store','createPersona')->name('t.tipoPersona.create');
+        Route::delete('/tipos/personas/delete/{id}','deletePersona')->name('t.tipoPersona.delete');
+    });
+
+    Route::controller(PersonalController::class)->group(function (){
+        //Tipo Resolucion
+        Route::get('/personal/administradores', 'indexAdministrador')->name('p.personalAdministrador');
+        Route::put('/personal/administradores/update/{id}','updateAdministrador')->name('p.personalAdministrador.update');
+        Route::post('/personal/administradores/store','createAdministrador')->name('p.personalAdministrador.create');
+        Route::delete('/personal/administradores/delete/{id}','deleteAdministrador')->name('p.personalAdministrador.delete');
+
     });
 
     /*Route::controller(RolController::class)->group(function (){

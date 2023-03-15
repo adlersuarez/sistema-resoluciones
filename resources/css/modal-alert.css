@@ -2,6 +2,13 @@
     height: 800px;
   }
 
+/*quitar boton a input numerico*/
+.swal2-html-container input[type=number]::-webkit-inner-spin-button, 
+.swal2-html-container input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
 .custom-title{
   margin: auto;
   font-size: 16px;
@@ -13,6 +20,7 @@
   height: 90px;
 }
 
+/*MODAL TIPOS*/
 .swal2-html-container .div-input-modal{
   display: flex;
   justify-content: space-between;
@@ -35,4 +43,45 @@
 
 .swal2-html-container #close-button{
   outline:none;
+}
+
+/*FORMULARIO PERSONAL*/
+.swal2-html-container .div-input-form{
+  display: flex;
+  width: 50%;
+  margin: 0 0 0 0;
+  justify-content: space-between;
+}
+
+.swal2-html-container .div-form{
+  display: flex;
+  align-content: center;
+}
+
+.swal2-html-container .label-input-form{
+  text-align: left;
+  margin: auto;
+  width: 20%;
+}
+
+.swal2-html-container #dni,#nombre,#apellidoP,#apellidoM,#telefono,#email{
+  width: 79%;
+  margin: auto;
+  margin-right: 35px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.swal2-html-container .hr-form{
+ margin-top: 25px;
+ margin-bottom: 25px;
+ border: 1px solid;
+ border-color: rgba(154, 154, 163, 0.229);
+}
+
+.swal2-html-container .h1-form{
+  text-align: left;
+  color: rgba(2, 2, 135, 0.76);
+  font-size: 25px;
+  font-weight: bold;
 }

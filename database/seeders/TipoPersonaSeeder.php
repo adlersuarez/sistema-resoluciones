@@ -16,11 +16,18 @@ class TipoPersonaSeeder extends Seeder
     public function run()
     {
         $tipo_persona = TipoPersona::create([
-            'c_nomTipoPer'=>'estudiante',
+            'nombreTipoPersona'=>'Administrativo',
+            'descripcionPersona'=>'Descripción tipo administrativo',
         ]);
 
         $tipo_persona = TipoPersona::create([
-            'c_nomTipoPer'=>'administrativo',
+            'nombreTipoPersona'=>'Docente',
+            'descripcionPersona'=>'Descripción tipo docente',
+        ]);
+
+        $tipo_persona = TipoPersona::create([
+            'nombreTipoPersona'=>'Estudiante',
+            'descripcionPersona'=>'Descripción tipo estudiante',
         ]);
     }
 }
