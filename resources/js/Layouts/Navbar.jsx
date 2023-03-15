@@ -130,6 +130,11 @@ const Navbar = ({ auth, children }) => {
                             'nombre': 'Estudiantes',
                             'ruta': 'admin',
                         },
+                        {
+                            'id': 3,
+                            'nombre': 'Cuenta de Usuario',
+                            'ruta': 'u.usuarioCuenta',
+                        },
                     ]
             }
         ],

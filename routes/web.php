@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResolucionController;
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\CuentaUsuarioController;
 //
 use App\Mail\EnviarConfirmacionMailable;
 use Illuminate\Support\Facades\Mail;
@@ -192,6 +193,18 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::post('/personal/administradores/store','createAdministrador')->name('p.personalAdministrador.create');
         Route::delete('/personal/administradores/delete/{id}','deleteAdministrador')->name('p.personalAdministrador.delete');
 
+    });
+
+    Route::controller(CuentaUsuarioController::class)->group(function (){
+        //Lista Usuarios
+        Route::get('/usuarios', 'indexUser')->name('u.usuarioCuenta');
+        Route::put('/usuarios/update/{id}','updateUser')->name('u.usuarioCuenta.update');
+        Route::post('/usuarios/store','createUser')->name('u.usuarioCuenta.create');
+        Route::delete('/usuarios/delete/{id}','deleteUser')->name('u.usuarioCuenta.delete');
+
+        //Usuario personal
+        Route::get('/usuario/personal', 'indexUserPersonal')->name('u.usuarioPersonal');
+        Route::put('/usuarios/update','updateUserPersonal')->name('u.usuarioPersonal.update');
     });
 
     /*Route::controller(RolController::class)->group(function (){

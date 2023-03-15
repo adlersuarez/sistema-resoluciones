@@ -85,3 +85,29 @@
   font-size: 25px;
   font-weight: bold;
 }
+
+/* Usuario */
+.swal2-html-container .div-user{
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: center;
+}
+
+.swal2-html-container .div-user .div-input-user{
+  display: flex;
+  width: 100%;
+  margin: auto;
+  margin-top: 15px;
+}
+
+.swal2-html-container .div-user .label-input-user{
+  text-align: left;
+  margin: auto;
+  width: 30%;
+}
+
+.swal2-html-container .div-user #username,#email,#tipo-usuario {
+  width: 70%;
+  margin: auto;
+  font-size: 18px;
+}

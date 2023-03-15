@@ -8,7 +8,7 @@ import { Inertia } from '@inertiajs/inertia';
 import DataTablePersonalAdministrador from '@/Components/DataTable/Personal/DataTablePersonalAdministrador';
 
 
-export default function Sesion({tipoAdmin,auth}) {
+export default function Administrador({tipoAdmin,auth}) {
 
     const nuevo_tipo = () => {
 
