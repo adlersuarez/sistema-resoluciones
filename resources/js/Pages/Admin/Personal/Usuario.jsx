@@ -2,28 +2,31 @@ import React from 'react';
 import Navbar from '@/Layouts/Navbar';
 import { Head, Link } from '@inertiajs/inertia-react';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faUserCircle, faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
-import DataTablePersonalAdministrador from '@/Components/DataTable/Personal/DataTablePersonalAdministrador';
 import DataTablePersonalUsuario from '@/Components/DataTable/Personal/DataTablePersonalUsuario';
 
+export default function Usuario({usuarios,roles,persona,auth}) {
 
-export default function Usuario({usuarios,roles,auth}) {
-
-    const selectPersona = "";
+    var selectPersona = "";
+   
+    persona.map( per => {
+        selectPersona += `<option value="${per.id_persona}">${per.c_apellidoP+" "+per.c_apellidoM+" "+per.c_nombres+" - "+per.nombreTipoPersona}</option>`
+    });
 
     const nuevo_tipo = () => {
 
         Swal.fire({
             title: 'Registro de Usuarios',
-            html: `<div class="div-user">
-            <label class="label-input-user">Tipo Usuario</label>
-            <select id="id_persona">
-                <option value="0" id="disabled-option" disabled selected}>Seleccionar Persona</option>
-                <option value="1">Administrador</option>
-                <option value="2">Usuario</option>
-            </select>
+            html: `
+            <div class="div-user">
+            <div class="div-input-user">
+            <label class="label-input-user">Persona</label>
+            <select id="id-persona"  data-live-search="true">
+                <option value="0" id="disabled-option" disabled selected="true"}>Seleccionar Persona</option>
+                ${selectPersona}
+            </select></div>
             <div class="div-input-user">
             <label class="label-input-user">Username</label><input type="text" id="username" class="swal2-input" placeholder="Username"></div>
             <div class="div-input-user"><label class="label-input-user">Email</label><input type="text" id="email" class="swal2-input" placeholder="Email"></div>
@@ -40,7 +43,7 @@ export default function Usuario({usuarios,roles,auth}) {
             confirmButtonText: 'Guardar',
             focusConfirm: false,
             showCloseButton: true,
-            width: '600px',
+            width: '700px',
             customClass: {
                title: 'custom-title',
                closeButton: 'close-button',

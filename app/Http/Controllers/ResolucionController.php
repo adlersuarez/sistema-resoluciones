@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Resolucion;
 use App\Models\Persona;
+
+use App\Models\MiembrosResolucion;
+
 use App\Models\TipoResolucion;
 use App\Models\TipoSesion;
 
@@ -21,12 +24,13 @@ class ResolucionController extends Controller
         ->join('tipo_resolucions','tipo_resolucions.id_tipoResolucion','=','resolucions.id_tipoResolucion')
         ->join('carrera_profesionals','carrera_profesionals.id_carreraProfesional','=','resolucions.id_carreraProfesional')
         ->join('sedes','sedes.id_sede','=','resolucions.id_sede')
-       
-        //->orderBy('solicituds.d_fechaSolicitud','asc')
         ->get();
+
+        $miembros = MiembrosResolucion::all();
 
         return Inertia::render('Admin/Resoluciones/Index',[
             'resoluciones' => $resoluciones,
+            'miembros' => $miembros,
         ]);
     }
 
@@ -41,5 +45,16 @@ class ResolucionController extends Controller
             'tipo_resolucion' => $tipo_resolucion,
             'tipo_sesion' => $tipo_sesion,
         ]);
+    }
+
+    public function descargarResolucion($id)
+    {
+        $pdf = Resolucion::where('id_resolucion',$id)->first();
+
+        $filename = $pdf->archivoResolucion;
+        $pathToFile = public_path('documentos/resoluciones/'.$filename);
+        $headers = ['Content-Type: application/pdf'];
+        
+        return response()->download($pathToFile,$filename,$headers);
     }
 }

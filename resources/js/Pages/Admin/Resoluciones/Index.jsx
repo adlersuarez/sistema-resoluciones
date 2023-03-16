@@ -5,7 +5,7 @@ import TitlePages from '@/Components/Titulo/TitlePages';
 import { faFileWord } from '@fortawesome/free-solid-svg-icons';
 import DataTableResolucion from '@/Components/DataTable/DataTableResolucion';
 
-export default function Index({resoluciones,auth}) {
+export default function Index({resoluciones,miembros,auth}) {
 
     //console.log(resoluciones)
 
@@ -22,7 +22,7 @@ export default function Index({resoluciones,auth}) {
                 </Link>
             </div>
             <div className="overflow-x-auto relative shadow-md rounded-lg mt-5 p-4 bg-[#F9FAFB]">
-                <DataTableResolucion datos={resoluciones}/>
+                <DataTableResolucion datos={resoluciones} miembros={miembros}/>
             </div>
             
         </Navbar>

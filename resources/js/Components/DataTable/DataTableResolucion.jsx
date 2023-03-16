@@ -43,9 +43,9 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTableResolucion({ datos }) {
+export default function DataTableResolucion({ datos,miembros }) {
 
-    //console.log(datos)
+    console.log(miembros)
 
     const columns = [
         {
@@ -72,7 +72,7 @@ export default function DataTableResolucion({ datos }) {
             name: 'Usuarios',
             cell: (row) => (
                 <div className='flex'>
-                    <Link href="#" className="text-center text-slate-500 focus:outline-none">
+                    <Link href="#" className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faUsers} />
                     </Link>
                 </div>
@@ -83,9 +83,11 @@ export default function DataTableResolucion({ datos }) {
             name: 'Archivo',
             cell: (row) => (
                 <div className='flex'>
-                    <Link href="#" className="text-center text-red-600 focus:outline-none">
+                    <a className="text-center text-red-400 hover:text-red-600 focus:outline-none"
+                        target="_blank"
+                        href={`/documentos/resoluciones/${row.archivo}`}>
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faFilePdf} />
-                    </Link>
+                    </a>
                 </div>
             ),
 
@@ -99,12 +101,15 @@ export default function DataTableResolucion({ datos }) {
             name: 'Acción',
             cell: (row) => (
                 <div className='flex gap-2'>
-                    <Link href="#" className="text-center text-green-400 focus:outline-none">
+                    <Link href="#" className="text-center text-green-500 hover:text-green-600 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faPen} />
                     </Link>
-                    <Link href="#" className="text-center text-blue-900 focus:outline-none">
+                    <a href={route('r.resoluciones.descargar', row.id)}
+                        target="_self"
+                        className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faDownload} />
-                    </Link>
+                    </a>
+
                 </div>
             ),
         },
@@ -139,6 +144,7 @@ export default function DataTableResolucion({ datos }) {
             tipoResolucion: elemento.nombreTipoResolucion,
             tipoSesion: elemento.nombreSesion,
             fecha: elemento.fechaResolucion.slice(0, 10),
+            archivo: elemento.archivoResolucion,
         })
     )
 

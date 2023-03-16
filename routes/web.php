@@ -164,6 +164,9 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
     Route::controller(ResolucionController::class)->group(function (){
         Route::get('/tramite-documentario/resoluciones', 'index')->name('r.resoluciones');
         Route::get('/tramite-documentario/resoluciones/registrar','create')->name('r.resoluciones.registrar');
+
+        //Descargar
+        Route::get('/tramite-documentario/resoluciones/descargar/{id}','descargarResolucion')->name('r.resoluciones.descargar');
     });
 
     Route::controller(TipoController::class)->group(function (){
@@ -187,12 +190,20 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
     });
 
     Route::controller(PersonalController::class)->group(function (){
-        //Tipo Resolucion
-        Route::get('/personal/administradores', 'indexAdministrador')->name('p.personalAdministrador');
-        Route::put('/personal/administradores/update/{id}','updateAdministrador')->name('p.personalAdministrador.update');
-        Route::post('/personal/administradores/store','createAdministrador')->name('p.personalAdministrador.create');
-        Route::delete('/personal/administradores/delete/{id}','deleteAdministrador')->name('p.personalAdministrador.delete');
+        //Administrativos
+        Route::get('/personal/administrativos', 'indexAdministrador')->name('p.personalAdministrador');
+        Route::put('/personal/administrativos/update/{id}','updateAdministrador')->name('p.personalAdministrador.update');
+        Route::post('/personal/administrativos/store','createAdministrador')->name('p.personalAdministrador.create');
+        Route::delete('/personal/administrativos/delete/{id}','deleteAdministrador')->name('p.personalAdministrador.delete');
 
+        //Docentes
+        Route::get('/personal/docentes', 'indexDocente')->name('p.personalDocente');
+        Route::put('/personal/docentes/update/{id}','updateDocente')->name('p.personalDocente.update');
+        Route::post('/personal/docentes/store','createDocente')->name('p.personalDocente.create');
+        Route::delete('/personal/docentes/delete/{id}','deleteDocente')->name('p.personalDocente.delete');
+
+        //Estudiantes
+        Route::get('/personal/estudiantes', 'indexEstudiante')->name('p.personalEstudiante');
     });
 
     Route::controller(CuentaUsuarioController::class)->group(function (){

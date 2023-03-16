@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Rol;
+use App\Models\Persona;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -22,9 +23,23 @@ class CuentaUsuarioController extends Controller
 
         $roles = Rol::all();
 
+        $userAcount = User::query()
+        ->join('personas','users.id_persona','=','personas.id_persona')
+        ->get();
+        foreach ($userAcount as $user) {
+                    $data[] = $user->id_persona;
+                }
+
+        $persona = Persona::whereNotIn('personas.id_persona', $data)
+        ->join('detalle_tipo_personas','detalle_tipo_personas.id_persona','=','personas.id_persona')
+        ->join('tipo_personas','tipo_personas.id_tipoPersona','=','detalle_tipo_personas.id_tipoPersona')
+        ->get();
+        //$persona = Persona::all();
+
         return Inertia::render('Admin/Personal/Usuario',[
             'usuarios' => $usuarios,
             'roles' => $roles,
+            'persona' => $persona,
         ]);
     }
 

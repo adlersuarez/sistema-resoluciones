@@ -117,22 +117,22 @@ const Navbar = ({ auth, children }) => {
                     [
                         {
                             'id': 0,
-                            'nombre': 'Administradores',
+                            'nombre': 'Administrativos',
                             'ruta': 'p.personalAdministrador',
                         },
                         {
                             'id': 1,
-                            'nombre': 'Personal',
-                            'ruta': 'admin',
+                            'nombre': 'Docentes',
+                            'ruta': 'p.personalDocente',
                         },
                         {
                             'id': 2,
                             'nombre': 'Estudiantes',
-                            'ruta': 'admin',
+                            'ruta': 'p.personalEstudiante',
                         },
                         {
                             'id': 3,
-                            'nombre': 'Cuenta de Usuario',
+                            'nombre': 'USUARIOS - SISTEMA',
                             'ruta': 'u.usuarioCuenta',
                         },
                     ]

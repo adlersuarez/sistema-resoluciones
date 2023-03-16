@@ -23,6 +23,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '1',
             'id_modalidadIngreso' => '1',
             'id_sede' => '1',
+            'id_nivel' => '1',
+            'id_seccion' => '1',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -32,6 +34,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '4',
             'id_modalidadIngreso' => '2',
             'id_sede' => '2',
+            'id_nivel' => '2',
+            'id_seccion' => '2',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -41,6 +45,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '2',
             'id_modalidadIngreso' => '3',
             'id_sede' => '2',
+            'id_nivel' => '3',
+            'id_seccion' => '3',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -50,6 +56,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '3',
             'id_modalidadIngreso' => '4',
             'id_sede' => '3',
+            'id_nivel' => '4',
+            'id_seccion' => '4',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -59,6 +67,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '3',
             'id_modalidadIngreso' => '5',
             'id_sede' => '3',
+            'id_nivel' => '5',
+            'id_seccion' => '5',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -68,6 +78,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '3',
             'id_modalidadIngreso' => '6',
             'id_sede' => '2',
+            'id_nivel' => '6',
+            'id_seccion' => '6',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -77,6 +89,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '2',
             'id_modalidadIngreso' => '7',
             'id_sede' => '2',
+            'id_nivel' => '7',
+            'id_seccion' => '7',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -86,6 +100,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '2',
             'id_modalidadIngreso' => '8',
             'id_sede' => '2',
+            'id_nivel' => '8',
+            'id_seccion' => '8',
         ]);
 
         $Estudiante = Estudiante::create([
@@ -95,6 +111,8 @@ class EstudianteSeeder extends Seeder
             'id_modalidad' => '4',
             'id_modalidadIngreso' => '9',
             'id_sede' => '2',
+            'id_nivel' => '9',
+            'id_seccion' => '9',
         ]);
 
     }

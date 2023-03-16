@@ -16,7 +16,8 @@ class Estudiante extends Model
         'id_modalidad',
         'id_modalidadIngreso',
         'id_sede',
-        'id_pago',
+        'id_seccion',
+        'id_nivel',
     ];
 
     //DetalleTipoPersona
@@ -25,16 +26,22 @@ class Estudiante extends Model
         return $this->belongsTo(DetalleTipoPersona::class);
     }
 
+    //Tipo Estudiante
+    public function TipoEstudiante()
+    {
+        return $this->belongsTo(TipoEstudiante::class,'id_tipoEstudiante','id_tipoEstudiante');
+    }
+
     //Modalidad
     public function Modalidad()
     {
-        return $this->belongsTo(Modalidad::class);
+        return $this->belongsTo(Modalidad::class,'id_modalidad','id_modalidad');
     }
 
     //Modalidad
     public function ModalidadIngreso()
     {
-        return $this->belongsTo(ModalidadIngreso::class);
+        return $this->belongsTo(ModalidadIngreso::class,'id_modalidadIngreso','id_modalidadIngreso');
     }
 
     //Especialidad
@@ -47,6 +54,18 @@ class Estudiante extends Model
     public function Sede()
     {
         return $this->belongsTo(Sede::class,'id_sede','id_sede');
+    }
+
+    //Seccion
+    public function Seccion()
+    {
+        return $this->belongsTo(Seccion::class,'id_seccion','id_seccion');
+    }
+
+    //Nivel
+    public function Nivel()
+    {
+        return $this->belongsTo(Nivel::class,'id_nivel','id_nivel');
     }
 
 }

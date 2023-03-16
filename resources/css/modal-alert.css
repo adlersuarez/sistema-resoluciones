@@ -106,7 +106,7 @@
   width: 30%;
 }
 
-.swal2-html-container .div-user #username,#email,#tipo-usuario {
+.swal2-html-container .div-user #username,#email,#tipo-usuario, #id-persona {
   width: 70%;
   margin: auto;
   font-size: 18px;

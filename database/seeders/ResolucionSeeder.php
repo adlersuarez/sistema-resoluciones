@@ -23,9 +23,9 @@ class ResolucionSeeder extends Seeder
             'id_sede'=>'1',
             'nombreResolucion'=>'01-2022-AU',
             'numeroResolucion'=>'1',
-            'archivoResolucion'=>'archivoPrueba.pdf',
+            'archivoResolucion'=>'1-2022-AU A.pdf',
             'asuntoResolucion'=>'Asunto de Prueba',
-            'fechaResolucion'=>'2023-03-09',
+            'fechaResolucion'=>'2023-03-10',
         ]);
 
         $resolucion = Resolucion::create([
@@ -34,9 +34,22 @@ class ResolucionSeeder extends Seeder
             'id_tipoResolucion'=>'2',
             'id_carreraProfesional'=>'2',
             'id_sede'=>'2',
-            'nombreResolucion'=>'02-2022-AU',
-            'numeroResolucion'=>'2',
-            'archivoResolucion'=>'archivoPrueba.pdf',
+            'nombreResolucion'=>'01-2022-R',
+            'numeroResolucion'=>'1',
+            'archivoResolucion'=>'1-2022-R A.pdf',
+            'asuntoResolucion'=>'Asunto de Prueba',
+            'fechaResolucion'=>'2023-03-10',
+        ]);
+
+        $resolucion = Resolucion::create([
+            'id'=>'1',
+            'id_tipoSesion'=>'2',
+            'id_tipoResolucion'=>'3',
+            'id_carreraProfesional'=>'3',
+            'id_sede'=>'2',
+            'nombreResolucion'=>'01-2022-CU',
+            'numeroResolucion'=>'1',
+            'archivoResolucion'=>'1-2022-CU A.pdf',
             'asuntoResolucion'=>'Asunto de Prueba',
             'fechaResolucion'=>'2023-03-10',
         ]);

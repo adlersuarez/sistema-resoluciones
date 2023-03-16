@@ -1,4 +1,4 @@
-import { faPen, faTrash, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faFilePdf, faPen, faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@inertiajs/inertia-react';
 import React, { useMemo, useState } from 'react'
@@ -45,75 +45,64 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTablePersonalUsuario({ datos, rol }) {
+export default function DataTablePersonalDocente({ datos }) {
 
     const editar_tipo = (row) => {
 
-        var valor_select_0 = "";
-        var valor_select_1 = "";
-        var valor_select_2 = "";
-
-        console.log(row.rol)
-
-        switch (row.rol) {
-            case 1:
-                valor_select_1 = "selected";
-                break;
-            case 2:
-                valor_select_2 = "selected";
-                break;
-            default:
-                valor_select_0 = "selected";
-                break;
-        }
-        console.log(valor_select_0+" - "+valor_select_1+" - "+valor_select_2)
-
         Swal.fire({
-            title: 'Actualizar Datos de Usuario',
-            html: `<div class="div-user">
-            <div class="div-input-user">
-            <label class="label-input-user">Username</label><input type="text" id="username" class="swal2-input" value="${row.username}"></div>
-            <div class="div-input-user"><label class="label-input-user">Email</label><input type="text" id="email" class="swal2-input" value="${row.email}"></div>
-            <div class="div-input-user">
-            <label class="label-input-user">Tipo Usuario</label>
-            <select id="tipo-usuario">
-                <option value="0" id="disabled-option" disabled ${valor_select_0}>Seleccionar Tipo</option>
-                <option value="1" ${valor_select_1}>Administrador</option>
-                <option value="2" ${valor_select_2}>Usuario</option>
-            </select>
+            title: 'Actualizar Datos de Docente',
+            html: `<h1 class="h1-form">DATOS PERSONALES</h1>
+            <div class="div-form">
+            <div class="div-input-form"><label class="label-input-form">DNI</label><input type="number" id="dni" class="swal2-input" maxlength="8" size="8" value="${row.dni}"></div>
+            <div class="div-input-form"><label class="label-input-form">Nombres</label><input type="text" id="nombre" class="swal2-input" value="${row.c_nom}"></div>
             </div>
+            <div class="div-form">
+            <div class="div-input-form"><label class="label-input-form">Apellido Paterno</label><input type="text" id="apellidoP" class="swal2-input" value="${row.c_apP}"></div>
+            <div class="div-input-form"><label class="label-input-form">Apellido Materno</label><input type="text" id="apellidoM" class="swal2-input" value="${row.c_apM}"></div>
             </div>
+            <hr class="hr-form"/>
+            <h1 class="h1-form">DATOS DE CONTACTO</h1>
+            <div class="div-form">
+            <div class="div-input-form"><label class="label-input-form">Teléfono</label><input type="number" id="telefono" class="swal2-input" value="${row.telefono}"></div>
+            <div class="div-input-form"><label class="label-input-form">Correo</label><input type="email" id="email" class="swal2-input" value="${row.correo}"></div>
             </div>`,
             confirmButtonText: 'Editar',
             focusConfirm: false,
             showCloseButton: true,
-            width: '600px',
+            width: '1000px',
             customClass: {
                title: 'custom-title',
                closeButton: 'close-button',
             },
             preConfirm: () => {
-                const username = Swal.getPopup().querySelector('#username').value
+                const dni = Swal.getPopup().querySelector('#dni').value
+                const nombre = Swal.getPopup().querySelector('#nombre').value
+                const apellidoP = Swal.getPopup().querySelector('#apellidoP').value
+                const apellidoM = Swal.getPopup().querySelector('#apellidoM').value
+                const telefono = Swal.getPopup().querySelector('#telefono').value
                 const email = Swal.getPopup().querySelector('#email').value
-                const tipo = Swal.getPopup().querySelector('#tipo-usuario').value
-                if (!username || !email || !tipo) {
+
+                if (!dni || !nombre || !apellidoP || !apellidoM || !telefono || !email) {
                     Swal.showValidationMessage(`Por favor ingrese todos los campos`)
                 }
-                return { username: username, email: email, tipo:tipo }
+                return { dni: dni, nombre: nombre, apellidoP: apellidoP, apellidoM: apellidoM, telefono: telefono, email: email }
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                //console.log(result)
-                Inertia.put(route('u.usuarioCuenta.update',`${row.id}`),{
+
+                Inertia.put(route('p.personalDocente.update',`${row.id}`),{
                     _method: 'put',
-                    username: result.value.username,
-                    email: result.value.email,
-                    id_rol: result.value.tipo,
+                    c_dni: result.value.dni,
+                    c_apellidoP: result.value.apellidoP,
+                    c_apellidoM: result.value.apellidoM,
+                    c_nombres: result.value.nombre,
+                    c_numTelefono: result.value.telefono,
+                    c_email: result.value.email,
                 })
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Datos de administrador actualizados',
+                    title: 'Datos de docente actualizados',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -124,7 +113,7 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
     const eliminar_tipo = (row) => {
 
         Swal.fire({
-            title: `¿Está seguro(a) de eliminar al usuario: <br><b>${row.username.toUpperCase()}</b>?`,
+            title: `¿Está seguro(a) de eliminar al docente: <br><b>${row.nombre.toUpperCase()}</b>?`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Eliminar',
@@ -132,11 +121,11 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
           }).then((result) => {
             
             if (result.isConfirmed) {
-                Inertia.delete(route('u.usuarioCuenta.delete',`${row.id}`))
+                Inertia.delete(route('p.personalDocente.delete',`${row.id}`))
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Usuario eliminado',
+                    title: 'Personal eliminado',
                     showConfirmButton: false,
                     timer: 1500
                 })
@@ -147,8 +136,8 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
 
     const columns = [
         {
-            name: 'Tipo',
-            selector: row => row.tipo,
+            name: 'DNI',
+            selector: row => row.dni,
             sortable: true,
 
         },
@@ -159,28 +148,15 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
 
         },
         {
-            name: 'Username',
-            selector: row => row.username,
+            name: 'Teléfono',
+            selector: row => row.telefono,
             sortable: true,
 
         },
         {
-            name: 'Email',
-            selector: row => row.email,
+            name: 'Correo',
+            selector: row => row.correo,
             sortable: true,
-
-        },
-        {
-            name: 'Foto',
-            cell: (row) => (
-                <div className='flex gap-2'>
-                    <Link className="text-center text-blue-800 focus:outline-none">
-                        <div className='rounded-md w-9 h-9 flex m-auto justify-center '>
-                            <FontAwesomeIcon className="h-5 w-5 my-2" id={row.id} icon={faUser} />
-                        </div>
-                    </Link>
-                </div>
-            ),
 
         },
         {
@@ -207,12 +183,14 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
 
     datos.map((elemento) =>
         data.push({
-            id: elemento.id,
+            id: elemento.id_persona,
+            dni: elemento.c_dni,
             nombre: elemento.c_apellidoP+" "+elemento.c_apellidoM+", "+elemento.c_nombres,
-            username: elemento.username,
-            email: elemento.email,
-            rol: elemento.id_rol,
-            tipo: elemento.c_nomRol,
+            c_nom: elemento.c_nombres,
+            c_apP: elemento.c_apellidoP,
+            c_apM: elemento.c_apellidoM,
+            telefono: elemento.c_numTelefono,
+            correo: elemento.c_email,
         })
     )
 
@@ -220,10 +198,10 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter(
-        item => item.nombre.toLowerCase().includes(filterText.toLowerCase())
-           || item.username.toLowerCase().includes(filterText.toLowerCase())
-           || item.email.toLowerCase().includes(filterText.toLowerCase())
-           || item.tipo.toLowerCase().includes(filterText.toLowerCase())
+        item => item.dni.toLowerCase().includes(filterText.toLowerCase())
+           || item.nombre.toLowerCase().includes(filterText.toLowerCase())
+           || item.telefono.toLowerCase().includes(filterText.toLowerCase())
+           || item.correo.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleClear = () => {

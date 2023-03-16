@@ -31,7 +31,14 @@ return new class extends Migration
             //id sede
             $table->unsignedBigInteger('id_sede');
             $table->foreign('id_sede')->references('id_sede')->on('sedes')->onUpdate('cascade')->onDelete('cascade');
-            
+            //id seccion
+            $table->unsignedBigInteger('id_seccion');
+            $table->foreign('id_seccion')->references('id_seccion')->on('seccions')->onUpdate('cascade')->onDelete('cascade');
+            //id modalidad
+            $table->unsignedBigInteger('id_nivel');
+            $table->foreign('id_nivel')->references('id_nivel')->on('nivels')->onUpdate('cascade')->onDelete('cascade');
+
+
             $table->timestamps();
         });
     }

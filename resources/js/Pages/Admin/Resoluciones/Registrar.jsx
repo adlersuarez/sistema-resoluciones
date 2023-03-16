@@ -3,9 +3,9 @@ import Navbar from '@/Layouts/Navbar'
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
 import BotonVolver from '@/Components/Botones/BotonVolver';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faAdd, faArrowAltCircleLeft, faArrowRotateBack, faArrowRotateLeft, faCircleArrowUp, faCirclePlus, faCircleXmark, faDeleteLeft, faFileWord, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCirclePlus, faCircleXmark, faFileWord } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 var listaMiembros = []
 
@@ -13,8 +13,6 @@ localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
 
 const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
     const [preview, setPreview] = useState('');
-
-    console.log(persona)
 
     const { data, setData, errors, put, progress } = useForm({
         nombre_codigo: '',
