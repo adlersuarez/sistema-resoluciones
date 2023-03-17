@@ -111,3 +111,27 @@
   margin: auto;
   font-size: 18px;
 }
+
+/*tabla miembros */
+.swal2-html-container .div-table-miembros{
+  display: flex;
+}
+
+.swal2-html-container .table-miembros-res{
+  width: 100%;
+  
+}
+
+.table-miembros-res th{
+  background-color: rgba(43, 43, 217, 0.851);
+  color: white;
+  border: 1px solid;
+  border-color: rgba(43, 43, 217, 0.851);
+}
+
+.table-miembros-res td{
+  border: 1px solid;
+  border-color: rgba(43, 43, 217, 0.851);
+}
+
+/**/

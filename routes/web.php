@@ -40,6 +40,12 @@ use Illuminate\Support\Facades\Route;
 
 //sistema resoluciones
 use App\Http\Controllers\ResolucionController;
+
+use App\Http\Controllers\AdendaController;
+use App\Http\Controllers\AsuntoController;
+use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\ConvenioController;
+
 use App\Http\Controllers\TipoController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\CuentaUsuarioController;
@@ -55,71 +61,71 @@ Route::get('/', [AuthenticatedSessionController::class, 'create'])
 
 //RUTAS SOLO ADMIN
 Route::middleware(['auth','verified','soloadmin'])->group(function () {
-    /* Route::get('/tramite-documentario',[AdminController::class,'index']
+    /* Route::get('/resoluciones-upla',[AdminController::class,'index']
      )->name('admin');
 
-     Route::get('/tramite-documentario/exportReporte',[AdminController::class,'generarReporte']
+     Route::get('/resoluciones-upla/exportReporte',[AdminController::class,'generarReporte']
      )->name('reporte'); */
 
     Route::controller(AdminController::class)->group(function (){
-       Route::get('/tramite-documentario', 'index')->name('admin');
-       //Route::get('/tramite-documentario/exportReporte', 'generarReporte')->name('reporte');
+       Route::get('/resoluciones-upla', 'index')->name('admin');
+       //Route::get('/resoluciones-upla/exportReporte', 'generarReporte')->name('reporte');
     });
 
 
     /*Route::controller(AdminSolicitudController::class)->group(function (){
-        Route::get('/tramite-documentario/solicitudes', 'index')->name('d.solicituds');
-        //Route::get('/tramite-documentario/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
+        Route::get('/resoluciones-upla/solicitudes', 'index')->name('d.solicituds');
+        //Route::get('/resoluciones-upla/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
         //
-        Route::get('/tramite-documentario/pagos/{id}', 'show')->name('d.solicituds.show');
+        Route::get('/resoluciones-upla/pagos/{id}', 'show')->name('d.solicituds.show');
         //
-        Route::post('/tramite-documentario/solicitudes/aceptar/{id}', 'aceptar_solicitud')->name('d.solicituds.aceptar_solicitud');
-        Route::get('/tramite-documentario/solicitudes/rechazar/{id}', 'rechazar_solicitud')->name('d.solicituds.rechazar_solicitud');
+        Route::post('/resoluciones-upla/solicitudes/aceptar/{id}', 'aceptar_solicitud')->name('d.solicituds.aceptar_solicitud');
+        Route::get('/resoluciones-upla/solicitudes/rechazar/{id}', 'rechazar_solicitud')->name('d.solicituds.rechazar_solicitud');
         //
-        Route::post('/tramite-documentario/solicitudes/validar_constancia/{id}', 'validar_constancia')->name('d.solicituds.validar_constancia');
-        Route::get('/tramite-documentario/solicitudes/rechazar_constancia/{id}', 'rechazar_constancia')->name('d.solicituds.rechazar_constancia');
+        Route::post('/resoluciones-upla/solicitudes/validar_constancia/{id}', 'validar_constancia')->name('d.solicituds.validar_constancia');
+        Route::get('/resoluciones-upla/solicitudes/rechazar_constancia/{id}', 'rechazar_constancia')->name('d.solicituds.rechazar_constancia');
 
-        Route::get('/tramite-documentario/solicitudes/ver/{id}', 'viewDocument')->name('d.solicituds.ver');
+        Route::get('/resoluciones-upla/solicitudes/ver/{id}', 'viewDocument')->name('d.solicituds.ver');
         //
-        Route::get('/tramite-documentario/exportWord/{id}', 'wordExport')->name('d.solicituds.wordExport');
+        Route::get('/resoluciones-upla/exportWord/{id}', 'wordExport')->name('d.solicituds.wordExport');
 
-        Route::get('/tramite-documentario/generarConstancia/{id}', 'generarConstanciaPDF')->name('d.solicituds.generarConstanciaPDF');
+        Route::get('/resoluciones-upla/generarConstancia/{id}', 'generarConstanciaPDF')->name('d.solicituds.generarConstanciaPDF');
 
 
-        Route::get('/tramite-documentario/inicio/{id}', 'viewDocument')->name('d.solicituds.ver');
+        Route::get('/resoluciones-upla/inicio/{id}', 'viewDocument')->name('d.solicituds.ver');
 
-        Route::get('/tramite-documentario/solicitudes/estado/{id}', 'mostrarEstado')->name('d.solicituds.estado');
+        Route::get('/resoluciones-upla/solicitudes/estado/{id}', 'mostrarEstado')->name('d.solicituds.estado');
 
-        Route::get('/tramite-documentario/solicitud/estado/{id}', 'mostrarEstadoPendRech')->name('d.solicituds.estadoPR');
+        Route::get('/resoluciones-upla/solicitud/estado/{id}', 'mostrarEstadoPendRech')->name('d.solicituds.estadoPR');
 
     });
 
     Route::controller(SecretariaSolicitudController::class)->group(function (){
-        Route::get('/tramite-documentario/secretaria/solicitudes', 'index')->name('d.solicitud.secretaria');
+        Route::get('/resoluciones-upla/secretaria/solicitudes', 'index')->name('d.solicitud.secretaria');
 
-        Route::put('/tramite-documentario/secretaria/solicitudes/aceptar/{id}', 'aceptar_solicitud')->name('d.solicitud.secretaria.aceptar_solicitud');
-        Route::put('/tramite-documentario/secretaria/solicitudes/rechazar/{id}', 'rechazar_solicitud')->name('d.solicitud.secretaria.rechazar_solicitud');
-        //Route::put('/tramite-documentario/secretaria/solicitudes/comentario/{id}', 'agregar_comentario')->name('d.solicitud.secretaria.agregar_comentario');
-        //Route::get('/tramite-documentario/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
-        Route::get('/tramite-documentario/secretaria/solicitudes/mostrar/{id}', 'show')->name('d.solicituds.secretaria.show');
+        Route::put('/resoluciones-upla/secretaria/solicitudes/aceptar/{id}', 'aceptar_solicitud')->name('d.solicitud.secretaria.aceptar_solicitud');
+        Route::put('/resoluciones-upla/secretaria/solicitudes/rechazar/{id}', 'rechazar_solicitud')->name('d.solicitud.secretaria.rechazar_solicitud');
+        //Route::put('/resoluciones-upla/secretaria/solicitudes/comentario/{id}', 'agregar_comentario')->name('d.solicitud.secretaria.agregar_comentario');
+        //Route::get('/resoluciones-upla/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
+        Route::get('/resoluciones-upla/secretaria/solicitudes/mostrar/{id}', 'show')->name('d.solicituds.secretaria.show');
     });
 
     Route::controller(JefaturaSolicitudController::class)->group(function (){
-        Route::get('/tramite-documentario/jefatura/solicitudes', 'index')->name('d.solicitud.jefatura');
+        Route::get('/resoluciones-upla/jefatura/solicitudes', 'index')->name('d.solicitud.jefatura');
 
-        //Route::get('/tramite-documentario/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
-        Route::put('/tramite-documentario/jefatura/validar_constancia/{id}', 'validar_constancia')->name('d.solicitud.jefatura.validar_constancia');
+        //Route::get('/resoluciones-upla/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
+        Route::put('/resoluciones-upla/jefatura/validar_constancia/{id}', 'validar_constancia')->name('d.solicitud.jefatura.validar_constancia');
 
-        //Route::get('/tramite-documentario/jefatura/rechazar_constancia/{id}', 'rechazar_constancia')->name('d.solicitud.jefatura.rechazar_constancia');
+        //Route::get('/resoluciones-upla/jefatura/rechazar_constancia/{id}', 'rechazar_constancia')->name('d.solicitud.jefatura.rechazar_constancia');
 
-        Route::post('/tramite-documentario/jefatura/generar_barcode/{id}', 'generarBarcode')->name('d.solicitud.jefatura.generar_barcode');
+        Route::post('/resoluciones-upla/jefatura/generar_barcode/{id}', 'generarBarcode')->name('d.solicitud.jefatura.generar_barcode');
 
-        Route::get('/tramite-documentario/jefatura/generarConstancia/{id}', 'generarConstanciaPDF')->name('d.solicituds.jefatura.generarConstanciaPDF');
+        Route::get('/resoluciones-upla/jefatura/generarConstancia/{id}', 'generarConstanciaPDF')->name('d.solicituds.jefatura.generarConstanciaPDF');
 
-        Route::get('/tramite-documentario/jefatura/inicio/AE/{id}', 'viewRequisitoAE')->name('d.solicituds.requisito.revisarAE');
-        Route::get('/tramite-documentario/jefatura/inicio/FAC/{id}', 'viewRequisitoFac')->name('d.solicituds.requisito.revisarFac');
-        Route::get('/tramite-documentario/jefatura/inicio/OEF/{id}', 'viewRequisitoOEF')->name('d.solicituds.requisito.revisarOEF');
-        Route::get('/tramite-documentario/jefatura/inicio/PAI/{id}', 'viewRequisitoPAI')->name('d.solicituds.requisito.revisarPAI');
+        Route::get('/resoluciones-upla/jefatura/inicio/AE/{id}', 'viewRequisitoAE')->name('d.solicituds.requisito.revisarAE');
+        Route::get('/resoluciones-upla/jefatura/inicio/FAC/{id}', 'viewRequisitoFac')->name('d.solicituds.requisito.revisarFac');
+        Route::get('/resoluciones-upla/jefatura/inicio/OEF/{id}', 'viewRequisitoOEF')->name('d.solicituds.requisito.revisarOEF');
+        Route::get('/resoluciones-upla/jefatura/inicio/PAI/{id}', 'viewRequisitoPAI')->name('d.solicituds.requisito.revisarPAI');
 
     });
 
@@ -159,96 +165,116 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
     });
 
     /* Route::controller(AdminNotificacionController::class)->group(function (){
-        Route::get('/tramite-documentario/noti','index')->name('notificacion.index');
+        Route::get('/resoluciones-upla/noti','index')->name('notificacion.index');
     }); */
     Route::controller(ResolucionController::class)->group(function (){
-        Route::get('/tramite-documentario/resoluciones', 'index')->name('r.resoluciones');
-        Route::get('/tramite-documentario/resoluciones/registrar','create')->name('r.resoluciones.registrar');
-
+        Route::get('/resoluciones-upla/resoluciones', 'index')->name('r.resoluciones');
+        Route::get('/resoluciones-upla/resoluciones/registrar','create')->name('r.resoluciones.registrar');
+        Route::post('/resoluciones-upla/resoluciones/store','store')->name('r.resoluciones.store');
         //Descargar
-        Route::get('/tramite-documentario/resoluciones/descargar/{id}','descargarResolucion')->name('r.resoluciones.descargar');
+        Route::get('/resoluciones-upla/resoluciones/descargar/{id}','descargarResolucion')->name('r.resoluciones.descargar');
+    });
+
+    Route::controller(AdendaController::class)->group(function (){
+        Route::get('/resoluciones-upla/adendas', 'index')->name('r.adendas');
+        //
+    });
+
+    Route::controller(AsuntoController::class)->group(function (){
+        Route::get('/resoluciones-upla/asuntos', 'index')->name('r.asuntos');
+        //
+    });
+
+    Route::controller(ContratoController::class)->group(function (){
+        Route::get('/resoluciones-upla/contratos', 'index')->name('r.contratos');
+        //
+    });
+
+    Route::controller(ConvenioController::class)->group(function (){
+        Route::get('/resoluciones-upla/convenios', 'index')->name('r.convenios');
+        //
     });
 
     Route::controller(TipoController::class)->group(function (){
         //Tipo Resolucion
-        Route::get('/tipos/resoluciones', 'indexResolucion')->name('t.tipoResolucion');
-        Route::put('/tipos/resoluciones/update/{id}','updateResolucion')->name('t.tipoResolucion.update');
-        Route::post('/tipos/resoluciones/store','createResolucion')->name('t.tipoResolucion.create');
-        Route::delete('/tipos/resoluciones/delete/{id}','deleteResolucion')->name('t.tipoResolucion.delete');
+        Route::get('/resoluciones-upla/tipos/resoluciones', 'indexResolucion')->name('t.tipoResolucion');
+        Route::put('/resoluciones-upla/tipos/resoluciones/update/{id}','updateResolucion')->name('t.tipoResolucion.update');
+        Route::post('/resoluciones-upla/tipos/resoluciones/store','createResolucion')->name('t.tipoResolucion.create');
+        Route::delete('/resoluciones-upla/tipos/resoluciones/delete/{id}','deleteResolucion')->name('t.tipoResolucion.delete');
 
         //Tipo Sesion
-        Route::get('/tipos/sesiones', 'indexSesion')->name('t.tipoSesion');
-        Route::put('/tipos/sesiones/update/{id}','updateSesion')->name('t.tipoSesion.update');
-        Route::post('/tipos/sesiones/store','createSesion')->name('t.tipoSesion.create');
-        Route::delete('/tipos/sesiones/delete/{id}','deleteSesion')->name('t.tipoSesion.delete');
+        Route::get('/resoluciones-upla/tipos/sesiones', 'indexSesion')->name('t.tipoSesion');
+        Route::put('/resoluciones-upla/tipos/sesiones/update/{id}','updateSesion')->name('t.tipoSesion.update');
+        Route::post('/resoluciones-upla/tipos/sesiones/store','createSesion')->name('t.tipoSesion.create');
+        Route::delete('/resoluciones-upla/tipos/sesiones/delete/{id}','deleteSesion')->name('t.tipoSesion.delete');
 
         //Tipo Persona
-        Route::get('/tipos/personas', 'indexPersona')->name('t.tipoPersona');
-        Route::put('/tipos/personas/update/{id}','updatePersona')->name('t.tipoPersona.update');
-        Route::post('/tipos/personas/store','createPersona')->name('t.tipoPersona.create');
-        Route::delete('/tipos/personas/delete/{id}','deletePersona')->name('t.tipoPersona.delete');
+        Route::get('/resoluciones-upla/tipos/personas', 'indexPersona')->name('t.tipoPersona');
+        Route::put('/resoluciones-upla/tipos/personas/update/{id}','updatePersona')->name('t.tipoPersona.update');
+        Route::post('/resoluciones-upla/tipos/personas/store','createPersona')->name('t.tipoPersona.create');
+        Route::delete('/resoluciones-upla/tipos/personas/delete/{id}','deletePersona')->name('t.tipoPersona.delete');
     });
 
     Route::controller(PersonalController::class)->group(function (){
         //Administrativos
-        Route::get('/personal/administrativos', 'indexAdministrador')->name('p.personalAdministrador');
-        Route::put('/personal/administrativos/update/{id}','updateAdministrador')->name('p.personalAdministrador.update');
-        Route::post('/personal/administrativos/store','createAdministrador')->name('p.personalAdministrador.create');
-        Route::delete('/personal/administrativos/delete/{id}','deleteAdministrador')->name('p.personalAdministrador.delete');
+        Route::get('/resoluciones-upla/personal/administrativos', 'indexAdministrador')->name('p.personalAdministrador');
+        Route::put('/resoluciones-upla/personal/administrativos/update/{id}','updateAdministrador')->name('p.personalAdministrador.update');
+        Route::post('/resoluciones-upla/personal/administrativos/store','createAdministrador')->name('p.personalAdministrador.create');
+        Route::delete('/resoluciones-upla/personal/administrativos/delete/{id}','deleteAdministrador')->name('p.personalAdministrador.delete');
 
         //Docentes
-        Route::get('/personal/docentes', 'indexDocente')->name('p.personalDocente');
-        Route::put('/personal/docentes/update/{id}','updateDocente')->name('p.personalDocente.update');
-        Route::post('/personal/docentes/store','createDocente')->name('p.personalDocente.create');
-        Route::delete('/personal/docentes/delete/{id}','deleteDocente')->name('p.personalDocente.delete');
+        Route::get('/resoluciones-upla/personal/docentes', 'indexDocente')->name('p.personalDocente');
+        Route::put('/resoluciones-upla/personal/docentes/update/{id}','updateDocente')->name('p.personalDocente.update');
+        Route::post('/resoluciones-upla/personal/docentes/store','createDocente')->name('p.personalDocente.create');
+        Route::delete('/resoluciones-upla/personal/docentes/delete/{id}','deleteDocente')->name('p.personalDocente.delete');
 
         //Estudiantes
-        Route::get('/personal/estudiantes', 'indexEstudiante')->name('p.personalEstudiante');
+        Route::get('/resoluciones-upla/personal/estudiantes', 'indexEstudiante')->name('p.personalEstudiante');
     });
 
     Route::controller(CuentaUsuarioController::class)->group(function (){
         //Lista Usuarios
-        Route::get('/usuarios', 'indexUser')->name('u.usuarioCuenta');
-        Route::put('/usuarios/update/{id}','updateUser')->name('u.usuarioCuenta.update');
-        Route::post('/usuarios/store','createUser')->name('u.usuarioCuenta.create');
-        Route::delete('/usuarios/delete/{id}','deleteUser')->name('u.usuarioCuenta.delete');
+        Route::get('/resoluciones-upla/usuarios', 'indexUser')->name('u.usuarioCuenta');
+        Route::put('/resoluciones-upla/usuarios/update/{id}','updateUser')->name('u.usuarioCuenta.update');
+        Route::post('/resoluciones-upla/usuarios/store','createUser')->name('u.usuarioCuenta.create');
+        Route::delete('/resoluciones-upla/usuarios/delete/{id}','deleteUser')->name('u.usuarioCuenta.delete');
 
         //Usuario personal
-        Route::get('/usuario/personal', 'indexUserPersonal')->name('u.usuarioPersonal');
-        Route::put('/usuarios/update','updateUserPersonal')->name('u.usuarioPersonal.update');
+        Route::get('/resoluciones-upla/usuario/personal', 'indexUserPersonal')->name('u.usuarioPersonal');
+        Route::put('/resoluciones-upla/usuarios/update','updateUserPersonal')->name('u.usuarioPersonal.update');
     });
 
     /*Route::controller(RolController::class)->group(function (){
-        Route::get('/tramite-documentario/roles','index')->name('d.roles.index');
-        Route::get('/tramite-documentario/roles/create','create')->name('d.roles.create');
-        Route::post('/tramite-documentario/roles/store','store')->name('d.roles.store');
-        Route::get('/tramite-documentario/roles/edit/{id}','edit')->name('d.roles.edit');
-        Route::put('/tramite-documentario/roles/update/{id}','update')->name('d.roles.update');
-        Route::delete('/tramite-documentario/roles/{id}','destroy')->name('d.roles.destroy');
+        Route::get('/resoluciones-upla/roles','index')->name('d.roles.index');
+        Route::get('/resoluciones-upla/roles/create','create')->name('d.roles.create');
+        Route::post('/resoluciones-upla/roles/store','store')->name('d.roles.store');
+        Route::get('/resoluciones-upla/roles/edit/{id}','edit')->name('d.roles.edit');
+        Route::put('/resoluciones-upla/roles/update/{id}','update')->name('d.roles.update');
+        Route::delete('/resoluciones-upla/roles/{id}','destroy')->name('d.roles.destroy');
     });
 
     Route::controller(OficinaController::class)->group(function (){
-        Route::get('/tramite-documentario/oficinas','index')->name('d.oficinas.index');
-        Route::get('/tramite-documentario/oficinas/create','create')->name('d.oficinas.create');
-        Route::post('/tramite-documentario/oficinas/store','store')->name('d.oficinas.store');
-        Route::get('/tramite-documentario/oficinas/edit/{id}','edit')->name('d.oficinas.edit');
-        Route::put('/tramite-documentario/oficinas/update/{id}','update')->name('d.oficinas.update');
-        Route::delete('/tramite-documentario/oficinas/{id}','destroy')->name('d.oficinas.destroy');
+        Route::get('/resoluciones-upla/oficinas','index')->name('d.oficinas.index');
+        Route::get('/resoluciones-upla/oficinas/create','create')->name('d.oficinas.create');
+        Route::post('/resoluciones-upla/oficinas/store','store')->name('d.oficinas.store');
+        Route::get('/resoluciones-upla/oficinas/edit/{id}','edit')->name('d.oficinas.edit');
+        Route::put('/resoluciones-upla/oficinas/update/{id}','update')->name('d.oficinas.update');
+        Route::delete('/resoluciones-upla/oficinas/{id}','destroy')->name('d.oficinas.destroy');
     });
     Route::controller(UserController::class)->group(function (){
-        Route::get('/tramite-documentario/usuarios','index')->name('d.usuarios.index');
-        Route::get('/tramite-documentario/usuarios/create','create')->name('d.usuarios.create');
-        Route::post('/tramite-documentario/usuarios/store','store')->name('d.usuarios.store');
-        Route::get('/tramite-documentario/usuarios/edit/{id}','edit')->name('d.usuarios.edit');
-        Route::put('/tramite-documentario/usuarios/update/{id}','update')->name('d.usuarios.update');
-        Route::delete('/tramite-documentario/usuarios/{id}','destroy')->name('d.usuarios.destroy');
-        Route::get('/tramite-documentario/usuarios/excel','exportExcel')->name('excel');
+        Route::get('/resoluciones-upla/usuarios','index')->name('d.usuarios.index');
+        Route::get('/resoluciones-upla/usuarios/create','create')->name('d.usuarios.create');
+        Route::post('/resoluciones-upla/usuarios/store','store')->name('d.usuarios.store');
+        Route::get('/resoluciones-upla/usuarios/edit/{id}','edit')->name('d.usuarios.edit');
+        Route::put('/resoluciones-upla/usuarios/update/{id}','update')->name('d.usuarios.update');
+        Route::delete('/resoluciones-upla/usuarios/{id}','destroy')->name('d.usuarios.destroy');
+        Route::get('/resoluciones-upla/usuarios/excel','exportExcel')->name('excel');
     });
 
 
 
 
-    //Route::get('/tramite-documentario/especificacion/{id}', [EspecificacionEquipoController::class,'show'])->name('d.especificacion.show');*/
+    //Route::get('/resoluciones-upla/especificacion/{id}', [EspecificacionEquipoController::class,'show'])->name('d.especificacion.show');*/
 
 });
 

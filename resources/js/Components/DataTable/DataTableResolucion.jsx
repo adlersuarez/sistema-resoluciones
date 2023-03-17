@@ -1,8 +1,9 @@
-import { faDownload, faFilePdf, faPen, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faDownload, faFilePdf, faPen, faSortUp, faTurnUp, faUpDown, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@inertiajs/inertia-react';
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
+import Swal from 'sweetalert2';
 
 const customStyles = {
     headCells: {
@@ -43,9 +44,72 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTableResolucion({ datos,miembros }) {
 
-    console.log(miembros)
+
+export default function DataTableResolucion({ datos, miembros }) {
+
+    //Eliminar svg de DataTable
+    useEffect(() => {
+        var element = document.getElementsByClassName("sc-lnskGP");
+        if (element[0]) {
+            if (element[0].firstElementChild != element[0].lastElementChild) {
+                element[0].removeChild(element[0].lastElementChild);
+            }
+        }
+    });
+    ////////////////////////////////////////////////////////////
+
+    const mostrarMiembro = (id) => {
+
+        const resolucion = datos.filter(
+            dato => dato.id_resolucion === id
+        )
+
+        const miembrosResolucion = miembros.filter(
+            miembro => miembro.id_resolucion === id
+        )
+
+        var elementosTabla = '';
+
+        miembrosResolucion.map(mRes => {
+            elementosTabla += `<tr class="tr-miembros">
+                                <td class="td-dni">${mRes.c_dni}</td>
+                                <td class="td-nombre">${mRes.c_apellidoP + ' ' + mRes.c_apellidoM + ' ' + mRes.c_nombres}</td>
+                                <td class="td-descripcion">${mRes.descripcionMiembro}</td>
+                            </tr>`;
+        })
+
+        var tabla = `<table class="table-miembros-res">
+                        <tr class="tr-miembros">
+                            <th class="th-dni">DNI</th>
+                            <th class="th-nombre">Nombre</th>
+                            <th class="th-descripcion">Descripción</th>
+                        </tr>
+                        ${elementosTabla}
+                    </table>`
+        if (miembrosResolucion.length > 0) {
+            Swal.fire({
+                title: `Resolución | ${resolucion[0].nombreResolucion}`,
+                html: `<div class="div-table-miembros">
+                        ${tabla}
+                        </div>`,
+                focusConfirm: false,
+                showCloseButton: true,
+                width: '650px',
+                customClass: {
+                    title: 'custom-title',
+                },
+                showConfirmButton: true,
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: `Resolución | ${resolucion[0].nombreResolucion}`,
+                text: 'No hay miembros en esta resolución',
+            })
+        }
+
+    }
 
     const columns = [
         {
@@ -72,7 +136,7 @@ export default function DataTableResolucion({ datos,miembros }) {
             name: 'Usuarios',
             cell: (row) => (
                 <div className='flex'>
-                    <Link href="#" className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
+                    <Link onClick={() => mostrarMiembro(row.id)} className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faUsers} />
                     </Link>
                 </div>
@@ -114,25 +178,6 @@ export default function DataTableResolucion({ datos,miembros }) {
             ),
         },
     ];
-
-    /*const data = [
-        {
-            id: 1,
-            titulo: '01-2022-AU',
-            asunto: '-',
-            tipoResolucion: 'Asamblea Universitaria',
-            tipoSesion: 'Extraordinaria',
-            fecha: '2023-03-07',
-        },
-        {
-            id: 2,
-            titulo: '02-2022-AU',
-            asunto: '-',
-            tipoResolucion: 'Consejo Universitario',
-            tipoSesion: 'Ordinaria',
-            fecha: '2023-03-06',
-        },
-    ] */
 
     var data = []
 
@@ -190,6 +235,7 @@ export default function DataTableResolucion({ datos,miembros }) {
             columns={columns}
             data={filteredItems}
             customStyles={customStyles}
+            sortIcon={<div className='h-4 w-4 flex mx-2 text-slate-400'><FontAwesomeIcon className='!h-3' icon={faArrowDown} /></div>}
             pagination
             paginationResetDefaultPage={resetPaginationToggle}
             paginationComponentOptions={paginationComponentOptions}

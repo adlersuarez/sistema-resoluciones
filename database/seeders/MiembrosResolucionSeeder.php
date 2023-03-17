@@ -20,5 +20,17 @@ class MiembrosResolucionSeeder extends Seeder
             'id_persona'=>'1',
             'descripcionMiembro'=>'Participante',
         ]);
+
+        $miembrosResolucion = MiembrosResolucion::create([
+            'id_resolucion'=>'1',
+            'id_persona'=>'2',
+            'descripcionMiembro'=>'Participante',
+        ]);
+
+        $miembrosResolucion = MiembrosResolucion::create([
+            'id_resolucion'=>'1',
+            'id_persona'=>'3',
+            'descripcionMiembro'=>'Participante',
+        ]);
     }
 }

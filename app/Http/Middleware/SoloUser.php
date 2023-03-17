@@ -19,7 +19,7 @@ class SoloUser
     {
         switch(auth::user()->id_rol){
 			case ('1'):
-                return redirect('/tramite-documentario');// si es admin redirige a la interfaz inicial de admin
+                return redirect('/resoluciones-upla');// si es admin redirige a la interfaz inicial de admin
 			    break;	
             case ('2'):
                 return $next($request);//si es usuario continua con la interfaz usuario

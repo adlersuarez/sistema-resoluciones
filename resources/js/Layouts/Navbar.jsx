@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/inertia-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars, faUserAlt } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/Components/Dropdown';
 import { Inertia } from '@inertiajs/inertia';
 import SideLink from '@/Components/SideLink';
@@ -195,7 +195,7 @@ const Navbar = ({ auth, children }) => {
                         </li>
 
                         <li className='px-3'>
-                            <SideLink href='#' active=''>
+                            <SideLink href={route('r.contratos')}  active={route().current('r.contratos')}  >
                                 <FontAwesomeIcon className="h-5 w-6" icon={faSuitcase} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
@@ -206,7 +206,7 @@ const Navbar = ({ auth, children }) => {
                         </li>
 
                         <li className='px-3'>
-                            <SideLink href='#' active=''>
+                            <SideLink href={route('r.convenios')} active={route().current('r.convenios')} >
                                 <FontAwesomeIcon className="h-5 w-6" icon={faBinoculars} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
@@ -217,7 +217,7 @@ const Navbar = ({ auth, children }) => {
                         </li>
 
                         <li className='px-3'>
-                            <SideLink href='#' active=''>
+                            <SideLink href={route('r.adendas')} active={route().current('r.adendas')}>
                                 <FontAwesomeIcon className="h-5 w-6" icon={faToggleOn} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
@@ -228,7 +228,7 @@ const Navbar = ({ auth, children }) => {
                         </li>
 
                         <li className='px-3'>
-                            <SideLink href='#' active=''>
+                            <SideLink href={route('r.asuntos')} active={route().current('r.asuntos')}>
                                 <FontAwesomeIcon className="h-5 w-6" icon={faArrowsToDot} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
@@ -346,11 +346,15 @@ const Navbar = ({ auth, children }) => {
                                 </Dropdown.Trigger>
                                 <Dropdown.Content>
 
-                                    <Link onClick={alertLogout} as="button" className='block w-full px-6 py-2 text-right text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
+                                    <Link onClick={alertLogout} as="button" className='block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
                                         Cerrar Sesión
                                         <FontAwesomeIcon className="h-4 w-5 ml-4" icon={faSignOut} />
                                     </Link>
-
+                                    
+                                    <Link href={route('u.usuarioPersonal')} as="button" className='block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
+                                        Cuenta de Usuario
+                                        <FontAwesomeIcon className="h-4 w-5 ml-4" icon={faUserAlt} />
+                                    </Link>
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>

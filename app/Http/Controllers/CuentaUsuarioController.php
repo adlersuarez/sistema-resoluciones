@@ -8,6 +8,7 @@ use App\Models\Persona;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CuentaUsuarioController extends Controller
 {
@@ -95,7 +96,9 @@ class CuentaUsuarioController extends Controller
     //User personal
     public function indexUserPersonal()
     {
-        $usuario = User::where('id', auth::user()->id)->first();
+        $usuario = User::where('users.id', auth::user()->id)
+        ->join('personas','personas.id_persona','=','users.id_persona')
+        ->first();
 
         return Inertia::render('Admin/Cuenta/Index',[
             'usuario' => $usuario,

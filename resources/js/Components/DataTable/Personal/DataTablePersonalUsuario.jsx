@@ -66,7 +66,7 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
                 valor_select_0 = "selected";
                 break;
         }
-        console.log(valor_select_0+" - "+valor_select_1+" - "+valor_select_2)
+        //console.log(valor_select_0+" - "+valor_select_1+" - "+valor_select_2)
 
         Swal.fire({
             title: 'Actualizar Datos de Usuario',
