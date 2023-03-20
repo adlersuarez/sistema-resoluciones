@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/inertia-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars, faUserAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars, faUserAlt, faHomeUser } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/Components/Dropdown';
 import { Inertia } from '@inertiajs/inertia';
 import SideLink from '@/Components/SideLink';
@@ -10,6 +10,8 @@ import NotificacionBell from '@/Components/Notificacion/NotificacionBell';
 import NavBarElement from '@/Components/Dropdown/NavBarElement';
 
 const Navbar = ({ auth, children }) => {
+
+    const nombreUser = auth.persona.c_apellidoP + ' ' + auth.persona.c_apellidoM + ', ' + auth.persona.c_nombres
 
     const [open, setOpen] = useState(true);
 
@@ -195,7 +197,7 @@ const Navbar = ({ auth, children }) => {
                         </li>
 
                         <li className='px-3'>
-                            <SideLink href={route('r.contratos')}  active={route().current('r.contratos')}  >
+                            <SideLink href={route('r.contratos')} active={route().current('r.contratos')}  >
                                 <FontAwesomeIcon className="h-5 w-6" icon={faSuitcase} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
@@ -327,10 +329,10 @@ const Navbar = ({ auth, children }) => {
                                             type="button"
                                             className="text-xs inline-flex md:px-2 py-2 border border-transparent md:text-sm leading-4 rounded-md text-[#007CBC] font-bold hover:text-gray-700 outline-none transition ease-in-out duration-150"
                                         >
-                                            <FontAwesomeIcon className="h-5 w-10" icon={faUser} />{auth.user.username.toUpperCase()}
+                                            {auth.user.username.toUpperCase()}
 
                                             <svg
-                                                className="ml-2 -mr-0.5 h-4 w-4"
+                                                className="ml-2 -mr-0.5 h-5 w-5"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 20 20"
                                                 fill="currentColor"
@@ -345,16 +347,37 @@ const Navbar = ({ auth, children }) => {
                                     </span>
                                 </Dropdown.Trigger>
                                 <Dropdown.Content>
+                                    <div className='grid grid-cols-5'>
+                                        <div className='col-span-2 bg-slate-600 h-24 p-2 border-r-[1px]'>
+                                            {
+                                                auth.user.imagen_perfil ?
+                                                    <img src={`/images/perfil/${auth.user.imagen_perfil}`} alt="foto-perfil" className='border-2 rounded-full object-cover h-full' />
+                                                    :
+                                                    <div className='border-2 rounded-full h-full w-full flex flex-col justify-center'>
+                                                        <FontAwesomeIcon className="h-10 mt-1" icon={faUser} />
+                                                        <p className='text-center font-play text-[10px] mt-1'>Imagen</p>
+                                                    </div>
+                                            }
 
-                                    <Link onClick={alertLogout} as="button" className='block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
+                                        </div>
+                                        <div className='flex col-span-3 bg-slate-600 p-2 '>
+                                            <div className='my-auto text-right px-1'>
+                                                <p className='text-xs '>{nombreUser}</p>
+                                                <hr className='my-2' />
+                                                <p className='text-center font-montserrat text-lg'>ADMIN</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Link href={route('u.usuarioPersonal')} as="button" className='flex justify-between w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
+                                        Mi perfil
+                                        <FontAwesomeIcon className="h-4 w-5 ml-4 mt-0.5" icon={faHomeUser} />
+                                    </Link>
+                                    <Link onClick={alertLogout} as="button" className='flex justify-between w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
                                         Cerrar Sesión
-                                        <FontAwesomeIcon className="h-4 w-5 ml-4" icon={faSignOut} />
+                                        <FontAwesomeIcon className="h-4 w-5 ml-4 mt-0.5" icon={faSignOut} />
                                     </Link>
-                                    
-                                    <Link href={route('u.usuarioPersonal')} as="button" className='block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-blue-200 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out'>
-                                        Cuenta de Usuario
-                                        <FontAwesomeIcon className="h-4 w-5 ml-4" icon={faUserAlt} />
-                                    </Link>
+
+
                                 </Dropdown.Content>
                             </Dropdown>
                         </div>

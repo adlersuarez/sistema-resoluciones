@@ -9,6 +9,7 @@ use App\Models\Persona;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class CuentaUsuarioController extends Controller
 {
@@ -109,16 +110,41 @@ class CuentaUsuarioController extends Controller
     {
         $request->validate([
             'username' => 'required',
-            'email' => 'required',
-            'password' => 'required',
+            'password' => 'nullable',
+            'c_numTelefono' => 'required',
+            'c_email' => 'required',
+            'imagen_perfil' => 'nullable',
         ]);
 
         $usuario = $request->all();
 
         User::where('id', auth::user()->id)->update([
             'username' => $usuario['username'],
-            'email' => $usuario['email'],
-            'password' => Hash::make($usuario['password']),
+        ]);
+        
+        if(isset($usuario['password'])){
+            User::where('id', auth::user()->id)->update([
+                'password' => Hash::make($usuario['password']),
+            ]);
+        }
+
+        if($imagen = $request->file('imagen_perfil')) {
+            $rutaGuardarImg = 'images/perfil';
+            $imagenPerfil = (auth::user()->username)."-".date('YmdHis'). "." . $imagen->getClientOriginalExtension();
+            $imagen->move($rutaGuardarImg, $imagenPerfil);
+            $usuario['imagen_perfil'] = $imagenPerfil; 
+                
+            User::where('id', auth::user()->id)->update([
+                'imagen_perfil' => $imagenPerfil,
+            ]);
+        }
+
+        
+        $persona = User::where('id', auth::user()->id)->first();
+
+        Persona::where('id_persona',$persona->id_persona)->update([
+            'c_numTelefono' => $usuario['c_numTelefono'],
+            'c_email' => $usuario['c_email'],
         ]);
         
         return redirect()->route('u.usuarioPersonal');

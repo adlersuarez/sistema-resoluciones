@@ -18,7 +18,7 @@ class PersonaSeeder extends Seeder
         $persona = Persona::create([
             'c_dni'=>'96872456',
             'c_apellidoP'=>'Nuñez',
-            'c_apellidoM'=>'-',
+            'c_apellidoM'=>'Nuñez',
             'c_nombres'=>'Amaya',
             'c_numTelefono'=>'475132',
             'c_numCelular'=>'965004343',

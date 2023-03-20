@@ -10,7 +10,7 @@ import DataTablePersonalUsuario from '@/Components/DataTable/Personal/DataTableP
 export default function Usuario({usuarios,roles,persona,auth}) {
 
     var selectPersona = "";
-   
+    
     persona.map( per => {
         selectPersona += `<option value="${per.id_persona}">${per.c_apellidoP+" "+per.c_apellidoM+" "+per.c_nombres+" - "+per.nombreTipoPersona}</option>`
     });

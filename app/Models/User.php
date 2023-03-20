@@ -17,6 +17,7 @@ class User extends Authenticatable
         'id_rol',
         'username',
         'email',
+        'imagen_perfil',
         'password'
     ];
 

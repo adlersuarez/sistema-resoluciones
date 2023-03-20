@@ -30,7 +30,7 @@ const Trigger = ({ children }) => {
     );
 };
 
-const Content = ({ align = 'right', width = '48', contentClasses = 'bg-white', children }) => {
+const Content = ({ align = 'right', width = '60', contentClasses = 'bg-white', children }) => {
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = 'origin-top';
@@ -43,8 +43,8 @@ const Content = ({ align = 'right', width = '48', contentClasses = 'bg-white', c
 
     let widthClasses = '';
 
-    if (width === '48') {
-        widthClasses = 'w-48';
+    if (width === '60') {
+        widthClasses = 'w-60';
     }
 
     return (

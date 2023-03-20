@@ -7,6 +7,8 @@ use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
 //
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,11 +38,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        $persona = null;
         //codigo
+        if(!is_null(auth::user())){
+        $persona = User::select('personas.c_nombres','personas.c_apellidoP','personas.c_apellidoM')
+        ->where('users.id', auth::user()->id)
+        ->join('personas','personas.id_persona','=','users.id_persona')
+        ->first();
+        }
 
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
+                'persona' => $persona,
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

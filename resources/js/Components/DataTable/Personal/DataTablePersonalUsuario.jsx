@@ -235,7 +235,7 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
 
     const subHeaderDataTable = useMemo(() => {
         return (
-            <div>
+            <div className='relative'>
                 <input
                     className=''
                     type="text"
@@ -244,7 +244,7 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
                     placeholder='Search'
                     value={filterText}
                 />
-                <button onClick={handleClear}>
+                <button className='font-montserrat text-slate-400 absolute right-3 my-auto top-0 bottom-0' onClick={handleClear}>
                     X
                 </button>
             </div>
