@@ -1,11 +1,11 @@
-import { faDownload, faFilePdf, faPen, faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faDownload, faFilePdf, faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@inertiajs/inertia-react';
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
-import { Inertia } from '@inertiajs/inertia';
-import NoRegistros from '../ComponentesDataTable/NoRegistros';
+import IconoSortColumn from './ComponentesDataTable/IconoSortColumn';
+import NoRegistros from './ComponentesDataTable/NoRegistros';
 
 const customStyles = {
     headCells: {
@@ -46,7 +46,9 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTableTipoPersonal({ datos }) {
+
+
+export default function DataTableAsunto({ datos }) {
 
     //Eliminar svg de DataTable
     useEffect(() => {
@@ -57,96 +59,37 @@ export default function DataTableTipoPersonal({ datos }) {
             }
         }
     });
-    
-    const editar_tipo = (row) => {
-
-        Swal.fire({
-            title: 'Actualizar Tipo de Personal',
-            html: `<div class="div-input-modal"><label class="label-input-modal">Tipo</label><input type="text" value="${row.titulo}" id="tipo" class="swal2-input" placeholder="Tipo"></div>
-            <div class="div-input-modal"><label class="label-input-modal">Descripción</label><textarea type="textarea" id="descripcion" class="swal2-input" placeholder="Descripción">${row.descripcion}</textarea></div>`,
-            confirmButtonText: 'Editar',
-            focusConfirm: false,
-            showCloseButton: true,
-            width: '800px',
-            customClass: {
-               title: 'custom-title',
-               closeButton: 'close-button',
-            },
-            preConfirm: () => {
-                const tipo = Swal.getPopup().querySelector('#tipo').value
-                const descripcion = Swal.getPopup().querySelector('#descripcion').value
-
-                if (!tipo || !descripcion) {
-                    Swal.showValidationMessage(`Por favor ingrese todos los campos`)
-                }
-                return { tipo: tipo, descripcion: descripcion }
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                Inertia.put(route('t.tipoPersona.update',`${row.id}`),{
-                    _method: 'put',
-                    nombreTipoPersona: result.value.tipo,
-                    descripcionPersona: result.value.descripcion,
-                })
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Tipo de Personal Actualizado',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            }
-        })
-    }
-
-    const eliminar_tipo = (row) => {
-
-        Swal.fire({
-            title: `¿Está seguro(a) de eliminar el tipo de Personal: <br><b>${row.titulo.toUpperCase()}</b>?`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Eliminar',
-            confirmButtonColor: '#CB1233',
-          }).then((result) => {
-            
-            if (result.isConfirmed) {
-                Inertia.delete(route('t.tipoPersona.delete',`${row.id}`))
-
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Tipo de Personal Eliminado',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-            }
-          })
-    }
-
 
     const columns = [
         {
-            name: 'Tipo de Personal',
-            selector: row => row.titulo,
+            name: 'Código',
+            selector: row => row.codigo,
             sortable: true,
-
+        },
+        {
+            name: 'Asunto',
+            selector: row => row.asunto,
+            sortable: true,
         },
         {
             name: 'Descripción',
             selector: row => row.descripcion,
             sortable: true,
-
         },
         {
             name: 'Acción',
             cell: (row) => (
                 <div className='flex gap-2'>
-                    <Link onClick={()=>eliminar_tipo(row)} className="text-center text-white focus:outline-none">
+                    <Link
+                        //</div>onClick={()=>eliminar_tipo(row)}
+                        className="text-center text-white focus:outline-none">
                         <div className='bg-red-600 hover:bg-red-800 rounded-md w-9 h-9 flex m-auto justify-center '>
                             <FontAwesomeIcon className="h-4 w-4 my-2.5" id={row.id} icon={faTrash} />
                         </div>
                     </Link>
-                    <Link onClick={()=>editar_tipo(row)} className="text-center text-white focus:outline-none">
+                    <Link 
+                        //onClick={()=>editar_tipo(row)} 
+                        className="text-center text-white focus:outline-none">
                         <div className='bg-green-600 hover:bg-green-800 rounded-md w-9 h-9 flex m-auto justify-center'>
                             <FontAwesomeIcon className="h-4 w-4 my-2.5" id={row.id} icon={faPen} />
                         </div>
@@ -156,23 +99,25 @@ export default function DataTableTipoPersonal({ datos }) {
         },
     ];
 
-
     var data = []
-
+    /*
     datos.map((elemento) =>
         data.push({
-            id: elemento.id_tipoPersona,
-            titulo: elemento.nombreTipoPersona,
-            descripcion: elemento.descripcionPersona,
+            id: //elemento.id_resolucion,
+            codigo: //elemento.nombreResolucion,
+            asunto: //elemento.asuntoResolucion,
+            descripcion: //elemento.nombreTipoResolucion,
         })
-    )
+    )*/
 
     //Filtro de texto
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter(
-        item => item.titulo.toLowerCase().includes(filterText.toLowerCase())
-           || item.descripcion.toLowerCase().includes(filterText.toLowerCase())
+        item => item.empresa.toLowerCase().includes(filterText.toLowerCase())
+            || item.fecha.toLowerCase().includes(filterText.toLowerCase())
+            || item.contrata.toLowerCase().includes(filterText.toLowerCase())
+            || item.representante.toLowerCase().includes(filterText.toLowerCase())
     );
 
     const handleClear = () => {
@@ -207,6 +152,7 @@ export default function DataTableTipoPersonal({ datos }) {
             columns={columns}
             data={filteredItems}
             customStyles={customStyles}
+            sortIcon={<IconoSortColumn />}
             pagination
             paginationResetDefaultPage={resetPaginationToggle}
             paginationComponentOptions={paginationComponentOptions}

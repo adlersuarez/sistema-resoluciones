@@ -25,7 +25,7 @@ class ResolucionSeeder extends Seeder
             'numeroResolucion'=>'1',
             'archivoResolucion'=>'1-2022-AU A.pdf',
             'asuntoResolucion'=>'Asunto de Prueba',
-            'fechaResolucion'=>'2023-03-10',
+            'fechaResolucion'=>'2023-03-08',
         ]);
 
         $resolucion = Resolucion::create([
@@ -38,7 +38,7 @@ class ResolucionSeeder extends Seeder
             'numeroResolucion'=>'1',
             'archivoResolucion'=>'1-2022-R A.pdf',
             'asuntoResolucion'=>'Asunto de Prueba',
-            'fechaResolucion'=>'2023-03-10',
+            'fechaResolucion'=>'2023-03-09',
         ]);
 
         $resolucion = Resolucion::create([

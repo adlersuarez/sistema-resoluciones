@@ -3,8 +3,9 @@ import Navbar from '@/Layouts/Navbar';
 import { Head, Link } from '@inertiajs/inertia-react';
 import TitlePages from '@/Components/Titulo/TitlePages';
 import { faToggleOn } from '@fortawesome/free-solid-svg-icons';
+import DataTableAdenda from '@/Components/DataTable/DataTableAdenda';
 
-export default function Index({auth}) {
+export default function Index({auth,adendas}) {
 
     return (
         <Navbar auth={auth}>
@@ -19,8 +20,7 @@ export default function Index({auth}) {
                 </Link>
             </div>
             <div className="overflow-x-auto relative shadow-md rounded-lg mt-5 p-4 bg-[#F9FAFB]">
-                {//<DataTableResolucion datos={resoluciones} miembros={miembros}/>
-                }
+                <DataTableAdenda datos={adendas}/>
             </div>
             
         </Navbar>

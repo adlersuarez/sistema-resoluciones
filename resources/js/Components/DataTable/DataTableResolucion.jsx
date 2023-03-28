@@ -1,9 +1,11 @@
-import { faArrowDown, faArrowUp, faDownload, faFilePdf, faPen, faSortUp, faTurnUp, faUpDown, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faFilePdf, faPen, faRefresh, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@inertiajs/inertia-react';
 import React, { useEffect, useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
+import IconoSortColumn from './ComponentesDataTable/IconoSortColumn';
+import NoRegistros from './ComponentesDataTable/NoRegistros';
 
 const customStyles = {
     headCells: {
@@ -44,10 +46,10 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
+export default function DataTableResolucion({ datos, miembros, sesion, resolucion }) {
 
-
-export default function DataTableResolucion({ datos, miembros }) {
-
+    //console.log(sesion)
+    //console.log(resolucion)
     //Eliminar svg de DataTable
     useEffect(() => {
         var element = document.getElementsByClassName("sc-lnskGP");
@@ -108,7 +110,6 @@ export default function DataTableResolucion({ datos, miembros }) {
                 text: 'No hay miembros en esta resolución',
             })
         }
-
     }
 
     const columns = [
@@ -190,17 +191,30 @@ export default function DataTableResolucion({ datos, miembros }) {
             tipoSesion: elemento.nombreSesion,
             fecha: elemento.fechaResolucion.slice(0, 10),
             archivo: elemento.archivoResolucion,
+            id_resolucion: elemento.id_tipoResolucion,
+            id_sesion: elemento.id_tipoSesion,
         })
     )
 
     //Filtro de texto
     const [filterText, setFilterText] = useState('');
+    const [filterSesion, setFilterSesion] = useState('');
+    const [filterResolucion, setFilterResolucion] = useState('');
+
+    const [filterDateStart, setFilterDateStart] = useState('');
+    const [filterDateEnd, setFilterDateEnd] = useState('');
+
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter(
-        item => item.titulo.toLowerCase().includes(filterText.toLowerCase())
+        item => (item.titulo.toLowerCase().includes(filterText.toLowerCase())
             || item.fecha.toLowerCase().includes(filterText.toLowerCase())
             || item.tipoResolucion.toLowerCase().includes(filterText.toLowerCase())
-            || item.tipoSesion.toLowerCase().includes(filterText.toLowerCase())
+            || item.tipoSesion.toLowerCase().includes(filterText.toLowerCase()))
+            && item.id_resolucion.toString().includes(filterResolucion.toString())
+            && item.id_sesion.toString().includes(filterSesion.toString())
+            && (filterDateStart == '' ? true : item.fecha >= filterDateStart)
+            && (filterDateEnd == '' ? true : item.fecha <= filterDateEnd)
+
     );
 
     const handleClear = () => {
@@ -212,18 +226,78 @@ export default function DataTableResolucion({ datos, miembros }) {
 
     const subHeaderDataTable = useMemo(() => {
         return (
-            <div className='relative'>
-                <input
-                    className=''
-                    type="text"
-                    id='search'
-                    onChange={(e) => setFilterText(e.target.value)}
-                    placeholder='Search'
-                    value={filterText}
-                />
-                <button className='font-montserrat text-slate-400 absolute right-3 my-auto top-0 bottom-0' onClick={handleClear}>
-                    X
-                </button>
+            <div className='w-full flex flex-col'>
+                <div className='flex flex-row mb-5 justify-between'>
+                    <h1 className='font-black text-xl my-auto'>Búsqueda de Resoluciones</h1>
+                    <div className='flex'>
+                        <input
+                            type="text"
+                            id='search'
+                            onChange={(e) => setFilterText(e.target.value)}
+                            placeholder='Search'
+                            value={filterText}
+                        />
+                        <Link className='h-8 w-10 my-auto rounded-md ml-5' onClick={handleClear}>
+                            <div className='flex h-full bg-green-700 rounded-md text-white m-auto justify-center'>
+                                <FontAwesomeIcon className="h-4 mt-2" icon={faRefresh} />
+                            </div>
+                        </Link>
+                    </div>
+
+                </div>
+              
+                    <div className='flex flex-row justify-between'>
+
+                        <div className='flex '>
+                            <label className='flex my-auto text-xs mr-5'>Tipo Resolución</label>
+                            <select
+                                id='select-tipo-resolucion'
+                                //className='w-[calc(25%-110px)]'
+                                defaultValue={'0'}
+                                onChange={(e) => setFilterResolucion(e.target.value)}>
+                                <option className='text-gray-400 bold' value='0' disabled>Seleccione</option>
+                                {
+                                    resolucion.map(res => {
+                                        return (
+                                            <option key={res.id_tipoResolucion} value={res.id_tipoResolucion}>{res.nombreTipoResolucion}</option>
+                                        )
+                                    })
+                                }
+                            </select>
+                            <label className='flex my-auto text-xs ml-16 mr-5'>Tipo Sesión</label>
+                            <select
+                                id='select-tipo-sesion'
+                                //className='w-[calc(25%+50px)]'
+                                defaultValue={'0'}
+                                onChange={(e) => setFilterSesion(e.target.value)}>
+                                <option className='text-gray-400 bold' value='0' disabled>Seleccione</option>
+                                {
+                                    sesion.map(ses => {
+                                        return (
+                                            <option key={ses.id_tipoSesion} value={ses.id_tipoSesion}>{ses.nombreSesion}</option>
+                                        )
+                                    })
+                                }
+                            </select>
+                        </div>
+                        <div className='flex'>
+                            <label className='flex my-auto text-xs ml-16 mr-5'>Fecha</label>
+                            <input
+                                type="date"
+                                onChange={(e) => setFilterDateStart(e.target.value)}
+                            //value={filterDateStart}
+                            />
+                            <label className='flex my-auto text-xs mx-2'>-</label>
+                            <input
+                                type="date"
+                                onChange={(e) => setFilterDateEnd(e.target.value)}
+                            //value={filterDateEnd}
+                            />
+                        </div>
+
+                    </div>
+
+                
             </div>
         );
 
@@ -235,12 +309,13 @@ export default function DataTableResolucion({ datos, miembros }) {
             columns={columns}
             data={filteredItems}
             customStyles={customStyles}
-            sortIcon={<div className='h-4 w-4 flex mx-2 text-slate-400'><FontAwesomeIcon className='!h-3' icon={faArrowDown} /></div>}
+            sortIcon={<IconoSortColumn />}
             pagination
             paginationResetDefaultPage={resetPaginationToggle}
             paginationComponentOptions={paginationComponentOptions}
             subHeader
             subHeaderComponent={subHeaderDataTable}
+            noDataComponent={<NoRegistros />}
         />
     );
 }

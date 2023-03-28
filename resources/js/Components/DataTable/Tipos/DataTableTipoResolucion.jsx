@@ -5,6 +5,7 @@ import React, { useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
+import NoRegistros from '../ComponentesDataTable/NoRegistros';
 
 const customStyles = {
     headCells: {
@@ -47,6 +48,16 @@ const paginationComponentOptions = {
 
 export default function DataTableTipoResolucion({ datos }) {
 
+    //Eliminar svg de DataTable
+    useEffect(() => {
+        var element = document.getElementsByClassName("sc-lnskGP");
+        if (element[0]) {
+            if (element[0].firstElementChild != element[0].lastElementChild) {
+                element[0].removeChild(element[0].lastElementChild);
+            }
+        }
+    });
+    
     const editar_tipo = (row) => {
 
         Swal.fire({
@@ -212,6 +223,7 @@ export default function DataTableTipoResolucion({ datos }) {
             paginationComponentOptions={paginationComponentOptions}
             subHeader
             subHeaderComponent={subHeaderDataTable}
+            noDataComponent={<NoRegistros />}
         />
     );
 }

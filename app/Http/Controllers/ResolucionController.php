@@ -32,9 +32,14 @@ class ResolucionController extends Controller
         ->join('personas','personas.id_persona','=','miembros_resolucions.id_persona')
         ->get();
 
+        $tipo_sesion = TipoSesion::all();
+        $tipo_resolucion = TipoResolucion::all();
+
         return Inertia::render('Admin/Resoluciones/Index',[
             'resoluciones' => $resoluciones,
             'miembros' => $miembros,
+            'tipo_sesion' => $tipo_sesion,
+            'tipo_resolucion' => $tipo_resolucion,
         ]);
     }
 

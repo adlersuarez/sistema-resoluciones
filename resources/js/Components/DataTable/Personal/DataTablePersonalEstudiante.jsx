@@ -2,8 +2,10 @@ import { faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/inertia-react';
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
+import IconoSortColumn from '../ComponentesDataTable/IconoSortColumn';
+import NoRegistros from '../ComponentesDataTable/NoRegistros';
 
 const customStyles = {
     headCells: {
@@ -46,6 +48,16 @@ const paginationComponentOptions = {
 
 export default function DataTablePersonalEstudiante({ datos, carrera, nivel, seccion, sede }) {
 
+    //Eliminar svg de DataTable
+    useEffect(() => {
+        var element = document.getElementsByClassName("sc-lnskGP");
+        if (element[0]) {
+            if (element[0].firstElementChild != element[0].lastElementChild) {
+                element[0].removeChild(element[0].lastElementChild);
+            }
+        }
+    });
+    
     const columns = [
         {
             name: 'Código',
@@ -235,6 +247,9 @@ export default function DataTablePersonalEstudiante({ datos, carrera, nivel, sec
             paginationComponentOptions={paginationComponentOptions}
             subHeader
             subHeaderComponent={subHeaderDataTable}
+
+            sortIcon={<IconoSortColumn />}
+            noDataComponent={<NoRegistros />}
         />
     );
 }
