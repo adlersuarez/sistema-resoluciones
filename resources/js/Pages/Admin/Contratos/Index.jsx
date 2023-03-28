@@ -14,7 +14,7 @@ export default function Index({auth,contratos}) {
 
                 <TitlePages texto={'Contratos'} icono={faSuitcase}/>
                 <Link
-                    href="#"
+                    href={route('r.contratos.registrar')}
                     className="text-center px-3 py-2 text-white bg-[#2f45ab] rounded-md focus:outline-none">
                     Registrar
                 </Link>

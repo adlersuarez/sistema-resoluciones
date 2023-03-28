@@ -15,4 +15,13 @@ class ConvenioController extends Controller
             'convenios' => $convenios,
         ]);
     }
+
+    public function create() 
+    {
+        $empresas = "empresas";
+
+        return Inertia::render('Admin/Convenios/Registrar',[
+            'empresas' => $empresas,
+        ]);
+    }
 }

@@ -175,23 +175,26 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::get('/resoluciones-upla/resoluciones/descargar/{id}','descargarResolucion')->name('r.resoluciones.descargar');
     });
 
-    Route::controller(AdendaController::class)->group(function (){
-        Route::get('/resoluciones-upla/adendas', 'index')->name('r.adendas');
-        //
-    });
-
     Route::controller(AsuntoController::class)->group(function (){
         Route::get('/resoluciones-upla/asuntos', 'index')->name('r.asuntos');
         //
     });
 
+    Route::controller(AdendaController::class)->group(function (){
+        Route::get('/resoluciones-upla/adendas', 'index')->name('r.adendas');
+        Route::get('/resoluciones-upla/adendas/registrar','create')->name('r.adendas.registrar');
+        //
+    });
+
     Route::controller(ContratoController::class)->group(function (){
         Route::get('/resoluciones-upla/contratos', 'index')->name('r.contratos');
+        Route::get('/resoluciones-upla/contratos/registrar','create')->name('r.contratos.registrar');
         //
     });
 
     Route::controller(ConvenioController::class)->group(function (){
         Route::get('/resoluciones-upla/convenios', 'index')->name('r.convenios');
+        Route::get('/resoluciones-upla/convenios/registrar','create')->name('r.convenios.registrar');
         //
     });
 

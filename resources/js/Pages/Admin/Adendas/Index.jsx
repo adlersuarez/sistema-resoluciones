@@ -14,7 +14,7 @@ export default function Index({auth,adendas}) {
 
                 <TitlePages texto={'Adendas'} icono={faToggleOn}/>
                 <Link
-                    href="#"
+                    href={route('r.adendas.registrar')}
                     className="text-center px-3 py-2 text-white bg-[#2f45ab] rounded-md focus:outline-none">
                     Registrar
                 </Link>

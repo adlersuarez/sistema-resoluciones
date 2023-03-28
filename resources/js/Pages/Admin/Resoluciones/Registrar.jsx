@@ -94,15 +94,15 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion }) => {
 
     return (
         <Navbar auth={auth}>
-            <Head title="Estado adeudo" />
+            <Head title="Resoluciones" />
             <div className='w-full flex justify-between mt-10 mb-5'>
-                <TitlePages texto={'Registrar'} icono={faFileWord} />
-                <BotonVolver ruta={'r.resoluciones'} />
+                <TitlePages texto={'Registrar Resolución'} icono={faFileWord} />
+                <BotonVolver ruta={'r.contratos'} />
             </div>
             <div className="">
                 <div className="mx-auto">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-4 border-b border-gray-200">
+                        <div className="px-10 py-4 border-b border-gray-200">
                             <hr className='my-4' />
 
                             <form name="createForm" onSubmit={handleSubmit}>

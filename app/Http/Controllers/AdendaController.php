@@ -15,4 +15,17 @@ class AdendaController extends Controller
             'adendas' => $adendas,
         ]);
     }
+
+    public function create() 
+    {
+        $empresas = "empresas";
+        $contratos = "contratos";
+        $convenios = "convenios";
+
+        return Inertia::render('Admin/Adendas/Registrar',[
+            'empresas' => $empresas,
+            'contratos' => $contratos,
+            'convenios' => $convenios,
+        ]);
+    }
 }

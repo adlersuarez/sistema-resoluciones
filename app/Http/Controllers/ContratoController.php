@@ -15,4 +15,13 @@ class ContratoController extends Controller
             'contratos' => $contratos,
         ]);
     }
+
+    public function create() 
+    {
+        $empresas = "empresas";
+
+        return Inertia::render('Admin/Contratos/Registrar',[
+            'empresas' => $empresas,
+        ]);
+    }
 }
