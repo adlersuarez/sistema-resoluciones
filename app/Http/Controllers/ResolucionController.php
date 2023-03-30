@@ -10,7 +10,12 @@ use App\Models\MiembrosResolucion;
 use App\Models\TipoResolucion;
 use App\Models\TipoSesion;
 
+use App\Models\TipoAsunto;
+use App\Models\Autoridad;
+
 use Inertia\Inertia;
+use PhpOffice\PhpWord\TemplateProcessor;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +39,7 @@ class ResolucionController extends Controller
 
         $tipo_sesion = TipoSesion::all();
         $tipo_resolucion = TipoResolucion::all();
-
+ 
         return Inertia::render('Admin/Resoluciones/Index',[
             'resoluciones' => $resoluciones,
             'miembros' => $miembros,
@@ -45,14 +50,26 @@ class ResolucionController extends Controller
 
     public function create() 
     {
-        $persona = Persona::all();
+        $persona = Persona::where('detalle_tipo_personas.id_estudiante','<>',1)
+        ->join('detalle_tipo_personas','detalle_tipo_personas.id_persona','=','personas.id_persona')
+        ->join('estudiantes','detalle_tipo_personas.id_estudiante','=','estudiantes.id_estudiante')
+        ->join('especialidads','especialidads.id_especialidad','=','estudiantes.id_especialidad')
+        ->join('carrera_profesionals','carrera_profesionals.id_carreraProfesional','=','especialidads.id_carreraProfesional')
+        ->join('facultads','carrera_profesionals.id_facultad','=','facultads.id_facultad')
+        ->get();
+
         $tipo_resolucion= TipoResolucion::all();
         $tipo_sesion= TipoSesion::all();
+
+        $tipo_asunto = TipoAsunto::where('id_tipoAsunto','<>',3)->get();
+        $autoridad = Autoridad::all();
 
         return Inertia::render('Admin/Resoluciones/Registrar',[
             'persona' => $persona,
             'tipo_resolucion' => $tipo_resolucion,
             'tipo_sesion' => $tipo_sesion,
+            'tipo_asunto' => $tipo_asunto,
+            'autoridad' => $autoridad,
         ]);
     }
 
@@ -65,10 +82,9 @@ class ResolucionController extends Controller
             //'id_carreraProfesional' => 'required',
             //'id_sede' => 'required',
             'numeroResolucion' => 'required',
-            'archivoResolucion' => 'required',
-            'asuntoResolucion' => 'required',
             'fechaResolucion' => 'required',
             'miembros' => 'required',
+            'asuntos' => 'required',
         ]);
 
         $resolucion = $request->all();
@@ -79,33 +95,39 @@ class ResolucionController extends Controller
         $year_fecha = date("Y",strtotime($resolucion['fechaResolucion']));
 
         $numRes = $resolucion['numeroResolucion'];
-        $numRes = sprintf("%02d", $numRes);
+        $numRes = sprintf("%03d", $numRes);
 
         $acroTipo = $tipoRes -> acronimoTipoResolucion;
 
         $nombreRes= $numRes.'-'.$year_fecha.'-'.$acroTipo;
 
+        //dd($resolucion['asuntos']);
+
+        $funciones = New ResolucionController();
+
+        $funciones->generarResoluciónWord($resolucion,$nombreRes);
+
         //archivo
-        if($resol = $request->file('archivoResolucion')) {
+        /*if($resol = $request->file('archivoResolucion')) {
             $rutaGuardarResolucion = 'documentos/resoluciones';
             $nombreResolucion = $nombreRes.' A-'.date('YmdHis').'.' . $resol->getClientOriginalExtension();
             $resol->move($rutaGuardarResolucion, $nombreResolucion);
             $resolucion['archivoResolucion'] = $nombreResolucion;
-            
-            Resolucion::create([
-                'id' => auth::user()->id,
-                'id_tipoSesion' => $resolucion['id_tipoSesion'],
-                'id_tipoResolucion' => $resolucion['id_tipoResolucion'],
-                'id_carreraProfesional' => 1,
-                'id_sede' => 1,
-                'nombreResolucion' => $nombreRes,
-                'numeroResolucion' => $resolucion['numeroResolucion'],
-                'archivoResolucion' => $nombreResolucion,
-                'asuntoResolucion' => $resolucion['asuntoResolucion'],
-                'fechaResolucion' => $resolucion['fechaResolucion'],
-            ]);
-        }
+        }*/
 
+        Resolucion::create([
+            'id' => auth::user()->id,
+            'id_tipoSesion' => $resolucion['id_tipoSesion'],
+            'id_tipoResolucion' => $resolucion['id_tipoResolucion'],
+            'id_carreraProfesional' => 1,
+            'id_sede' => 1,
+            'nombreResolucion' => $nombreRes,
+            'numeroResolucion' => $resolucion['numeroResolucion'],
+            'archivoResolucion' => $nombreRes.".docx",
+            'fechaResolucion' => $resolucion['fechaResolucion'],
+        ]);
+
+        //Miembros de Resolución
         $idResolucion = Resolucion::query()
             ->orderBy('created_at','desc')
             ->first();
@@ -129,8 +151,71 @@ class ResolucionController extends Controller
 
         $filename = $pdf->archivoResolucion;
         $pathToFile = public_path('documentos/resoluciones/'.$filename);
-        $headers = ['Content-Type: application/pdf'];
         
-        return response()->download($pathToFile,$filename,$headers);
+        return response()->download($pathToFile,$filename);
+    }
+
+    public function generarResoluciónWord($resolucion,$nombre)
+    {
+        //$resolucion['numeroResolucion'];
+        //dd($resolucion['fechaResolucion']);
+        //$resolucion['miembros'];
+        //dd($resolucion['asuntos']);
+        $resuelves = $resolucion['asuntos'];
+
+        $tipoResolucion = TipoResolucion::select('nombreTipoResolucion')
+        ->where('id_tipoResolucion',$resolucion['id_tipoResolucion'])
+        ->first();
+
+        $tipoSesion = TipoSesion::select('nombreSesion')
+        ->where('id_tipoSesion',$resolucion['id_tipoSesion'])
+        ->first();
+
+        $tipo_resolucion = $tipoResolucion->nombreTipoResolucion;
+        $nombre_resolucion = $nombre;
+        $tipo_resolucion_sesion = "Sesión ".$tipoSesion->nombreSesion." de ".$tipoResolucion->nombreTipoResolucion;
+
+        $day_fecha = substr($resolucion['fechaResolucion'], 8, 2);
+        $mes_fecha = substr($resolucion['fechaResolucion'], 5, 2);
+        $year_fecha = substr($resolucion['fechaResolucion'], 0, 4);
+        
+        $fecha_puntos = $day_fecha.".".$mes_fecha.".".$year_fecha;
+
+        $templateProcessor = new TemplateProcessor('plantillas/resoluciones/plantilla-resolucion.docx');
+        //
+        
+        $templateProcessor->setValue('tipo_resolucion', strtoupper($tipo_resolucion));
+        $templateProcessor->setValue('nombre_resolucion', strtoupper($nombre_resolucion));
+        $templateProcessor->setValue('fecha', $fecha_puntos);
+        $templateProcessor->setValue('tipo_resolucion_sesion', $tipo_resolucion_sesion);
+        
+        //dd($resuelves);
+        /*$replacements = array(
+            array('descripcion' => 'Batman',),
+            array('descripcion' => 'Superman',),
+        ); */
+
+        //$templateProcessor->cloneBlock('block_name', count($resuelves), true, false, $replacements );
+
+        $templateProcessor->cloneBlock('block_name', count($resuelves), true, true );
+
+        foreach ($resuelves as $key => $value) {
+            //dd($value['descripcion']);
+            $templateProcessor->setValue('descripcion_asunto#'.($key+1), strtoupper($value['nombre'])." ".$value['descripcion']);
+        }
+
+        //
+        //$templateProcessor->setImageValue('codigoQR', array('path' => 'images/personal/jefaturaORyM/codigoQR.png', 'width' => 165, 'height' => 165, 'ratio' => true));
+        //$templateProcessor->setImageValue('firma', array('path' => 'images/personal/jefaturaORyM/firma.png', 'width' => 100, 'height' => 100, 'ratio' => true));
+        //
+
+        $direccion = 'documentos/resoluciones/';
+        $fileName = $nombre;
+        //$fileName = $nombre." A-".date('YmdHis');
+
+        $templateProcessor->saveAs($direccion.$fileName . '.docx');
+        
+        return response()->download($direccion.$fileName . '.docx');
+        //return response()->download($fileName . '.docx');
     }
 }

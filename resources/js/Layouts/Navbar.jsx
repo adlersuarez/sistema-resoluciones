@@ -384,7 +384,7 @@ const Navbar = ({ auth, children }) => {
                     </div>
                 </div>
                 <div className='flex justify-center bg-slate-100 overflow-y-auto ' style={{ height: 'calc(100% - 112px)' }}>
-                    <div className='w-11/12 flex flex-col mb-4'>
+                    <div className='w-[95%] flex flex-col mb-4'>
                         {children}
                     </div>
                 </div>

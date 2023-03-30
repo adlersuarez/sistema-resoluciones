@@ -46,6 +46,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call(MiembrosResolucionSeeder::class);
         $this->call(ExternosResolucionSeeder::class);
+
+        $this->call(AutoridadSeeder::class);
+        $this->call(TipoAsuntoSeeder::class);
+        $this->call(DetalleResolucionAsuntoSeeder::class);
+        $this->call(ListaEncargoSeeder::class);
         
     }
 }
