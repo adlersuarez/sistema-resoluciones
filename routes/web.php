@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\Route;
 //sistema resoluciones
 use App\Http\Controllers\ResolucionController;
 
+use App\Http\Controllers\PlantillaController;
 use App\Http\Controllers\AdendaController;
 use App\Http\Controllers\AsuntoController;
 use App\Http\Controllers\ContratoController;
@@ -72,107 +73,20 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
        //Route::get('/resoluciones-upla/exportReporte', 'generarReporte')->name('reporte');
     });
 
-
-    /*Route::controller(AdminSolicitudController::class)->group(function (){
-        Route::get('/resoluciones-upla/solicitudes', 'index')->name('d.solicituds');
-        //Route::get('/resoluciones-upla/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
-        //
-        Route::get('/resoluciones-upla/pagos/{id}', 'show')->name('d.solicituds.show');
-        //
-        Route::post('/resoluciones-upla/solicitudes/aceptar/{id}', 'aceptar_solicitud')->name('d.solicituds.aceptar_solicitud');
-        Route::get('/resoluciones-upla/solicitudes/rechazar/{id}', 'rechazar_solicitud')->name('d.solicituds.rechazar_solicitud');
-        //
-        Route::post('/resoluciones-upla/solicitudes/validar_constancia/{id}', 'validar_constancia')->name('d.solicituds.validar_constancia');
-        Route::get('/resoluciones-upla/solicitudes/rechazar_constancia/{id}', 'rechazar_constancia')->name('d.solicituds.rechazar_constancia');
-
-        Route::get('/resoluciones-upla/solicitudes/ver/{id}', 'viewDocument')->name('d.solicituds.ver');
-        //
-        Route::get('/resoluciones-upla/exportWord/{id}', 'wordExport')->name('d.solicituds.wordExport');
-
-        Route::get('/resoluciones-upla/generarConstancia/{id}', 'generarConstanciaPDF')->name('d.solicituds.generarConstanciaPDF');
-
-
-        Route::get('/resoluciones-upla/inicio/{id}', 'viewDocument')->name('d.solicituds.ver');
-
-        Route::get('/resoluciones-upla/solicitudes/estado/{id}', 'mostrarEstado')->name('d.solicituds.estado');
-
-        Route::get('/resoluciones-upla/solicitud/estado/{id}', 'mostrarEstadoPendRech')->name('d.solicituds.estadoPR');
-
-    });
-
-    Route::controller(SecretariaSolicitudController::class)->group(function (){
-        Route::get('/resoluciones-upla/secretaria/solicitudes', 'index')->name('d.solicitud.secretaria');
-
-        Route::put('/resoluciones-upla/secretaria/solicitudes/aceptar/{id}', 'aceptar_solicitud')->name('d.solicitud.secretaria.aceptar_solicitud');
-        Route::put('/resoluciones-upla/secretaria/solicitudes/rechazar/{id}', 'rechazar_solicitud')->name('d.solicitud.secretaria.rechazar_solicitud');
-        //Route::put('/resoluciones-upla/secretaria/solicitudes/comentario/{id}', 'agregar_comentario')->name('d.solicitud.secretaria.agregar_comentario');
-        //Route::get('/resoluciones-upla/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
-        Route::get('/resoluciones-upla/secretaria/solicitudes/mostrar/{id}', 'show')->name('d.solicituds.secretaria.show');
-    });
-
-    Route::controller(JefaturaSolicitudController::class)->group(function (){
-        Route::get('/resoluciones-upla/jefatura/solicitudes', 'index')->name('d.solicitud.jefatura');
-
-        //Route::get('/resoluciones-upla/especificacionEquipo/{id}', 'show')->name('d.solicituds.show');
-        Route::put('/resoluciones-upla/jefatura/validar_constancia/{id}', 'validar_constancia')->name('d.solicitud.jefatura.validar_constancia');
-
-        //Route::get('/resoluciones-upla/jefatura/rechazar_constancia/{id}', 'rechazar_constancia')->name('d.solicitud.jefatura.rechazar_constancia');
-
-        Route::post('/resoluciones-upla/jefatura/generar_barcode/{id}', 'generarBarcode')->name('d.solicitud.jefatura.generar_barcode');
-
-        Route::get('/resoluciones-upla/jefatura/generarConstancia/{id}', 'generarConstanciaPDF')->name('d.solicituds.jefatura.generarConstanciaPDF');
-
-        Route::get('/resoluciones-upla/jefatura/inicio/AE/{id}', 'viewRequisitoAE')->name('d.solicituds.requisito.revisarAE');
-        Route::get('/resoluciones-upla/jefatura/inicio/FAC/{id}', 'viewRequisitoFac')->name('d.solicituds.requisito.revisarFac');
-        Route::get('/resoluciones-upla/jefatura/inicio/OEF/{id}', 'viewRequisitoOEF')->name('d.solicituds.requisito.revisarOEF');
-        Route::get('/resoluciones-upla/jefatura/inicio/PAI/{id}', 'viewRequisitoPAI')->name('d.solicituds.requisito.revisarPAI');
-
-    });
-
-    Route::controller(ArchivoEstudiantilController::class)->group(function (){
-        Route::get('/archivo-estudiantil/no-adeudo/pendiente', 'index')->name('d.archivoEstudiantil');
-        Route::get('/archivo-estudiantil/no-adeudo/mostrar/{id}', 'show')->name('d.archivoEstudiantil.mostrar');
-        Route::get('/archivo-estudiantil/no-adeudo/validado', 'estado_validado')->name('d.archivoEstudiantil.validado');
-        Route::put('/archivo-estudiantil/no-adeudo/validar/{id}', 'validar_ArchivoEstudiantil')->name('d.archivoEstudiantil.validarAE');
-        Route::put('/archivo-estudiantil/no-adeudo/notificar/{id}', 'notificar_estudianteAE')->name('d.archivoEstudiantil.notificarAE');
-    });
-
-    Route::controller(DursController::class)->group(function (){
-        Route::get('/durs/no-adeudo/pendiente', 'index')->name('d.durs');
-
-        Route::get('/durs/no-adeudo/mostrar/{id}', 'show')->name('d.durs.mostrar');
-        Route::get('/durs/no-adeudo/validado', 'estado_validado')->name('d.durs.validado');
-        Route::put('/durs/no-adeudo/validar/{id}', 'validar_Durs')->name('d.durs.validarPai');
-        //Route::put('/durs/no-adeudo/notificar/{id}', 'notificar_estudiantePai')->name('d.durs.notificarPai');
-    });
-
-    Route::controller(FacultadesController::class)->group(function (){
-        Route::get('/facultades/no-adeudo/pendiente', 'index')->name('d.facultades');
-
-        Route::get('/facultades/no-adeudo/mostrar/{id}', 'show')->name('d.facultades.mostrar');
-        Route::get('/facultades/no-adeudo/validado', 'estado_validado')->name('d.facultades.validado');
-        Route::put('/facultades/no-adeudo/validar/{id}', 'validar_Fac')->name('d.facultades.validarFac');
-        //Route::put('/facultades/no-adeudo/notificar/{id}', 'notificar_estudianteAE')->name('d.facultades.notificarFac');
-    });
-
-    Route::controller(OefcController::class)->group(function (){
-        Route::get('/oefc/no-adeudo/pendiente', 'index')->name('d.oefc');
-
-        Route::get('/oefc/no-adeudo/mostrar/{id}', 'show')->name('d.oefc.mostrar');
-        Route::get('/oefc/no-adeudo/validado', 'estado_validado')->name('d.oefc.validado');
-        Route::put('/oefc/no-adeudo/validar/{id}', 'validar_Oefc')->name('d.oefc.validarOefc');
-        //Route::put('/oefc/no-adeudo/notificar/{id}', 'notificar_estudianteOEF')->name('d.oefc.notificarOefc');
-    });
-
-    /* Route::controller(AdminNotificacionController::class)->group(function (){
-        Route::get('/resoluciones-upla/noti','index')->name('notificacion.index');
-    }); */
     Route::controller(ResolucionController::class)->group(function (){
         Route::get('/resoluciones-upla/resoluciones', 'index')->name('r.resoluciones');
         Route::get('/resoluciones-upla/resoluciones/registrar','create')->name('r.resoluciones.registrar');
         Route::post('/resoluciones-upla/resoluciones/store','store')->name('r.resoluciones.store');
         //Descargar
         Route::get('/resoluciones-upla/resoluciones/descargar/{id}','descargarResolucion')->name('r.resoluciones.descargar');
+        //Ver Documento
+        Route::get('/resoluciones-upla/resoluciones/mostrar/{id}', 'verDocumento')->name('r.resoluciones.ver');
+    });
+
+    Route::controller(PlantillaController::class)->group(function (){
+        Route::get('/resoluciones-upla/plantillas', 'index')->name('r.plantillas');
+        Route::get('/resoluciones-upla/plantillas/registrar','create')->name('r.plantillas.registrar');
+        //
     });
 
     Route::controller(AsuntoController::class)->group(function (){

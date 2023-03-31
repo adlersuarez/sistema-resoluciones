@@ -22,4 +22,10 @@ class TipoResolucion extends Model
         return $this->belongsTo(Resolucion::class); 
     }
 
+    //Plantilla
+    public function Plantilla()
+    {
+        return $this->belongsTo(Plantilla::class); 
+    }
+
 }

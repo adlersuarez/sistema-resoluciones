@@ -9,6 +9,7 @@ use App\Models\MiembrosResolucion;
 
 use App\Models\TipoResolucion;
 use App\Models\TipoSesion;
+use App\Models\DetalleResolucionAsunto;
 
 use App\Models\TipoAsunto;
 use App\Models\Autoridad;
@@ -17,6 +18,8 @@ use Inertia\Inertia;
 use PhpOffice\PhpWord\TemplateProcessor;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -101,20 +104,7 @@ class ResolucionController extends Controller
 
         $nombreRes= $numRes.'-'.$year_fecha.'-'.$acroTipo;
 
-        //dd($resolucion['asuntos']);
-
-        $funciones = New ResolucionController();
-
-        $funciones->generarResoluciónWord($resolucion,$nombreRes);
-
-        //archivo
-        /*if($resol = $request->file('archivoResolucion')) {
-            $rutaGuardarResolucion = 'documentos/resoluciones';
-            $nombreResolucion = $nombreRes.' A-'.date('YmdHis').'.' . $resol->getClientOriginalExtension();
-            $resol->move($rutaGuardarResolucion, $nombreResolucion);
-            $resolucion['archivoResolucion'] = $nombreResolucion;
-        }*/
-
+        //Crear resolucion
         Resolucion::create([
             'id' => auth::user()->id,
             'id_tipoSesion' => $resolucion['id_tipoSesion'],
@@ -127,11 +117,33 @@ class ResolucionController extends Controller
             'fechaResolucion' => $resolucion['fechaResolucion'],
         ]);
 
-        //Miembros de Resolución
+        //ID resolucion
         $idResolucion = Resolucion::query()
-            ->orderBy('created_at','desc')
-            ->first();
+        ->orderBy('created_at','desc')
+        ->first();
 
+        $count = 0;
+        // Lista Asuntos
+        foreach ($resolucion['asuntos'] as $asunto){
+            //dd($asunto);
+            $count++;
+            $imagenProducto = '';
+            if($imagen = $asunto['imagen']) {
+                $rutaGuardarImg = 'documentos/resoluciones/imagenes';
+                $imagenProducto = date('YmdHis')."-".$count. "." . $imagen->getClientOriginalExtension();
+                $imagen->move($rutaGuardarImg, $imagenProducto);
+                //$soli['imagen'] = $imagenProducto;  
+            }
+
+            DetalleResolucionAsunto::create([
+                'id_resolucion' => $idResolucion->id_resolucion,
+                'id_tipoAsunto' => $asunto['id'],
+                'descripcion_asuntoResolucion' => $asunto['descripcion'],
+                'imagen_asuntoResolucion' => $imagenProducto,
+            ]);
+        }
+
+        //Miembros de Resolución
         foreach ($resolucion['miembros'] as $codigoPersona) {
             if($codigoPersona != 0){
                 MiembrosResolucion::create([
@@ -141,7 +153,11 @@ class ResolucionController extends Controller
                 ]);
             }
         }
-        
+
+        //CREAR DOCUMENTO
+        $funciones = New ResolucionController();
+        $funciones->generarResoluciónWord($resolucion,$nombreRes,$idResolucion->id_resolucion);
+
         return redirect()->route('r.resoluciones');
     }
 
@@ -155,12 +171,8 @@ class ResolucionController extends Controller
         return response()->download($pathToFile,$filename);
     }
 
-    public function generarResoluciónWord($resolucion,$nombre)
+    public function generarResoluciónWord($resolucion,$nombre,$id)
     {
-        //$resolucion['numeroResolucion'];
-        //dd($resolucion['fechaResolucion']);
-        //$resolucion['miembros'];
-        //dd($resolucion['asuntos']);
         $resuelves = $resolucion['asuntos'];
 
         $tipoResolucion = TipoResolucion::select('nombreTipoResolucion')
@@ -188,22 +200,26 @@ class ResolucionController extends Controller
         $templateProcessor->setValue('nombre_resolucion', strtoupper($nombre_resolucion));
         $templateProcessor->setValue('fecha', $fecha_puntos);
         $templateProcessor->setValue('tipo_resolucion_sesion', $tipo_resolucion_sesion);
+
+        $asuntos = DetalleResolucionAsunto::where('id_resolucion',$id)
+        ->join('tipo_asuntos','tipo_asuntos.id_tipoAsunto','=','detalle_resolucion_asuntos.id_tipoAsunto')
+        ->get();
+
+        //$templateProcessor->cloneBlock('block_name', count($resuelves), true, true );
+        $templateProcessor->cloneBlock('block_name', count($asuntos), true, true );
         
-        //dd($resuelves);
-        /*$replacements = array(
-            array('descripcion' => 'Batman',),
-            array('descripcion' => 'Superman',),
-        ); */
-
-        //$templateProcessor->cloneBlock('block_name', count($resuelves), true, false, $replacements );
-
-        $templateProcessor->cloneBlock('block_name', count($resuelves), true, true );
-
-        foreach ($resuelves as $key => $value) {
-            //dd($value['descripcion']);
-            $templateProcessor->setValue('descripcion_asunto#'.($key+1), strtoupper($value['nombre'])." ".$value['descripcion']);
+        foreach ($asuntos as $key => $value) {
+            //dd($value->imagen_asuntoResolucion);
+            $templateProcessor->setValue('asunto#'.($key+1), strtoupper($value->c_nombreTipoAsunto));
+            $templateProcessor->setValue('descripcion_asunto#'.($key+1), $value->descripcion_asuntoResolucion);
+            if($value->imagen_asuntoResolucion!=""){
+                $templateProcessor->setImageValue('imagen-asunto#'.($key+1), array('path' => 'documentos/resoluciones/imagenes/'.$value->imagen_asuntoResolucion, 'width' => '14cm', 'height' => '60px', 'ratio' => true));
+            }else{
+                $templateProcessor->setValue('imagen-asunto#'.($key+1),"");
+            }
         }
 
+        
         //
         //$templateProcessor->setImageValue('codigoQR', array('path' => 'images/personal/jefaturaORyM/codigoQR.png', 'width' => 165, 'height' => 165, 'ratio' => true));
         //$templateProcessor->setImageValue('firma', array('path' => 'images/personal/jefaturaORyM/firma.png', 'width' => 100, 'height' => 100, 'ratio' => true));
@@ -218,4 +234,14 @@ class ResolucionController extends Controller
         return response()->download($direccion.$fileName . '.docx');
         //return response()->download($fileName . '.docx');
     }
+
+    public function verDocumento($id)
+    {
+        $resolucion = Resolucion::where('id_resolucion',$id)->first();
+
+        return Inertia::render('Admin/Resoluciones/VerDocumento',[
+            'resolucion' => $resolucion,
+        ]);
+    }
+
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/inertia-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars, faUserAlt, faHomeUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars, faUserAlt, faHomeUser, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/Components/Dropdown';
 import { Inertia } from '@inertiajs/inertia';
 import SideLink from '@/Components/SideLink';
@@ -141,6 +141,31 @@ const Navbar = ({ auth, children }) => {
             }
         ],
 
+        'plantillas': [
+            { 'titulo': 'Plantillas' },
+            { 'icono': faFileCirclePlus },
+            {
+                'elementos':
+                    [
+                        {
+                            'id': 0,
+                            'nombre': 'Rectorado',
+                            'ruta': 'r.plantillas',
+                        },
+                        {
+                            'id': 1,
+                            'nombre': 'Asamblea Universitaria',
+                            'ruta': 'admin',
+                        },
+                        {
+                            'id': 2,
+                            'nombre': 'Consejo Universitario',
+                            'ruta': 'admin',
+                        },
+                    ]
+            }
+        ],
+
     };
 
     return (
@@ -247,6 +272,21 @@ const Navbar = ({ auth, children }) => {
 
                         {// Usuarios
                             <NavBarElement elementos={navBarLink.usuarios} estado={open} widthLista={'w-56'} />
+                        }
+
+                        {// Plantillas
+                          //  <NavBarElement elementos={navBarLink.plantillas} estado={open} widthLista={'w-56'} />
+                          <li className='px-3'>
+                            <SideLink href={route('r.plantillas')} active={route().current('r.plantillas')}>
+                                <FontAwesomeIcon className="h-5 w-6" icon={faFileCirclePlus} />
+                                <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
+                                    <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
+                                        <strong>Plantillas</strong>
+                                    </span>
+                                </div>
+                            </SideLink>
+                        </li>
+
                         }
 
                         <hr />

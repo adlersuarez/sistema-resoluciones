@@ -1,4 +1,4 @@
-import { faArchive, faDownload, faFilePdf, faPen, faRefresh, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faArchive, faDownload, faFilePdf, faFileWord, faPen, faRefresh, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@inertiajs/inertia-react';
 import React, { useEffect, useMemo, useState } from 'react'
@@ -46,10 +46,8 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTableResolucion({ datos, miembros, sesion, resolucion }) {
+export default function DataTablePlantilla({ datos , resolucion }) {
 
-    //console.log(sesion)
-    //console.log(resolucion)
     //Eliminar svg de DataTable
     useEffect(() => {
         var element = document.getElementsByClassName("sc-lnskGP");
@@ -61,112 +59,21 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
     });
     ////////////////////////////////////////////////////////////
 
-    const mostrarMiembro = (id) => {
-
-        const resolucion = datos.filter(
-            dato => dato.id_resolucion === id
-        )
-
-        const miembrosResolucion = miembros.filter(
-            miembro => miembro.id_resolucion === id
-        )
-
-        var elementosTabla = '';
-
-        miembrosResolucion.map(mRes => {
-            elementosTabla += `<tr class="tr-miembros">
-                                <td class="td-dni">${mRes.c_dni}</td>
-                                <td class="td-nombre">${mRes.c_apellidoP + ' ' + mRes.c_apellidoM + ' ' + mRes.c_nombres}</td>
-                                <td class="td-descripcion">${mRes.descripcionMiembro}</td>
-                            </tr>`;
-        })
-
-        var tabla = `<table class="table-miembros-res">
-                        <tr class="tr-miembros">
-                            <th class="th-dni">DNI</th>
-                            <th class="th-nombre">Nombre</th>
-                            <th class="th-descripcion">Descripción</th>
-                        </tr>
-                        ${elementosTabla}
-                    </table>`
-        if (miembrosResolucion.length > 0) {
-            Swal.fire({
-                title: `Resolución | ${resolucion[0].nombreResolucion}`,
-                html: `<div class="div-table-miembros">
-                        ${tabla}
-                        </div>`,
-                focusConfirm: false,
-                showCloseButton: true,
-                width: '650px',
-                customClass: {
-                    title: 'custom-title',
-                },
-                showConfirmButton: true,
-            })
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: `Resolución | ${resolucion[0].nombreResolucion}`,
-                text: 'No hay miembros en esta resolución',
-            })
-        }
-    }
 
     const columns = [
         {
-            name: 'Resolución',
-            selector: row => row.titulo,
+            name: 'Plantilla',
+            selector: row => row.nombre,
             sortable: true,
         },
         {
-            name: 'Asunto',
-            cell: (row) => (
-                <div className='flex'>
-                    <Link className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
-                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faArchive} />
-                    </Link>
-                </div>
-            ),
-
+            name: 'Descripción',
+            selector: row => row.descripcion,
+            sortable: true,
         },
         {
             name: 'Tipo Resolución',
             selector: row => row.tipoResolucion,
-
-        },
-        {
-            name: 'Tipo Sesión',
-            selector: row => row.tipoSesion,
-
-        },
-        {
-            name: 'Usuarios',
-            cell: (row) => (
-                <div className='flex'>
-                    <Link onClick={() => mostrarMiembro(row.id)} className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
-                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faUsers} />
-                    </Link>
-                </div>
-            ),
-
-        },
-        {
-            name: 'Archivo',
-            cell: (row) => (
-                <div className='flex'>
-                    {/*<a className="text-center text-red-400 hover:text-red-600 focus:outline-none"
-                        target="_blank"
-                        href={`/documentos/resoluciones/${row.archivo}`}>
-                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faFilePdf} />
-                    </a>*/}
-                    
-                    <a className="text-center text-red-400 hover:text-red-600 focus:outline-none"
-                        target="_blank"
-                        href={route('r.resoluciones.ver',row.id)}>
-                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faFilePdf} />
-                    </a>
-                </div>
-            ),
 
         },
         {
@@ -181,10 +88,10 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
                     <Link href="#" className="text-center text-green-500 hover:text-green-600 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faPen} />
                     </Link>
-                    <a href={route('r.resoluciones.descargar', row.id)}
+                    <a href={"#"}
                         target="_self"
-                        className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
-                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faDownload} />
+                        className="text-center text-blue-400 hover:text-blue-600 focus:outline-none">
+                        <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faFileWord} />
                     </a>
 
                 </div>
@@ -196,21 +103,18 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
 
     datos.map((elemento) =>
         data.push({
-            id: elemento.id_resolucion,
-            titulo: elemento.nombreResolucion,
-            asunto: elemento.asuntoResolucion,
+            id: elemento.id_plantilla,
+            nombre: elemento.c_nombrePlantilla,
+            descripcion: elemento.c_descripcionPlantilla,
             tipoResolucion: elemento.nombreTipoResolucion,
-            tipoSesion: elemento.nombreSesion,
-            fecha: elemento.fechaResolucion.slice(0, 10),
-            archivo: elemento.archivoResolucion,
+            fecha: elemento.fecha_plantilla.slice(0, 10),
+            archivo: elemento.c_archivoPlantilla,
             id_resolucion: elemento.id_tipoResolucion,
-            id_sesion: elemento.id_tipoSesion,
         })
     )
 
     //Filtro de texto
     const [filterText, setFilterText] = useState('');
-    const [filterSesion, setFilterSesion] = useState('');
     const [filterResolucion, setFilterResolucion] = useState('');
 
     const [filterDateStart, setFilterDateStart] = useState('');
@@ -218,12 +122,11 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
 
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter(
-        item => (item.titulo.toLowerCase().includes(filterText.toLowerCase())
+        item => (item.nombre.toLowerCase().includes(filterText.toLowerCase())
+            || item.descripcion.toLowerCase().includes(filterText.toLowerCase())
             || item.fecha.toLowerCase().includes(filterText.toLowerCase())
-            || item.tipoResolucion.toLowerCase().includes(filterText.toLowerCase())
-            || item.tipoSesion.toLowerCase().includes(filterText.toLowerCase()))
+            || item.tipoResolucion.toLowerCase().includes(filterText.toLowerCase()))
             && item.id_resolucion.toString().includes(filterResolucion.toString())
-            && item.id_sesion.toString().includes(filterSesion.toString())
             && (filterDateStart == '' ? true : item.fecha >= filterDateStart)
             && (filterDateEnd == '' ? true : item.fecha <= filterDateEnd)
 
@@ -240,7 +143,7 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
         return (
             <div className='w-full flex flex-col'>
                 <div className='flex flex-row mb-5 justify-between'>
-                    <h1 className='font-black text-xl my-auto'>Búsqueda de Resoluciones</h1>
+                    <h1 className='font-black text-xl my-auto'>Búsqueda de Plantillas</h1>
                     <div className='flex'>
                         <input
                             type="text"
@@ -272,21 +175,6 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
                                     resolucion.map(res => {
                                         return (
                                             <option key={res.id_tipoResolucion} value={res.id_tipoResolucion}>{res.nombreTipoResolucion}</option>
-                                        )
-                                    })
-                                }
-                            </select>
-                            <label className='flex my-auto text-xs ml-16 mr-5'>Tipo Sesión</label>
-                            <select
-                                id='select-tipo-sesion'
-                                //className='w-[calc(25%+50px)]'
-                                defaultValue={'0'}
-                                onChange={(e) => setFilterSesion(e.target.value)}>
-                                <option className='text-gray-400 bold' value='0' disabled>Seleccione</option>
-                                {
-                                    sesion.map(ses => {
-                                        return (
-                                            <option key={ses.id_tipoSesion} value={ses.id_tipoSesion}>{ses.nombreSesion}</option>
                                         )
                                     })
                                 }

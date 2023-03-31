@@ -17,7 +17,6 @@ localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
 localStorage.setItem("listaEncargo", JSON.stringify(listaEncargo));
 
 const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, autoridad }) => {
-    const [preview, setPreview] = useState('');
 
     const { data, setData, errors, put, progress } = useForm({
         id_persona: '',
