@@ -19,6 +19,7 @@ class Resolucion extends Model
         'numeroResolucion',
         'archivoResolucion',
         'asuntoResolucion',
+        'descripcion_vistoResolucion',
         'fechaResolucion',
     ];
 

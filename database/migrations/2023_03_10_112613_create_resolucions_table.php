@@ -35,6 +35,7 @@ return new class extends Migration
             $table->string('numeroResolucion',40)->nullable();
             $table->string('archivoResolucion',50)->nullable();
             $table->string('asuntoResolucion',200)->nullable();
+            $table->string('descripcion_vistoResolucion',500)->nullable();
 
             $table->dateTime('fechaResolucion')->nullable();
 

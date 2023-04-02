@@ -84,6 +84,7 @@ class ResolucionController extends Controller
             'id_tipoResolucion' => 'required',
             //'id_carreraProfesional' => 'required',
             //'id_sede' => 'required',
+            'visto_resolucion' => 'required',
             'numeroResolucion' => 'required',
             'fechaResolucion' => 'required',
             'miembros' => 'required',
@@ -114,6 +115,7 @@ class ResolucionController extends Controller
             'nombreResolucion' => $nombreRes,
             'numeroResolucion' => $resolucion['numeroResolucion'],
             'archivoResolucion' => $nombreRes.".docx",
+            'descripcion_vistoResolucion' => $resolucion['visto_resolucion'],
             'fechaResolucion' => $resolucion['fechaResolucion'],
         ]);
 
@@ -195,10 +197,11 @@ class ResolucionController extends Controller
 
         $templateProcessor = new TemplateProcessor('plantillas/resoluciones/plantilla-resolucion.docx');
         //
-        
+
         $templateProcessor->setValue('tipo_resolucion', strtoupper($tipo_resolucion));
         $templateProcessor->setValue('nombre_resolucion', strtoupper($nombre_resolucion));
         $templateProcessor->setValue('fecha', $fecha_puntos);
+        $templateProcessor->setValue('visto_resolucion', $resolucion['visto_resolucion']);
         $templateProcessor->setValue('tipo_resolucion_sesion', $tipo_resolucion_sesion);
 
         $asuntos = DetalleResolucionAsunto::where('id_resolucion',$id)

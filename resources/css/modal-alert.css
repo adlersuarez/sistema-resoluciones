@@ -119,7 +119,6 @@
 
 .swal2-html-container .table-miembros-res{
   width: 100%;
-  
 }
 
 .table-miembros-res th{
@@ -135,3 +134,25 @@
 }
 
 /**/
+.swal2-html-container .div-form-asunto{
+  width: 100%;
+}
+.swal2-html-container .div-input-form-asunto{
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.swal2-html-container .div-form-asunto .label-input-form{
+  width: 20%;
+  margin-top: 0;
+}
+
+.swal2-html-container .div-form-asunto #asunto {
+  width: 80%;
+  height: 250px;
+  margin: auto;
+  font-size: 18px;
+}

@@ -1,20 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '@/Layouts/Navbar'
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
 import BotonVolver from '@/Components/Botones/BotonVolver';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faArrowDown, faArrowUp, faEdit, faFileWord, faMinus, faPencil, faPersonCirclePlus, faTrash, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowUp, faEdit, faFileWord, faMinus, faPencil, faPersonCirclePlus, faRefresh, faTrash, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
+import Sesion from '../Tipos/Sesion';
 
 var listaMiembros = []
 var listaAsuntos = []
 var listaEncargo = []
 
+var id_resolucion = 'DEFAULT'
+var id_sesion = 'DEFAULT'
+var num_resolucion = ''
+var fecha_resolucion = ''
+var visto_resolucion = ''
+
+var muestra_tipo_resolucion = ''
+var muestra_tipo_sesion = ''
+var muestra_fecha = ''
+
 localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
 localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
 localStorage.setItem("listaEncargo", JSON.stringify(listaEncargo));
+
+localStorage.setItem("id_resolucion", id_resolucion);
+localStorage.setItem("id_sesion", id_sesion);
+localStorage.setItem("num_resolucion", num_resolucion);
+localStorage.setItem("fecha_resolucion", fecha_resolucion);
+localStorage.setItem("visto_resolucion", visto_resolucion);
+
+localStorage.setItem("muestra_tipo_resolucion", muestra_tipo_resolucion);
+localStorage.setItem("muestra_tipo_sesion", muestra_tipo_sesion);
+localStorage.setItem("muestra_fecha", muestra_fecha);
 
 const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, autoridad }) => {
 
@@ -27,6 +48,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         numeroResolucion: '',
         imagenResolucion: null,
         asuntoResolucion: '',
+        vistoResolucion: '',
         fechaResolucion: '',
         alturaImagen: '80',
         id_asunto: '',
@@ -34,8 +56,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         asuntos: [],
         encargo: [],
     });
-
-    //console.log(data.alturaImagen)
 
     const [filterText, setFilterText] = useState('');
     const [filterAutoridad, setFilterAutoridad] = useState('');
@@ -61,12 +81,13 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         Inertia.post(route('r.resoluciones.store'), {
             _method: 'post',
 
-            id_tipoSesion: data.id_tipoSesion,
-            id_tipoResolucion: data.id_tipoResolucion,
+            id_tipoSesion: localStorage.getItem('id_sesion'),
+            id_tipoResolucion: localStorage.getItem('id_resolucion'),
+            visto_resolucion: localStorage.getItem('visto_resolucion'),
             //id_carreraProfesional: data.id_carreraProfesional,
             //id_sede: data.id_sede,
-            numeroResolucion: data.numeroResolucion,
-            fechaResolucion: data.fechaResolucion,
+            numeroResolucion: localStorage.getItem('num_resolucion'),
+            fechaResolucion: localStorage.getItem('fecha_resolucion'),
             miembros: data.miembros,
             asuntos: listaAsuntos,
         })
@@ -77,6 +98,44 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             showConfirmButton: false,
             timer: 1500,
         })
+
+        localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
+        localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
+        localStorage.setItem("listaEncargo", JSON.stringify(listaEncargo));
+
+        localStorage.setItem("id_resolucion", id_resolucion);
+        localStorage.setItem("id_sesion", id_sesion);
+        localStorage.setItem("num_resolucion", num_resolucion);
+        localStorage.setItem("fecha_resolucion", fecha_resolucion);
+        localStorage.setItem("visto_resolucion", visto_resolucion);
+
+        localStorage.setItem("muestra_tipo_resolucion", muestra_tipo_resolucion);
+        localStorage.setItem("muestra_tipo_sesion", muestra_tipo_sesion);
+        localStorage.setItem("muestra_fecha", muestra_fecha);
+    }
+
+    //VISTO
+    function agregar_editar_visto() {
+        if (localStorage.getItem('visto_resolucion') == '') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Visto creado correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        } else {
+            Swal.fire({
+                icon: 'success',
+                title: 'Visto editado correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            })
+        }
+
+        localStorage.setItem("visto_resolucion", data.vistoResolucion);
+    }
+    function eliminar_visto() {
+        localStorage.setItem("visto_resolucion", '');
     }
 
     //PARTICIPANTES
@@ -158,8 +217,53 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
     function editar_asunto(cod) {
         var indiceEditar = listaAsuntos.findIndex(item => item.cod === cod)
         var aux = listaAsuntos[indiceEditar]
+        //console.log(aux)
         //añadir formulario con sweet alert
+        Swal.fire({
+            title: 'Editar Asunto',
+            html: `<h1 class="h1-form"> Art. ${indiceEditar + 1}° - ${aux.nombre.toUpperCase()}</h1>
+            <div class="div-form-asunto">
+                <div class="div-input-form-asunto">
+                    <label class="label-input-form">Descripción</label>
+                    <textarea type="number" id="asunto" class="swal2-input" >${aux.descripcion}</textarea>
+                </div>
+            </div>`,
+            confirmButtonText: 'Guardar',
+            focusConfirm: false,
+            showCloseButton: true,
+            width: '800px',
+            customClass: {
+                title: 'custom-title',
+                closeButton: 'close-button',
+            },
+            preConfirm: () => {
+                const asunto = Swal.getPopup().querySelector('#asunto').value
+                //const imagen = Swal.getPopup().querySelector('#imagen').value
+
+                if (!asunto) {
+                    Swal.showValidationMessage(`Por favor ingrese todos los campos`)
+                }
+                return { asunto: asunto }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                aux.descripcion = result.value.asunto
+                listaAsuntos.splice(indiceEditar, 1, aux)
+                localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
+
+                console.log(listaAsuntos)
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Asunto actualizado correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        })
     }
+
     function eliminar_asunto(cod) {
         var indiceBorrado = listaAsuntos.findIndex(item => item.cod === cod)
         listaAsuntos.splice(indiceBorrado, 1)
@@ -252,6 +356,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
     //Descripción de ENCARGO
     var descripcion = ""
+
     listaEncargo.map(encargo => {
         descripcion += encargo.articulo + " " + encargo.nombre + ", "
     })
@@ -274,6 +379,56 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
 
     }
+
+    //MUESTRA DE PREVISUALIZACION
+    if (localStorage.getItem('id_sesion') != '') {
+        const busqueda = tipo_sesion.find(element => element.id_tipoSesion == localStorage.getItem('id_sesion'));
+        busqueda &&
+            localStorage.setItem("muestra_tipo_sesion", busqueda.nombreSesion);
+    }
+
+    if (localStorage.getItem('id_resolucion') != '') {
+        const busqueda = tipo_resolucion.find(element => element.id_tipoResolucion == localStorage.getItem('id_resolucion'));
+        busqueda &&
+            localStorage.setItem("muestra_tipo_resolucion", busqueda.nombreTipoResolucion);
+    }
+
+    if (localStorage.getItem('fecha_resolucion') != '') {
+        localStorage.setItem("muestra_fecha", data.fechaResolucion.replaceAll('-', '.'));
+    }
+
+    function mostrar_sesion(id) {
+        const busqueda = tipo_sesion.find(element => element.id_tipoSesion == id);
+        if (busqueda) {
+            return busqueda.nombreSesion
+        }
+    }
+
+    function mostrar_resolucion(id) {
+        const busqueda = tipo_resolucion.find(element => element.id_tipoResolucion == id);
+        if (busqueda) {
+            return busqueda.nombreTipoResolucion
+        }
+    }
+
+    function fecha(id) {
+        if (id) {
+            return id.replaceAll('-', '.')
+        }
+    }
+    function numeroResolucion(id) {
+        return id.padStart(4, '0000')
+    }
+    function yearFecha(id) {
+        return id.slice(0, 4)
+    }
+    function acronimoResolucion(id) {
+        const busqueda = tipo_resolucion.find(element => element.id_tipoResolucion == id);
+        if (busqueda) {
+            return busqueda.acronimoTipoResolucion
+        }
+    }
+
     return (
         <Navbar auth={auth}>
             <Head title="Resoluciones" />
@@ -355,7 +510,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                             {!estado_lista_miembro_fin(miembro.id) ?
                                                                                 <Link onClick={() => mover_abajo_participante(miembro.id)}
                                                                                     className='flex m-auto '>
-                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-slate-600" icon={faArrowDown} />
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
                                                                                 </Link>
                                                                                 :
                                                                                 <p className='flex m-auto'>
@@ -365,7 +520,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                             {!estado_lista_miembro_inicio(miembro.id) ?
                                                                                 <Link onClick={() => mover_arriba_participante(miembro.id)}
                                                                                     className='flex m-auto '>
-                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-slate-600" icon={faArrowUp} />
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
                                                                                 </Link>
                                                                                 :
                                                                                 <p className='flex m-auto'>
@@ -396,7 +551,9 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                     }
 
                                     <hr className="my-4" />
-
+                                    <div className='flex gap-4'>
+                                        <strong className="my-auto">Resolución: </strong>
+                                    </div>
                                     {/* Tipo de Sesión - Resolución*/}
                                     <div className='grid grid-cols-12 gap-4 my-4'>
                                         <label className="col-span-2 my-auto">Tipo Sesión </label>
@@ -405,10 +562,11 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                 id='id_tipoSesion'
                                                 name='id_tipoSesion'
                                                 className='block w-full bg-white border h-10'
-                                                defaultValue={'DEFAULT'}
-                                                onChange={(e) =>
+                                                defaultValue={localStorage.getItem('id_sesion')}
+                                                onChange={(e) => {
                                                     setData('id_tipoSesion', e.target.value)
-                                                }
+                                                    localStorage.setItem("id_sesion", e.target.value);
+                                                }}
                                                 required
                                             >
                                                 <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
@@ -428,10 +586,11 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                 id='id_tipoResolucion'
                                                 name='id_tipoResolucion'
                                                 className='block w-full bg-white border h-10'
-                                                defaultValue={'DEFAULT'}
-                                                onChange={(e) =>
-                                                    setData('id_tipoResolucion', e.target.value)
-                                                }
+                                                defaultValue={localStorage.getItem('id_resolucion')}
+                                                onChange={(e) => {
+                                                    setData('id_tipoResolucion', e.target.value);
+                                                    localStorage.setItem("id_resolucion", e.target.value);
+                                                }}
                                                 required
                                             >
                                                 <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
@@ -454,9 +613,11 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                 type="number"
                                                 min="1" max="99"
                                                 className="w-full px-4 py-2 text-gray-500"
-                                                onChange={(e) =>
-                                                    setData('numeroResolucion', e.target.value)
-                                                }
+                                                defaultValue={localStorage.getItem('num_resolucion')}
+                                                onChange={(e) => {
+                                                    setData('numeroResolucion', e.target.value);
+                                                    localStorage.setItem("num_resolucion", e.target.value);
+                                                }}
                                                 required
                                             />
                                         </div>
@@ -465,9 +626,11 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                             <input
                                                 type="date"
                                                 className="w-full px-4 py-2 text-gray-500"
-                                                onChange={(e) =>
-                                                    setData('fechaResolucion', e.target.value)
-                                                }
+                                                defaultValue={localStorage.getItem('fecha_resolucion')}
+                                                onChange={(e) => {
+                                                    setData('fechaResolucion', e.target.value);
+                                                    localStorage.setItem("fecha_resolucion", e.target.value);
+                                                }}
                                                 required
                                             />
                                         </div>
@@ -477,8 +640,70 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
                                     {/* Asunto Resolucion */}
                                     <div className='flex justify-between '>
+                                        <strong className="my-auto">Visto: </strong>
+                                        {
+                                            (data.vistoResolucion != '') &&
+                                            <div className="flex text-white ">
+                                                <Link onClick={() => agregar_editar_visto()} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
+                                                    <div className='m-auto'>
+                                                        <strong className=' mr-2'>
+                                                            {
+                                                                localStorage.getItem('visto_resolucion') == '' ?
+                                                                    'Agregar'
+                                                                    :
+                                                                    'Editar'
+
+                                                            } </strong>
+                                                        <FontAwesomeIcon className="m-auto h-4" icon={faPencil} />
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div className='grid grid-cols-12 gap-4 my-4'>
+                                        {/*<div className="flex flex-col col-span-3">
+                                            <select
+                                                id='id_asunto'
+                                                name='id_asunto'
+                                                className='block w-full bg-white border h-10'
+                                                defaultValue={'DEFAULT'}
+                                                onChange={(e) =>
+                                                    setData('id_asunto', e.target.value)
+                                                }
+                                            >
+                                                <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
+                                                {
+                                                    tipo_asunto.map(tip => {
+                                                        return (
+                                                            <option key={tip.id_tipoAsunto} value={tip.id_tipoAsunto}>{tip.c_nombreTipoAsunto}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                            </div>*/}
+
+
+                                        <div className="flex flex-col col-span-12">
+                                            <textarea
+                                                type="text"
+                                                className="p-2 text-gray-500"
+                                                defaultValue={localStorage.getItem('visto_resolucion')}
+                                                onChange={(e) =>
+                                                    setData('vistoResolucion', e.target.value)
+                                                }
+
+                                            ></textarea>
+
+                                        </div>
+                                    </div>
+
+                                    <hr className="my-4" />
+
+                                    {/* Asunto Resolucion */}
+                                    <div className='flex justify-between '>
                                         <strong className="my-auto">Se resuelve: </strong>
-                                        {   
+                                        {
                                             (data.id_asunto != '') &&
                                             <div className="flex text-white ">
                                                 <Link onClick={() => agregar_asunto(data.id_asunto)} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
@@ -569,7 +794,9 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
                                                     className='flex mx-auto bg-yellow-500 hover:bg-yellow-600 h-9 w-28 rounded-lg'>
                                                     <div className='m-auto'>
-                                                        <strong className=' mr-2'>Agregar </strong>
+                                                        <strong className=' mr-2'>
+                                                            Agregar
+                                                        </strong>
                                                         <FontAwesomeIcon className="m-auto h-4" icon={faPencil} />
                                                     </div>
                                                 </Link>
@@ -602,7 +829,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                             {!estado_lista_encargo_fin(miembro.id) ?
                                                                                 <Link onClick={() => mover_abajo_encargo(miembro.id)}
                                                                                     className='flex m-auto '>
-                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-slate-600" icon={faArrowDown} />
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
                                                                                 </Link>
                                                                                 :
                                                                                 <p className='flex m-auto'>
@@ -612,7 +839,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                             {!estado_lista_encargo_inicio(miembro.id) ?
                                                                                 <Link onClick={() => mover_arriba_encargo(miembro.id)}
                                                                                     className='flex m-auto '>
-                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-slate-600" icon={faArrowUp} />
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
                                                                                 </Link>
                                                                                 :
                                                                                 <p className='flex m-auto'>
@@ -711,7 +938,62 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                 </div>
                 <div className='bg-white shadow-sm sm:rounded-lg w-5/12 p-4 ml-4 overflow-hidden'>
                     <div className='mt-2 border-black border-[1px] p-2 overflow-x-hidden max-h-[655px] max-[650px]:overflow-scroll'>
-                        SE RESUELVE:
+                        <div className='my-2 text-center text-xl'>
+                            <strong>RESOLUCIÓN
+                                {(localStorage.getItem('id_resolucion') != '' && mostrar_resolucion(localStorage.getItem('id_resolucion'))) &&
+                                    ` DE ${mostrar_resolucion(localStorage.getItem('id_resolucion')).toUpperCase()}`
+                                }
+                                {
+                                    localStorage.getItem('num_resolucion') != '' &&
+                                    '  N°' + numeroResolucion(localStorage.getItem('num_resolucion'))
+                                }
+                                {
+                                    localStorage.getItem('fecha_resolucion') != '' &&
+                                    '-' + yearFecha(localStorage.getItem('fecha_resolucion'))
+                                }
+                                {
+                                    localStorage.getItem('id_resolucion') != 'DEFAULT' &&
+                                    '-' + acronimoResolucion(localStorage.getItem('id_resolucion'))
+                                }
+
+                            </strong>
+                        </div>
+                        {
+                            data.fechaResolucion &&
+                            <div className='my-2 text-right'>
+                                <label>Huancayo, {fecha(localStorage.getItem('fecha_resolucion'))}</label>
+                            </div>
+                        }
+
+                        {
+                            (localStorage.getItem('visto_resolucion') != '' && localStorage.getItem('id_resolucion') != 'DEFAULT' && localStorage.getItem('id_sesion') != 'DEFAULT' && localStorage.getItem('fecha_resolucion') != '') &&
+                            <div>
+                                <div>
+                                    <strong> VISTOS:</strong>
+                                </div>
+                                <div className='my-2' >
+                                    <p>{localStorage.getItem('visto_resolucion')} y el acuerdo de {mostrar_resolucion(localStorage.getItem('id_resolucion'))} en Sesión {mostrar_sesion(localStorage.getItem('id_sesion'))} de fecha {fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,
+                                    </p>
+                                </div>
+                            </div>
+                        }
+
+
+
+                        {
+                            listaAsuntos.length == 0 ?
+                                <div className='flex w-full h-8 bg-slate-500 text-center text-white justify-center'>
+                                    <strong className='m-auto'>VISTA PREVIA</strong>
+                                </div>
+                                :
+                                <div className='flex gap-4 pb-4'>
+                                    <strong className='my-auto'>SE RESUELVE:</strong>
+                                    <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
+                                        <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
+                                    </Link>
+                                </div>
+                        }
+
                         {listaAsuntos.map((asunto, index) => {
 
                             return (
@@ -721,13 +1003,13 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                             {!estado_lista_asunto_fin(asunto.cod) &&
                                                 <Link onClick={() => mover_abajo_asunto(asunto.cod)}
                                                     className='flex mx-auto '>
-                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-slate-600" icon={faArrowDown} />
+                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
                                                 </Link>
                                             }
                                             {!estado_lista_asunto_inicio(asunto.cod) &&
                                                 <Link onClick={() => mover_arriba_asunto(asunto.cod)}
                                                     className='flex mx-auto '>
-                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-slate-600" icon={faArrowUp} />
+                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
                                                 </Link>
                                             }
                                         </div>
@@ -747,7 +1029,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
                                     </div>
                                     <div className='col-span-1 flex'>
-                                        <Link
+                                        <Link onClick={() => editar_asunto(asunto.cod)}
                                             className='flex mx-auto '>
                                             <FontAwesomeIcon className="h-5 mx-0.5 hover:text-green-700" icon={faEdit} />
                                         </Link>
