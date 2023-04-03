@@ -662,37 +662,15 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                     </div>
 
                                     <div className='grid grid-cols-12 gap-4 my-4'>
-                                        {/*<div className="flex flex-col col-span-3">
-                                            <select
-                                                id='id_asunto'
-                                                name='id_asunto'
-                                                className='block w-full bg-white border h-10'
-                                                defaultValue={'DEFAULT'}
-                                                onChange={(e) =>
-                                                    setData('id_asunto', e.target.value)
-                                                }
-                                            >
-                                                <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
-                                                {
-                                                    tipo_asunto.map(tip => {
-                                                        return (
-                                                            <option key={tip.id_tipoAsunto} value={tip.id_tipoAsunto}>{tip.c_nombreTipoAsunto}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
-                                            </div>*/}
-
 
                                         <div className="flex flex-col col-span-12">
                                             <textarea
                                                 type="text"
-                                                className="p-2 text-gray-500"
+                                                className="p-2 text-gray-500 h-20"
                                                 defaultValue={localStorage.getItem('visto_resolucion')}
                                                 onChange={(e) =>
                                                     setData('vistoResolucion', e.target.value)
                                                 }
-
                                             ></textarea>
 
                                         </div>
@@ -742,7 +720,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                         <div className="flex flex-col col-span-9">
                                             <textarea
                                                 type="text"
-                                                className="p-2 text-gray-500"
+                                                className="p-2 text-gray-500 h-20"
                                                 onChange={(e) =>
                                                     setData('asuntoResolucion', e.target.value)
                                                 }
@@ -791,7 +769,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                             listaEncargo.length != 0 &&
                                             <div className="flex text-white ">
                                                 <Link onClick={() => agregar_asunto_encargo()}
-
                                                     className='flex mx-auto bg-yellow-500 hover:bg-yellow-600 h-9 w-28 rounded-lg'>
                                                     <div className='m-auto'>
                                                         <strong className=' mr-2'>
@@ -908,20 +885,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                         </div>
                                     </div>
 
-                                    {/* Archivo de Resolución 
-                                    <div className='grid grid-cols-12 gap-4 my-4'>
-                                        <label className="col-span-2 my-auto">Archivo </label>
-                                        <div className="flex flex-col col-span-10 border-[1px] border-current">
-                                            <input
-                                                type="file"
-                                                className="w-full px-4 py-2"
-                                                onChange={(e) => 
-                                                    setData("archivoResolucion", e.target.files[0])
-                                                }
-                                            />
-                                        </div>
-                                    </div>*/}
-
                                     <hr className="my-4" />
 
                                     <div className="flex mx-auto mt-4 justify-center">
@@ -937,7 +900,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                     </div>
                 </div>
                 <div className='bg-white shadow-sm sm:rounded-lg w-5/12 p-4 ml-4 overflow-hidden'>
-                    <div className='mt-2 border-black border-[1px] p-2 overflow-x-hidden max-h-[655px] max-[650px]:overflow-scroll'>
+                    <div className='h-[800px] border-black border-[1px] p-2 overflow-x-hidden max-h-[745px] max-[745px]:overflow-scroll'>
                         <div className='my-2 text-center text-xl'>
                             <strong>RESOLUCIÓN
                                 {(localStorage.getItem('id_resolucion') != '' && mostrar_resolucion(localStorage.getItem('id_resolucion'))) &&
@@ -945,7 +908,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                 }
                                 {
                                     localStorage.getItem('num_resolucion') != '' &&
-                                    '  N°' + numeroResolucion(localStorage.getItem('num_resolucion'))
+                                    '  N° ' + numeroResolucion(localStorage.getItem('num_resolucion'))
                                 }
                                 {
                                     localStorage.getItem('fecha_resolucion') != '' &&
