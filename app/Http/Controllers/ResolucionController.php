@@ -21,6 +21,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
+//codigo barras
+use Picqer;
+
 use Illuminate\Support\Facades\Auth;
 
 class ResolucionController extends Controller
@@ -158,6 +161,7 @@ class ResolucionController extends Controller
 
         //CREAR DOCUMENTO
         $funciones = New ResolucionController();
+        $funciones->generarBarcode($idResolucion->id_resolucion,$nombreRes);
         $funciones->generarResoluciónWord($resolucion,$nombreRes,$idResolucion->id_resolucion);
 
         return redirect()->route('r.resoluciones');
@@ -203,6 +207,7 @@ class ResolucionController extends Controller
         $templateProcessor->setValue('fecha', $fecha_puntos);
         $templateProcessor->setValue('visto_resolucion', $resolucion['visto_resolucion']);
         $templateProcessor->setValue('tipo_resolucion_sesion', $tipo_resolucion_sesion);
+        $templateProcessor->setImageValue('codigo_barras', array('path' => 'documentos/resoluciones/codigoBarras/'.$nombre_resolucion.'.png', 'width' => '3cm', 'height' => '1cm', 'ratio' => false));
 
         $asuntos = DetalleResolucionAsunto::where('id_resolucion',$id)
         ->join('tipo_asuntos','tipo_asuntos.id_tipoAsunto','=','detalle_resolucion_asuntos.id_tipoAsunto')
@@ -236,6 +241,22 @@ class ResolucionController extends Controller
         
         return response()->download($direccion.$fileName . '.docx');
         //return response()->download($fileName . '.docx');
+    }
+
+    public function generarBarcode($id,$codigo)
+    {
+        $barcode_generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+
+        //
+        $directorio = "documentos/resoluciones/codigoBarras/";
+
+        file_put_contents(public_path()."/".$directorio.$codigo.".png", $barcode_generator->getBarcode($codigo,$barcode_generator::TYPE_CODE_93));
+
+        Resolucion::where('id_resolucion', $id)
+        ->update([
+            'c_codigoBarras' => $codigo.".png"
+        ]);
+
     }
 
     public function verDocumento($id)

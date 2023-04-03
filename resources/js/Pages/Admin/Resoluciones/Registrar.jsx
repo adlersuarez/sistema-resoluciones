@@ -3,7 +3,7 @@ import Navbar from '@/Layouts/Navbar'
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
 import BotonVolver from '@/Components/Botones/BotonVolver';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faArrowDown, faArrowUp, faEdit, faFileWord, faMinus, faPencil, faPersonCirclePlus, faRefresh, faTrash, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faArrowDown, faArrowUp, faEdit, faFileWord, faMinus, faPencil, faPersonCirclePlus, faRefresh, faTrash, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
@@ -71,6 +71,25 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         item => item.c_nombreAutoridad.toLowerCase().includes(filterAutoridad.toLowerCase())
     );
 
+    function limpiar() {
+
+        localStorage.setItem("listaMiembros", []);
+        localStorage.setItem("listaAsuntos", []);
+        localStorage.setItem("listaEncargo", []);
+
+        localStorage.setItem("id_resolucion", 'DEFAULT');
+        localStorage.setItem("id_sesion", 'DEFAULT');
+        localStorage.setItem("num_resolucion", '');
+        localStorage.setItem("fecha_resolucion", '');
+        localStorage.setItem("visto_resolucion", '');
+
+        localStorage.setItem("muestra_tipo_resolucion", '');
+        localStorage.setItem("muestra_tipo_sesion", '');
+        localStorage.setItem("muestra_fecha", '');
+
+        listaAsuntos = []
+    }
+
     function handleSubmit(e) {
         e.preventDefault();
 
@@ -99,19 +118,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             timer: 1500,
         })
 
-        localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
-        localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
-        localStorage.setItem("listaEncargo", JSON.stringify(listaEncargo));
-
-        localStorage.setItem("id_resolucion", id_resolucion);
-        localStorage.setItem("id_sesion", id_sesion);
-        localStorage.setItem("num_resolucion", num_resolucion);
-        localStorage.setItem("fecha_resolucion", fecha_resolucion);
-        localStorage.setItem("visto_resolucion", visto_resolucion);
-
-        localStorage.setItem("muestra_tipo_resolucion", muestra_tipo_resolucion);
-        localStorage.setItem("muestra_tipo_sesion", muestra_tipo_sesion);
-        localStorage.setItem("muestra_fecha", muestra_fecha);
+        limpiar()
     }
 
     //VISTO
@@ -434,10 +441,18 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             <Head title="Resoluciones" />
             <div className='w-full flex justify-between mt-10 mb-5'>
                 <TitlePages texto={'Registrar Resolución'} icono={faFileWord} />
-                <BotonVolver ruta={'r.resoluciones'} />
+                <div className="flex items-center justify-between mb-6">
+                    <Link className="pr-5 pl-3 py-2 text-white bg-[#007CBC] rounded-md focus:outline-none hover:bg-[#0064bc]"
+                        onClick={()=>limpiar()}
+                        href={route('r.resoluciones')}
+                        >
+                        <FontAwesomeIcon className="h-4 w-5 mr-3" icon={faArrowAltCircleLeft} />
+                        <strong>Volver</strong>
+                    </Link>
+                </div>
             </div>
             <div className="flex">
-                <div className="w-7/12">
+                <div className="w-6/12">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="px-10 py-4 border-b border-gray-200">
                             <hr className='my-4' />
@@ -611,7 +626,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                         <div className="flex flex-col my-auto col-span-4" id='fecha-input'>
                                             <input
                                                 type="number"
-                                                min="1" max="99"
+                                                min="1" max="999"
                                                 className="w-full px-4 py-2 text-gray-500"
                                                 defaultValue={localStorage.getItem('num_resolucion')}
                                                 onChange={(e) => {
@@ -739,7 +754,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                             }
                                                         />
                                                     </div>
-                                                    <label className="col-span-2 my-auto text-right">Altura(px) </label>
+                                                    {/*<label className="col-span-2 my-auto text-right">Altura(px) </label>
                                                     <div className="flex flex-col col-span-2">
                                                         <input
                                                             type="number"
@@ -750,7 +765,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                 setData("alturaImagen", e.target.value)
                                                             }
                                                         />
-                                                    </div>
+                                                    </div>*/}
                                                 </div>
                                             }
                                         </div>
@@ -899,7 +914,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                         </div>
                     </div>
                 </div>
-                <div className='bg-white shadow-sm sm:rounded-lg w-5/12 p-4 ml-4 overflow-hidden'>
+                <div className='bg-white shadow-sm sm:rounded-lg w-6/12 p-4 ml-4 overflow-hidden'>
                     <div className='h-[800px] border-black border-[1px] p-2 overflow-x-hidden max-h-[745px] max-[745px]:overflow-scroll'>
                         <div className='my-2 text-center text-xl'>
                             <strong>RESOLUCIÓN

@@ -20,6 +20,7 @@ class Resolucion extends Model
         'archivoResolucion',
         'asuntoResolucion',
         'descripcion_vistoResolucion',
+        'c_codigoBarras',
         'fechaResolucion',
     ];
 
