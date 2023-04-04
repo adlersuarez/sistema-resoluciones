@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Response;
 //codigo barras
 use Picqer;
 
+//codigo QR
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 use Illuminate\Support\Facades\Auth;
 
 class ResolucionController extends Controller
@@ -92,10 +95,12 @@ class ResolucionController extends Controller
             'fechaResolucion' => 'required',
             'miembros' => 'required',
             'asuntos' => 'required',
+            //
+            'imagenQR64' => 'required',
         ]);
 
         $resolucion = $request->all();
-       
+
         $tipoRes = TipoResolucion::where('id_tipoResolucion',$resolucion['id_tipoResolucion'])
         ->first();
 
@@ -159,10 +164,28 @@ class ResolucionController extends Controller
             }
         }
 
+        //fecha con puntos
+        $day_fecha = substr($resolucion['fechaResolucion'], 8, 2);
+        $mes_fecha = substr($resolucion['fechaResolucion'], 5, 2);
+        $year_fecha = substr($resolucion['fechaResolucion'], 0, 4);
+
+        $fecha_puntos = $day_fecha.".".$mes_fecha.".".$year_fecha;
+        //guardar img64 a png
+        $data64 = $resolucion['imagenQR64'];
+        list($type, $data64) = explode(';', $data64);
+        list(, $data64)      = explode(',', $data64);
+        $data64 = base64_decode($data64);
+        file_put_contents('documentos/resoluciones/codigoQr/'.$nombreRes.'_'.$fecha_puntos.'.png', $data64);
+
+        Resolucion::where('id_resolucion', $idResolucion->id_resolucion)
+        ->update([
+            'c_codigoQr' => $nombreRes.'_'.$fecha_puntos.'.png'
+        ]);
+
         //CREAR DOCUMENTO
         $funciones = New ResolucionController();
         $funciones->generarBarcode($idResolucion->id_resolucion,$nombreRes);
-        $funciones->generarResoluciónWord($resolucion,$nombreRes,$idResolucion->id_resolucion);
+        $funciones->generarResolucionWord($resolucion,$nombreRes,$idResolucion->id_resolucion);
 
         return redirect()->route('r.resoluciones');
     }
@@ -177,7 +200,7 @@ class ResolucionController extends Controller
         return response()->download($pathToFile,$filename);
     }
 
-    public function generarResoluciónWord($resolucion,$nombre,$id)
+    public function generarResolucionWord($resolucion,$nombre,$id)
     {
         $resuelves = $resolucion['asuntos'];
 
@@ -207,7 +230,10 @@ class ResolucionController extends Controller
         $templateProcessor->setValue('fecha', $fecha_puntos);
         $templateProcessor->setValue('visto_resolucion', $resolucion['visto_resolucion']);
         $templateProcessor->setValue('tipo_resolucion_sesion', $tipo_resolucion_sesion);
+       
         $templateProcessor->setImageValue('codigo_barras', array('path' => 'documentos/resoluciones/codigoBarras/'.$nombre_resolucion.'.png', 'width' => '3cm', 'height' => '1cm', 'ratio' => false));
+
+        $templateProcessor->setImageValue('codigo_qr', array('path' => 'documentos/resoluciones/codigoQr/'.$nombre_resolucion.'_'.$fecha_puntos.'.png', 'width' => '3cm', 'height' => '3cm', 'ratio' => true));
 
         $asuntos = DetalleResolucionAsunto::where('id_resolucion',$id)
         ->join('tipo_asuntos','tipo_asuntos.id_tipoAsunto','=','detalle_resolucion_asuntos.id_tipoAsunto')
@@ -251,6 +277,8 @@ class ResolucionController extends Controller
         $directorio = "documentos/resoluciones/codigoBarras/";
 
         file_put_contents(public_path()."/".$directorio.$codigo.".png", $barcode_generator->getBarcode($codigo,$barcode_generator::TYPE_CODE_93));
+
+        //QrCode::color(0, 124, 188)->format('svg')->generate($codigo,public_path().'/documentos/codigoQR.svg');
 
         Resolucion::where('id_resolucion', $id)
         ->update([

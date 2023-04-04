@@ -112,6 +112,10 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
         }
     }
 
+    const mostrarAsunto = (id) => {
+    //console.log(id)
+    }
+
     const columns = [
         {
             name: 'Resolución',
@@ -122,7 +126,7 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
             name: 'Asunto',
             cell: (row) => (
                 <div className='flex'>
-                    <Link className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
+                    <Link onClick={() => mostrarAsunto(row.id)} className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faArchive} />
                     </Link>
                 </div>
@@ -178,9 +182,9 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
             name: 'Acción',
             cell: (row) => (
                 <div className='flex gap-2'>
-                    <Link href="#" className="text-center text-green-500 hover:text-green-600 focus:outline-none">
+                    {/*<Link href="#" className="text-center text-green-500 hover:text-green-600 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faPen} />
-                    </Link>
+                    </Link>*/}
                     <a href={route('r.resoluciones.descargar', row.id)}
                         target="_self"
                         className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">

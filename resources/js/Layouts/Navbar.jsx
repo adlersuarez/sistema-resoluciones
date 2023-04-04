@@ -188,7 +188,7 @@ const Navbar = ({ auth, children }) => {
                                 </div>
                                 <div className="grow text-center" style={open ? styleOpen : styleClose} >
                                     <strong className="text-4xl text-white md:inline min-[200px]:hidden bold font-mirza">
-                                        R-UPLA
+                                        <abbr title='Resoluciones - Universidad Peruana Los Andes'className='no-underline'>R - UPLA</abbr>  
                                     </strong>
                                 </div>
                             </div>

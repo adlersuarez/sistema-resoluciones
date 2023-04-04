@@ -21,6 +21,8 @@ class Resolucion extends Model
         'asuntoResolucion',
         'descripcion_vistoResolucion',
         'c_codigoBarras',
+        'c_codigoQr',
+        
         'fechaResolucion',
     ];
 

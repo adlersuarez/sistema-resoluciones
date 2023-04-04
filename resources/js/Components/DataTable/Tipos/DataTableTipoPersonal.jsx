@@ -1,7 +1,7 @@
-import { faDownload, faFilePdf, faPen, faTrash, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from '@inertiajs/inertia-react';
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';

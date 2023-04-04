@@ -20,6 +20,7 @@
         "phpoffice/phpword": "^1.0",
         "picqer/php-barcode-generator": "^2.2",
         "setasign/fpdi-fpdf": "^2.3",
+        "simplesoftwareio/simple-qrcode": "~4",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

@@ -8,6 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
 import Sesion from '../Tipos/Sesion';
+import QRCode from "react-qr-code";
+import { Canvg } from 'canvg';
+
 
 var listaMiembros = []
 var listaAsuntos = []
@@ -23,6 +26,8 @@ var muestra_tipo_resolucion = ''
 var muestra_tipo_sesion = ''
 var muestra_fecha = ''
 
+var imagenQR_base64 = ''
+
 localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
 localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
 localStorage.setItem("listaEncargo", JSON.stringify(listaEncargo));
@@ -36,6 +41,8 @@ localStorage.setItem("visto_resolucion", visto_resolucion);
 localStorage.setItem("muestra_tipo_resolucion", muestra_tipo_resolucion);
 localStorage.setItem("muestra_tipo_sesion", muestra_tipo_sesion);
 localStorage.setItem("muestra_fecha", muestra_fecha);
+
+localStorage.setItem("imagenQR_base64", imagenQR_base64);
 
 const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, autoridad }) => {
 
@@ -55,6 +62,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         miembros: [0],
         asuntos: [],
         encargo: [],
+
+        imagenQR64: '',
     });
 
     const [filterText, setFilterText] = useState('');
@@ -88,6 +97,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         localStorage.setItem("muestra_fecha", '');
 
         listaAsuntos = []
+        listaEncargo = []
     }
 
     function handleSubmit(e) {
@@ -96,6 +106,14 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         listaMiembros.map(lis => {
             data.miembros.push(lis.id)
         })
+
+        //guardar png base 64
+        if(document.querySelector('#diagram_png').src != ''){
+            if(localStorage.getItem('imagenQR_base64') == ''){
+                localStorage.setItem("imagenQR_base64", document.querySelector('#diagram_png').src);
+            }
+        }
+
 
         Inertia.post(route('r.resoluciones.store'), {
             _method: 'post',
@@ -109,6 +127,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             fechaResolucion: localStorage.getItem('fecha_resolucion'),
             miembros: data.miembros,
             asuntos: listaAsuntos,
+            //imagen64
+            imagenQR64: localStorage.getItem('imagenQR_base64'),
         })
 
         Swal.fire({
@@ -140,9 +160,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         }
 
         localStorage.setItem("visto_resolucion", data.vistoResolucion);
-    }
-    function eliminar_visto() {
-        localStorage.setItem("visto_resolucion", '');
     }
 
     //PARTICIPANTES
@@ -436,6 +453,58 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         }
     }
 
+    function textoCodigoQR() {
+        var texto = ''
+
+        if (localStorage.getItem('num_resolucion') != '') {
+            texto += numeroResolucion(localStorage.getItem('num_resolucion'))
+        }
+
+        if (localStorage.getItem('fecha_resolucion') != '') {
+            texto += '-' + yearFecha(localStorage.getItem('fecha_resolucion'))
+        }
+
+        if (localStorage.getItem('id_resolucion') != 'DEFAULT') {
+            texto += '-' + acronimoResolucion(localStorage.getItem('id_resolucion'))
+        }
+
+        if (localStorage.getItem('fecha_resolucion') != '') {
+            texto += ' ' + fecha(localStorage.getItem('fecha_resolucion'))
+        }
+
+        return texto
+    }
+
+    var codigo_qr = textoCodigoQR()
+
+    /* 
+    
+    */
+    if (localStorage.getItem('num_resolucion') != '' && localStorage.getItem('fecha_resolucion') != '' && localStorage.getItem('id_resolucion') != 'DEFAULT') {
+
+        //CONVERTIR SVG a png agregando un canvas
+        var mySVG = document.querySelector('#svblock'),        // Inline SVG element
+            tgtImage = document.querySelector('#diagram_png'), // Where to draw the result
+            can = document.createElement('canvas'), // Not shown on page
+            ctx = can.getContext('2d'),
+            loader = new Image; 
+
+        loader.width = can.width = tgtImage.width = mySVG.clientWidth;
+        loader.height = can.height = tgtImage.height = mySVG.clientHeight;
+
+        loader.onload = function () {
+            ctx.drawImage(loader, 0, 0, loader.width, loader.height);
+            tgtImage.src = can.toDataURL();
+            
+            console.log(tgtImage.src)
+            if(tgtImage.src){
+                localStorage.setItem("imagenQR_base64", tgtImage.src);
+            }
+        };
+        var svgAsXML = (new XMLSerializer).serializeToString(mySVG);
+        loader.src = 'data:image/svg+xml,' + encodeURIComponent(svgAsXML);
+    }
+
     return (
         <Navbar auth={auth}>
             <Head title="Resoluciones" />
@@ -443,9 +512,9 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                 <TitlePages texto={'Registrar Resolución'} icono={faFileWord} />
                 <div className="flex items-center justify-between mb-6">
                     <Link className="pr-5 pl-3 py-2 text-white bg-[#007CBC] rounded-md focus:outline-none hover:bg-[#0064bc]"
-                        onClick={()=>limpiar()}
+                        onClick={() => limpiar()}
                         href={route('r.resoluciones')}
-                        >
+                    >
                         <FontAwesomeIcon className="h-4 w-5 mr-3" icon={faArrowAltCircleLeft} />
                         <strong>Volver</strong>
                     </Link>
@@ -1020,10 +1089,29 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                     </div>
                                 </div>
                             )
+                        })
+
                         }
 
-                        )
+                        {
+                            codigo_qr &&
+                            <div className='mt-4 text-center uppercase'>
+                                <hr className='my-10' />
 
+                                {<div className='w-40 h-40 m-auto' id='diagram_image'>
+                                    <QRCode
+                                        id='svblock'
+                                        size={256}
+                                        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                                        value={codigo_qr}
+                                        viewBox={`0 0 256 256`}
+                                        fgColor={'#007CBC'}
+                                    />
+                                </div>}
+                                <label className='text-[#007CBC] font-bold text-sm mt-4'>{codigo_qr}</label>
+                                <img className='' id="diagram_png" />
+                               
+                            </div>
                         }
                     </div>
                 </div>
