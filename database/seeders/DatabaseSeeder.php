@@ -41,6 +41,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TipoSesionSeeder::class);
         $this->call(TipoResolucionSeeder::class);
+        $this->call(TipoDocumentoSeeder::class);
+
+        $this->call(DocumentoSeeder::class);
 
         $this->call(ResolucionSeeder::class);
 

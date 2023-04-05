@@ -60,12 +60,31 @@ class Resolucion extends Model
     //MiembrosResolucion
     public function MiembrosResolucion()
     {
-        return $this->belongsTo(Sede::class);
+        return $this->belongsTo(MiembrosResolucion::class);
     }
 
     //ExternosResolucion
     public function ExternosResolucion()
     {
-        return $this->belongsTo(Sede::class);
+        return $this->belongsTo(ExternosResolucion::class);
+    }
+    //////////////////////////////////////////////////////
+
+    //DetalleResolucionAsunto
+    public function DetalleResolucionAsunto()
+    {
+        return $this->belongsTo(DetalleResolucionAsunto::class);
+    }
+
+    //DetalleResolucionConsiderando
+    public function DetalleResolucionConsiderando()
+    {
+        return $this->belongsTo(DetalleResolucionConsiderando::class);
+    }
+
+    //DetalleResolucionVisto
+    public function DetalleResolucionVisto()
+    {
+        return $this->belongsTo(DetalleResolucionVisto::class);
     }
 }

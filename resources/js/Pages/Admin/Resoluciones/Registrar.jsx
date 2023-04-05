@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Navbar from '@/Layouts/Navbar'
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
-import BotonVolver from '@/Components/Botones/BotonVolver';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faArrowAltCircleLeft, faArrowDown, faArrowUp, faEdit, faFileWord, faMinus, faPencil, faPersonCirclePlus, faRefresh, faTrash, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faArrowDown, faArrowUp, faEdit, faFileWord, faFolderPlus, faMinus, faPencil, faPersonCirclePlus, faRefresh, faTrash, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
-import Sesion from '../Tipos/Sesion';
 import QRCode from "react-qr-code";
-import { Canvg } from 'canvg';
+import CheckBoxDocumentos from '@/Components/Resolucion/CheckBoxDocumentos';
 
 
 var listaMiembros = []
 var listaAsuntos = []
 var listaEncargo = []
+
+var listaVisto = []
 
 var id_resolucion = 'DEFAULT'
 var id_sesion = 'DEFAULT'
@@ -44,7 +44,10 @@ localStorage.setItem("muestra_fecha", muestra_fecha);
 
 localStorage.setItem("imagenQR_base64", imagenQR_base64);
 
-const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, autoridad }) => {
+const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, autoridad, documento, tipo_documento }) => {
+
+    //console.log(documento)
+    //console.log(tipo_documento)
 
     const { data, setData, errors, put, progress } = useForm({
         id_persona: '',
@@ -67,7 +70,10 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
     });
 
     const [filterText, setFilterText] = useState('');
+    const [filterDoc, setFilterDoc] = useState('');
+
     const [filterAutoridad, setFilterAutoridad] = useState('');
+    const [filterTipoDocumento, setFilterTipoDocumento] = useState('');
 
     const filtroPersona = persona.filter(
         item => item.c_dni.toLowerCase().includes(filterText.toLowerCase())
@@ -78,6 +84,12 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
     const filtroAutoridad = autoridad.filter(
         item => item.c_nombreAutoridad.toLowerCase().includes(filterAutoridad.toLowerCase())
+    );
+
+    const filtroTipoDocumento = documento.filter(
+        item => item.id_tipoDocumento.toString() == filterTipoDocumento.toString()
+            && (item.num_documento.toLowerCase().includes(filterDoc.toLowerCase())
+                || item.subNum_documento.toLowerCase().includes(filterDoc.toLowerCase()))
     );
 
     function limpiar() {
@@ -108,8 +120,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         })
 
         //guardar png base 64
-        if(document.querySelector('#diagram_png').src != ''){
-            if(localStorage.getItem('imagenQR_base64') == ''){
+        if (document.querySelector('#diagram_png').src != '') {
+            if (localStorage.getItem('imagenQR_base64') == '') {
                 localStorage.setItem("imagenQR_base64", document.querySelector('#diagram_png').src);
             }
         }
@@ -142,24 +154,64 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
     }
 
     //VISTO
-    function agregar_editar_visto() {
-        if (localStorage.getItem('visto_resolucion') == '') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Visto creado correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        } else {
-            Swal.fire({
-                icon: 'success',
-                title: 'Visto editado correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            })
+    function agregar_visto() {
+        var vistoOficio = ''
+        var vistoProveido = ''
+
+        var conteoOficio = 0
+        var conteoProveido = 0
+
+        JSON.parse(localStorage.getItem('listaDocumentosSeleccionados')).map(lista => {
+            const texto = documento.find(element => element.id_documento == lista.id)
+            if (texto.id_tipoDocumento == '1') {
+                conteoOficio++
+            }
+            if (texto.id_tipoDocumento == '2') {
+                conteoProveido++
+            }
+        })
+
+        if (conteoProveido == 1) {
+            vistoProveido = 'el proveído '
+        } else if (conteoProveido > 1) {
+            vistoProveido = 'los Proveídos '
         }
 
-        localStorage.setItem("visto_resolucion", data.vistoResolucion);
+        if (conteoOficio > 0) {
+            if (conteoOficio == 1) {
+                vistoOficio = 'El Oficio '
+            } else {
+                vistoOficio = 'Los Oficios'
+            }
+        } else {
+            vistoProveido = vistoProveido.charAt(0).toUpperCase() + vistoProveido.slice(1);
+        }
+
+        JSON.parse(localStorage.getItem('listaDocumentosSeleccionados')).map(lista => {
+            const texto = documento.find(element => element.id_documento == lista.id)
+            if (texto.id_tipoDocumento == '1') {
+                // añadir comas e "y" dependiendo de la cantidad de oficios en la cadena
+                vistoOficio += texto.num_documento + "-" + texto.subNum_documento
+            }
+            if (texto.id_tipoDocumento == '2') {
+                // añadir comas e "y" dependiendo de la cantidad de proveidos en la cadena
+                vistoProveido += texto.num_documento + "-" + texto.subNum_documento
+            }
+        })
+
+        if (conteoOficio > 0 && conteoProveido == 0) {
+            localStorage.setItem("visto_resolucion", vistoOficio);
+        }
+
+        if (conteoOficio == 0 && conteoProveido > 0) {
+            localStorage.setItem("visto_resolucion", vistoProveido);
+        }
+
+        if (conteoOficio > 0 && conteoProveido > 0) {
+            localStorage.setItem("visto_resolucion", vistoOficio + " y " + vistoProveido);
+        }
+
+        console.log(localStorage.getItem('visto_resolucion'))
     }
 
     //PARTICIPANTES
@@ -287,7 +339,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             }
         })
     }
-
     function eliminar_asunto(cod) {
         var indiceBorrado = listaAsuntos.findIndex(item => item.cod === cod)
         listaAsuntos.splice(indiceBorrado, 1)
@@ -477,9 +528,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
     var codigo_qr = textoCodigoQR()
 
-    /* 
-    
-    */
     if (localStorage.getItem('num_resolucion') != '' && localStorage.getItem('fecha_resolucion') != '' && localStorage.getItem('id_resolucion') != 'DEFAULT') {
 
         //CONVERTIR SVG a png agregando un canvas
@@ -487,7 +535,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             tgtImage = document.querySelector('#diagram_png'), // Where to draw the result
             can = document.createElement('canvas'), // Not shown on page
             ctx = can.getContext('2d'),
-            loader = new Image; 
+            loader = new Image;
 
         loader.width = can.width = tgtImage.width = mySVG.clientWidth;
         loader.height = can.height = tgtImage.height = mySVG.clientHeight;
@@ -495,15 +543,22 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         loader.onload = function () {
             ctx.drawImage(loader, 0, 0, loader.width, loader.height);
             tgtImage.src = can.toDataURL();
-            
+
             console.log(tgtImage.src)
-            if(tgtImage.src){
+            if (tgtImage.src) {
                 localStorage.setItem("imagenQR_base64", tgtImage.src);
             }
         };
         var svgAsXML = (new XMLSerializer).serializeToString(mySVG);
         loader.src = 'data:image/svg+xml,' + encodeURIComponent(svgAsXML);
     }
+
+    if (localStorage.getItem('listaDocumentosSeleccionados') != []) {
+        listaVisto = JSON.parse(localStorage.getItem('listaDocumentosSeleccionados'))
+    }
+
+    //console.log(listaVisto)
+    //console.log(JSON.parse(localStorage.getItem('listaDocumentosSeleccionados')))
 
     return (
         <Navbar auth={auth}>
@@ -725,27 +780,13 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                     {/* Asunto Resolucion */}
                                     <div className='flex justify-between '>
                                         <strong className="my-auto">Visto: </strong>
-                                        {
-                                            (data.vistoResolucion != '') &&
-                                            <div className="flex text-white ">
-                                                <Link onClick={() => agregar_editar_visto()} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
-                                                    <div className='m-auto'>
-                                                        <strong className=' mr-2'>
-                                                            {
-                                                                localStorage.getItem('visto_resolucion') == '' ?
-                                                                    'Agregar'
-                                                                    :
-                                                                    'Editar'
+                                        <Link className='text-green-600 hover:text-green-700 h-7 w-7 flex'>
+                                            <FontAwesomeIcon className="h-6 m-auto" icon={faFolderPlus} />
+                                        </Link>
 
-                                                            } </strong>
-                                                        <FontAwesomeIcon className="m-auto h-4" icon={faPencil} />
-                                                    </div>
-                                                </Link>
-                                            </div>
-                                        }
                                     </div>
 
-                                    <div className='grid grid-cols-12 gap-4 my-4'>
+                                    {/*<div className='grid grid-cols-12 gap-4 my-4'>
 
                                         <div className="flex flex-col col-span-12">
                                             <textarea
@@ -758,7 +799,133 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                             ></textarea>
 
                                         </div>
+                                    </div> */}
+                                    <div className='grid grid-cols-4 gap-2 my-4'>
+                                        <div className="flex flex-col col-span-1">
+                                            <select
+                                                id='id_tipo_documento'
+                                                name='id_tipo_documento'
+                                                className='block w-full bg-white border h-10'
+                                                defaultValue={'DEFAULT'}
+                                                onChange={(e) =>
+                                                    setFilterTipoDocumento(e.target.value)
+                                                }
+                                            >
+                                                <option className='text-gray-400 bold' value="DEFAULT" disabled>Seleccionar</option>
+                                                {
+                                                    tipo_documento.map(tip => {
+                                                        return (
+                                                            <option key={tip.id_tipoDocumento} value={tip.id_tipoDocumento}>{tip.nombreDocumento}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+
+                                        </div>
+                                        <div className='col-span-1'></div>
+                                        <div className="flex flex-col col-span-2">
+                                            <input
+                                                type="text"
+                                                className="w-full px-4 py-2 text-gray-500"
+                                                placeholder="Filtro documento"
+                                                onChange={(e) => setFilterDoc(e.target.value)}
+                                            />
+                                        </div>
                                     </div>
+                                    <div className="col-span-3 grid grid-cols-2">
+                                        {filtroTipoDocumento.map(doc => {
+                                            return (
+                                                <CheckBoxDocumentos key={doc.id_documento} documento={doc} tipo_documento={tipo_documento} />
+                                            )
+                                        })}
+                                    </div>
+                                    {/* TABLA DE MIEMBROS*/}
+                                    {
+                                        listaVisto.length != 0 &&
+                                        <div className='my-2'>
+                                            <div className='flex justify-between'>
+                                                <label className="my-auto text-lg text-slate-400">
+                                                    <strong>Lista de Vistos seleccionados</strong>
+                                                </label>
+                                                {
+                                                    listaVisto.length != 0 &&
+                                                    <div className="flex text-white ">
+                                                        <Link onClick={() => agregar_visto()} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
+                                                            <div className='m-auto'>
+                                                                <strong className=' mr-2'>
+                                                                    {
+                                                                        localStorage.getItem('visto_resolucion') == '' ?
+                                                                            'Agregar'
+                                                                            :
+                                                                            'Editar'
+
+                                                                    } </strong>
+                                                                <FontAwesomeIcon className="m-auto h-4" icon={faPencil} />
+                                                            </div>
+                                                        </Link>
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            <div className="flex flex-col my-auto">
+                                                <hr />
+                                                <table className="table-fixed mt-4">
+                                                    <thead className='bg-slate-400 text-white h-6'>
+                                                        <tr className='font-bold border-2 border-slate-400 text-center'>
+                                                            <th></th>
+                                                            <th>Tipo</th>
+                                                            <th>Documento</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            listaVisto.map((doc) =>
+                                                                <tr key={doc.id} className="">
+                                                                    <td className='border-slate-400 border-[1px]'>
+                                                                        <div className='flex m-auto h-6 text-slate-400'>
+                                                                            {!estado_lista_encargo_fin(doc.id) ?
+                                                                                <Link onClick={() => mover_abajo_encargo(doc.id)}
+                                                                                    className='flex m-auto '>
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
+                                                                                </Link>
+                                                                                :
+                                                                                <p className='flex m-auto'>
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5" icon={faMinus} />
+                                                                                </p>
+                                                                            }
+                                                                            {!estado_lista_encargo_inicio(doc.id) ?
+                                                                                <Link onClick={() => mover_arriba_encargo(doc.id)}
+                                                                                    className='flex m-auto '>
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
+                                                                                </Link>
+                                                                                :
+                                                                                <p className='flex m-auto'>
+                                                                                    <FontAwesomeIcon className="h-4 mx-0.5" icon={faMinus} />
+                                                                                </p>
+                                                                            }
+
+                                                                        </div>
+                                                                    </td>
+                                                                    <td className='text-center border-slate-400 border-[1px]'>{doc.tipo}</td>
+                                                                    <td className='text-center border-slate-400 border-[1px]'>{doc.nombre}</td>
+                                                                    <td className='border-slate-400 border-[1px]'>
+                                                                        <div className='flex m-auto text-red-500'>
+                                                                            <Link onClick={() => eliminar_encargo(doc.id)} className='flex m-auto w-7 h-6'>
+                                                                                <FontAwesomeIcon className="m-auto h-4 hover:text-red-800" icon={faUserMinus} />
+                                                                            </Link>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                                <hr />
+                                            </div>
+                                        </div>
+
+                                    }
 
                                     <hr className="my-4" />
 
@@ -1109,8 +1276,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                     />
                                 </div>}
                                 <label className='text-[#007CBC] font-bold text-sm mt-4'>{codigo_qr}</label>
-                                <img className='' id="diagram_png" />
-                               
+                                <img className='hidden' id="diagram_png" />
+
                             </div>
                         }
                     </div>

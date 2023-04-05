@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('detalle_resolucion_asuntos', function (Blueprint $table) {
-            $table->id('id_detalleResolucionAsunto');
+        Schema::create('detalle_resolucion_considerandos', function (Blueprint $table) {
+            $table->id('id_detalleResolucionConsiderando');
             //resolucion
             $table->unsignedBigInteger('id_resolucion');
             $table->foreign('id_resolucion')->references('id_resolucion')->on('resolucions')->onUpdate('cascade')->onDelete('cascade');
-            //tipo asuntos
-            $table->unsignedBigInteger('id_tipoAsunto');
-            $table->foreign('id_tipoAsunto')->references('id_tipoAsunto')->on('tipo_asuntos')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('descripcion_asuntoResolucion',2000)->nullable();
-            $table->string('imagen_asuntoResolucion',100)->nullable();
+            $table->string('descripcion_considerandoResolucion',2000)->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('detalle_resolucion_asuntos');
+        Schema::dropIfExists('detalle_resolucion_considerandos');
     }
 };

@@ -9,6 +9,10 @@ use App\Models\MiembrosResolucion;
 
 use App\Models\TipoResolucion;
 use App\Models\TipoSesion;
+
+use App\Models\Documento;
+use App\Models\TipoDocumento;
+
 use App\Models\DetalleResolucionAsunto;
 
 use App\Models\TipoAsunto;
@@ -73,12 +77,17 @@ class ResolucionController extends Controller
         $tipo_asunto = TipoAsunto::where('id_tipoAsunto','<>',3)->get();
         $autoridad = Autoridad::all();
 
+        $documento = Documento::all();
+        $tipo_documento = TipoDocumento::all();
+
         return Inertia::render('Admin/Resoluciones/Registrar',[
             'persona' => $persona,
             'tipo_resolucion' => $tipo_resolucion,
             'tipo_sesion' => $tipo_sesion,
             'tipo_asunto' => $tipo_asunto,
             'autoridad' => $autoridad,
+            'documento' => $documento,
+            'tipo_documento' => $tipo_documento,
         ]);
     }
 
