@@ -127,7 +127,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         Inertia.post(route('r.resoluciones.store'), {
             _method: 'post',
 
-            id_tipoSesion: localStorage.getItem('id_sesion'),
+            id_tipoSesion: '2',
+            //id_tipoSesion: localStorage.getItem('id_sesion'),
             id_tipoResolucion: localStorage.getItem('id_resolucion'),
             visto_resolucion: localStorage.getItem('visto_resolucion'),
             //id_carreraProfesional: data.id_carreraProfesional,
@@ -825,7 +826,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                     </div>
                                     {/* Tipo de Sesión - Resolución*/}
                                     <div className='grid grid-cols-12 gap-4 my-4'>
-                                        <label className="col-span-2 my-auto">Tipo Sesión </label>
+                                        {/*<label className="col-span-2 my-auto">Tipo Sesión </label>
                                         <div className="flex flex-col my-auto col-span-4">
                                             <select
                                                 id='id_tipoSesion'
@@ -847,7 +848,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                     })
                                                 }
                                             </select>
-                                        </div>
+                                            </div>*/}
 
                                         <label className="col-span-2 my-auto">Tipo Resolución </label>
                                         <div className="flex flex-col my-auto col-span-4">
@@ -872,10 +873,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                 }
                                             </select>
                                         </div>
-                                    </div>
-
-                                    {/* Número y Fecha de Resolución */}
-                                    <div className='grid grid-cols-12 gap-4 my-4'>
                                         <label className="col-span-2 my-auto">N° Resolución </label>
                                         <div className="flex flex-col my-auto col-span-4" id='fecha-input'>
                                             <input
@@ -890,7 +887,12 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                 required
                                             />
                                         </div>
-                                        <label className="col-span-2 my-auto mx-auto">Fecha </label>
+                                    </div>
+
+                                    {/* Número y Fecha de Resolución */}
+                                    <div className='grid grid-cols-12 gap-4 my-4'>
+                                        
+                                        <label className="col-span-2 my-auto ">Fecha </label>
                                         <div className="flex flex-col my-auto col-span-4">
                                             <input
                                                 type="date"
@@ -1306,15 +1308,19 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                         }
 
                         {
-                            (localStorage.getItem('visto_resolucion') != '' && localStorage.getItem('id_resolucion') != 'DEFAULT' && localStorage.getItem('id_sesion') != 'DEFAULT' && localStorage.getItem('fecha_resolucion') != '') &&
+                            (localStorage.getItem('visto_resolucion') != '' && localStorage.getItem('id_resolucion') != 'DEFAULT' && localStorage.getItem('fecha_resolucion') != '') &&
                             <div>
                                 <div>
                                     <strong> VISTOS:</strong>
                                 </div>
                                 <div className='my-2 text-justify' >
-                                    <p>{localStorage.getItem('visto_resolucion')} y el acuerdo de {mostrar_resolucion(localStorage.getItem('id_resolucion'))} en Sesión {mostrar_sesion(localStorage.getItem('id_sesion'))} de fecha {fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,
+                                    <p>{localStorage.getItem('visto_resolucion')} y el acuerdo de {mostrar_resolucion(localStorage.getItem('id_resolucion'))} en Sesión extraordinaria de fecha {fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,
                                     </p>
                                 </div>
+                                {/*<div className='my-2 text-justify' >
+                                    <p>{localStorage.getItem('visto_resolucion')} y el acuerdo de {mostrar_resolucion(localStorage.getItem('id_resolucion'))} en Sesión {mostrar_sesion(localStorage.getItem('id_sesion'))} de fecha {fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,
+                                    </p>
+                                </div>*/}
                             </div>
                         }
 
