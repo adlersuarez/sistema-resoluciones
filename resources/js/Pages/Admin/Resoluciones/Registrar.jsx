@@ -9,11 +9,10 @@ import { Inertia } from '@inertiajs/inertia';
 import QRCode from "react-qr-code";
 import CheckBoxDocumentos from '@/Components/Resolucion/CheckBoxDocumentos';
 
-
 var listaMiembros = []
 var listaAsuntos = []
 var listaEncargo = []
-
+var listaConsiderando = []
 var listaVisto = []
 
 var id_resolucion = 'DEFAULT'
@@ -31,6 +30,7 @@ var imagenQR_base64 = ''
 localStorage.setItem("listaMiembros", JSON.stringify(listaMiembros));
 localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
 localStorage.setItem("listaEncargo", JSON.stringify(listaEncargo));
+localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));
 
 localStorage.setItem("id_resolucion", id_resolucion);
 localStorage.setItem("id_sesion", id_sesion);
@@ -45,9 +45,6 @@ localStorage.setItem("muestra_fecha", muestra_fecha);
 localStorage.setItem("imagenQR_base64", imagenQR_base64);
 
 const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, autoridad, documento, tipo_documento }) => {
-
-    //console.log(documento)
-    //console.log(tipo_documento)
 
     const { data, setData, errors, put, progress } = useForm({
         id_persona: '',
@@ -181,22 +178,67 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             if (conteoOficio == 1) {
                 vistoOficio = 'El Oficio '
             } else {
-                vistoOficio = 'Los Oficios'
+                vistoOficio = 'Los Oficios '
             }
         } else {
             vistoProveido = vistoProveido.charAt(0).toUpperCase() + vistoProveido.slice(1);
         }
 
+        var contAuxOficio = 1
+        var contAuxProveido = 1
+
         JSON.parse(localStorage.getItem('listaDocumentosSeleccionados')).map(lista => {
             const texto = documento.find(element => element.id_documento == lista.id)
+            //console.log(texto)
+
             if (texto.id_tipoDocumento == '1') {
                 // añadir comas e "y" dependiendo de la cantidad de oficios en la cadena
-                vistoOficio += texto.num_documento + "-" + texto.subNum_documento
+                if (contAuxOficio < conteoOficio - 1) {
+                    vistoOficio += texto.num_documento + "-" + texto.subNum_documento + ", "
+                }
+
+                if (contAuxOficio == conteoOficio - 1) {
+                    vistoOficio += texto.num_documento + "-" + texto.subNum_documento + " y "
+                }
+
+                if (contAuxOficio == conteoOficio) {
+                    vistoOficio += texto.num_documento + "-" + texto.subNum_documento
+                }
+                contAuxOficio++
             }
+
             if (texto.id_tipoDocumento == '2') {
-                // añadir comas e "y" dependiendo de la cantidad de proveidos en la cadena
-                vistoProveido += texto.num_documento + "-" + texto.subNum_documento
+
+                // añadir comas e "y" dependiendo de la cantidad de oficios en la cadena
+                if (contAuxProveido < conteoProveido - 1) {
+                    vistoProveido += texto.num_documento + "-" + texto.subNum_documento + ", "
+                }
+
+                if (contAuxProveido == conteoProveido - 1) {
+                    vistoProveido += texto.num_documento + "-" + texto.subNum_documento + " y "
+                }
+
+                if (contAuxProveido == conteoProveido) {
+                    vistoProveido += texto.num_documento + "-" + texto.subNum_documento
+                }
+                contAuxProveido++
             }
+
+            // añadir filtro de REPETIDOS //////////////////////////////////////////////////////////////
+            var repetido = listaConsiderando.find(lista => lista.id == texto.id_documento)
+            console.log(texto)
+            const tipoDoc = tipo_documento.find(doc => doc.id_tipoDocumento == texto.id_tipoDocumento)
+
+            if (!repetido) {
+                listaConsiderando.push({
+                    'id': texto.id_documento,
+                    'descripcion': 'Que, ' + texto.considerando_documento,
+                    'tipo': tipoDoc.nombreDocumento,
+                    'nombre': texto.num_documento + '-' + texto.subNum_documento
+                })
+            }
+
+            localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));
         })
 
         if (conteoOficio > 0 && conteoProveido == 0) {
@@ -208,10 +250,98 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         }
 
         if (conteoOficio > 0 && conteoProveido > 0) {
-            localStorage.setItem("visto_resolucion", vistoOficio + " y " + vistoProveido);
+            localStorage.setItem("visto_resolucion", vistoOficio + " ,y " + vistoProveido);
         }
+    }
 
-        console.log(localStorage.getItem('visto_resolucion'))
+    function editar_considerando(id) {
+        var indiceEditar = listaConsiderando.findIndex(item => item.id === id)
+        var aux = listaConsiderando[indiceEditar]
+        //console.log(aux)
+        //añadir formulario con sweet alert
+        Swal.fire({
+            title: 'Editar Considerando',
+            html: `<h1 class="h1-form"> ${aux.tipo.toUpperCase()} - ${aux.nombre}</h1>
+            <div class="div-form-asunto">
+                <div class="div-input-form-asunto">
+                    <label class="label-input-form">Descripción</label>
+                    <textarea type="number" id="asunto" class="swal2-input" >${aux.descripcion}</textarea>
+                </div>
+            </div>`,
+            confirmButtonText: 'Guardar',
+            focusConfirm: false,
+            showCloseButton: true,
+            width: '800px',
+            customClass: {
+                title: 'custom-title',
+                closeButton: 'close-button',
+            },
+            preConfirm: () => {
+                const asunto = Swal.getPopup().querySelector('#asunto').value
+                //const imagen = Swal.getPopup().querySelector('#imagen').value
+
+                if (!asunto) {
+                    Swal.showValidationMessage(`Por favor ingrese todos los campos`)
+                }
+                return { asunto: asunto }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                aux.descripcion = result.value.asunto
+                listaConsiderando.splice(indiceEditar, 1, aux)
+                localStorage.setItem("listaAsuntos", JSON.stringify(listaConsiderando));
+
+                //console.log(listaConsiderando)
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Considerando actualizado correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        })
+    }
+    function eliminar_considerando(id) {
+        var indiceBorrado = listaConsiderando.findIndex(item => item.id === id)
+        listaConsiderando.splice(indiceBorrado, 1)
+        localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));
+
+        /*var indiceBorradoDoc = listaVisto.findIndex(item => item.id === id)
+        listaConsiderando.splice(indiceBorradoDoc, 1)
+        localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));*/
+    }
+    function mover_arriba_considerando(id) {
+        var indiceItem = listaConsiderando.findIndex(item => item.id === id)
+        const aux_pos1 = listaConsiderando[indiceItem]
+        const aux_pos2 = listaConsiderando[indiceItem - 1]
+
+        listaConsiderando.splice(indiceItem - 1, 1, aux_pos1)
+        listaConsiderando.splice(indiceItem, 1, aux_pos2)
+
+        localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));
+    }
+    function mover_abajo_considerando(id) {
+        var indiceItem = listaConsiderando.findIndex(item => item.id === id)
+        const aux_pos1 = listaConsiderando[indiceItem]
+        const aux_pos2 = listaConsiderando[indiceItem + 1]
+
+        listaConsiderando.splice(indiceItem + 1, 1, aux_pos1)
+        listaConsiderando.splice(indiceItem, 1, aux_pos2)
+        localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));
+    }
+    function estado_lista_considerando_inicio(id) {
+        var indiceItem = listaConsiderando.findIndex(item => item.id === id)
+        if (indiceItem == 0) {
+            return true
+        }
+    }
+    function estado_lista_considerando_fin(id) {
+        var indiceItem = listaConsiderando.findIndex(item => item.id === id)
+        if (indiceItem == (listaConsiderando.length - 1)) {
+            return true
+        }
     }
 
     //PARTICIPANTES
@@ -544,7 +674,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             ctx.drawImage(loader, 0, 0, loader.width, loader.height);
             tgtImage.src = can.toDataURL();
 
-            console.log(tgtImage.src)
+            //console.log(tgtImage.src)
             if (tgtImage.src) {
                 localStorage.setItem("imagenQR_base64", tgtImage.src);
             }
@@ -868,7 +998,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                             </div>
 
                                             <div className="flex flex-col my-auto">
-                                                <hr />
                                                 <table className="table-fixed mt-4">
                                                     <thead className='bg-slate-400 text-white h-6'>
                                                         <tr className='font-bold border-2 border-slate-400 text-center'>
@@ -1005,9 +1134,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                 </div>
                                             }
                                         </div>
-
-
-
 
                                     </div>
 
@@ -1185,27 +1311,86 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                 <div>
                                     <strong> VISTOS:</strong>
                                 </div>
-                                <div className='my-2' >
+                                <div className='my-2 text-justify' >
                                     <p>{localStorage.getItem('visto_resolucion')} y el acuerdo de {mostrar_resolucion(localStorage.getItem('id_resolucion'))} en Sesión {mostrar_sesion(localStorage.getItem('id_sesion'))} de fecha {fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,
                                     </p>
                                 </div>
                             </div>
                         }
 
+                        {
+                            (listaAsuntos.length == 0 && listaAsuntos.length == 0) &&
+                            <div className='flex w-full h-8 bg-slate-500 text-center text-white justify-center'>
+                                <strong className='m-auto'>VISTA PREVIA</strong>
+                            </div>
+                        }
+
 
 
                         {
-                            listaAsuntos.length == 0 ?
-                                <div className='flex w-full h-8 bg-slate-500 text-center text-white justify-center'>
-                                    <strong className='m-auto'>VISTA PREVIA</strong>
+                            listaConsiderando.length != 0 &&
+                            <>
+                                <hr className='my-4' />
+                                <div className='flex mt-4'>
+                                    <strong className='my-auto'>CONSIDERANDO:</strong>
+                                    {/*<Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
+                                    <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
+                                </Link>*/}
                                 </div>
-                                :
-                                <div className='flex gap-4 pb-4'>
+                            </>
+                        }
+
+                        {listaConsiderando.map((considerando) => {
+
+                            return (
+                                <div className='grid grid-cols-12 mt-2' key={considerando.id}>
+                                    <div className='col-span-1 flex flex-row'>
+                                        <div className='flex w-8 mt-1 mr-2'>
+                                            {!estado_lista_considerando_fin(considerando.id) &&
+                                                <Link onClick={() => mover_abajo_considerando(considerando.id)}
+                                                    className='flex mx-auto '>
+                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
+                                                </Link>
+                                            }
+                                            {!estado_lista_considerando_inicio(considerando.id) &&
+                                                <Link onClick={() => mover_arriba_considerando(considerando.id)}
+                                                    className='flex mx-auto '>
+                                                    <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
+                                                </Link>
+                                            }
+                                        </div>
+
+                                    </div>
+                                    <div className='col-span-10 mx-2 text-justify'>
+                                        {considerando.descripcion}
+                                    </div>
+                                    <div className='col-span-1 flex'>
+                                        <Link onClick={() => editar_considerando(considerando.id)}
+                                            className='flex mx-auto '>
+                                            <FontAwesomeIcon className="h-5 mx-0.5 hover:text-green-700" icon={faEdit} />
+                                        </Link>
+
+                                        <Link onClick={() => eliminar_considerando(considerando.id)}
+                                            className='flex mx-auto '>
+                                            <FontAwesomeIcon className="h-5 mx-0.5 hover:text-red-700" icon={faTrash} />
+                                        </Link>
+                                    </div>
+                                </div>
+                            )
+                        })
+                        }
+
+                        {
+                            listaAsuntos.length != 0 &&
+                            <>
+                                <hr className='my-4' />
+                                <div className='flex gap-4 mt-4'>
                                     <strong className='my-auto'>SE RESUELVE:</strong>
                                     <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
                                         <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
                                     </Link>
                                 </div>
+                            </>
                         }
 
                         {listaAsuntos.map((asunto, index) => {
@@ -1232,7 +1417,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                         </div>
 
                                     </div>
-                                    <div className='col-span-9 mx-2'>
+                                    <div className='col-span-9 mx-2 text-justify'>
                                         <strong>{asunto.nombre.toUpperCase()}</strong> {asunto.descripcion}
                                         {
                                             asunto.imagen &&
