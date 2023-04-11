@@ -109,6 +109,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
         listaEncargo = []
     }
 
+    //console.log(localStorage.getItem('visto_resolucion'))
+
     function handleSubmit(e) {
         e.preventDefault();
 
@@ -123,7 +125,6 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             }
         }
 
-
         Inertia.post(route('r.resoluciones.store'), {
             _method: 'post',
 
@@ -137,6 +138,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             fechaResolucion: localStorage.getItem('fecha_resolucion'),
             miembros: data.miembros,
             asuntos: listaAsuntos,
+            //
+            considerando: listaConsiderando,
             //imagen64
             imagenQR64: localStorage.getItem('imagenQR_base64'),
         })
@@ -227,7 +230,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
             // añadir filtro de REPETIDOS //////////////////////////////////////////////////////////////
             var repetido = listaConsiderando.find(lista => lista.id == texto.id_documento)
-            console.log(texto)
+            //console.log(texto)
             const tipoDoc = tipo_documento.find(doc => doc.id_tipoDocumento == texto.id_tipoDocumento)
 
             if (!repetido) {
@@ -1325,13 +1328,11 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                         }
 
                         {
-                            (listaAsuntos.length == 0 && listaAsuntos.length == 0) &&
+                            (listaAsuntos.length == 0 && listaConsiderando.length == 0) &&
                             <div className='flex w-full h-8 bg-slate-500 text-center text-white justify-center'>
                                 <strong className='m-auto'>VISTA PREVIA</strong>
                             </div>
                         }
-
-
 
                         {
                             listaConsiderando.length != 0 &&

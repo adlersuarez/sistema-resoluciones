@@ -42,6 +42,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResolucionController;
 
 use App\Http\Controllers\PlantillaController;
+use App\Http\Controllers\DocumentoController;
+
 use App\Http\Controllers\AdendaController;
 use App\Http\Controllers\AsuntoController;
 use App\Http\Controllers\ContratoController;
@@ -86,6 +88,12 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
     Route::controller(PlantillaController::class)->group(function (){
         Route::get('/resoluciones-upla/plantillas', 'index')->name('r.plantillas');
         Route::get('/resoluciones-upla/plantillas/registrar','create')->name('r.plantillas.registrar');
+        //
+    });
+
+    Route::controller(DocumentoController::class)->group(function (){
+        Route::get('/resoluciones-upla/documentos', 'index')->name('r.documentos');
+        Route::get('/resoluciones-upla/documentos/registrar','create')->name('r.documentos.registrar');
         //
     });
 

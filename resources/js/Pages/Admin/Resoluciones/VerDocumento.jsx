@@ -1,11 +1,9 @@
 import React from 'react';
 import { Head } from '@inertiajs/inertia-react';
 
-const VerDocumento = ({ auth, resolucion }) => {
+const VerDocumento = ({ resolucion }) => {
 
     var ruta = `/documentos/resoluciones/${resolucion.archivoResolucion}`
-    
-    console.log(resolucion)
 
     return (
 

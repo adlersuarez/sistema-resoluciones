@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from '@inertiajs/inertia-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars, faUserAlt, faHomeUser, faFileCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faSignOut, faChartColumn, faCube, faFileWord, faToggleOn, faBinoculars, faArrowsToDot, faCircleChevronLeft, faSuitcase, faBars, faUserAlt, faHomeUser, faFileCirclePlus, faFileClipboard } from '@fortawesome/free-solid-svg-icons';
 import Dropdown from '@/Components/Dropdown';
 import { Inertia } from '@inertiajs/inertia';
 import SideLink from '@/Components/SideLink';
@@ -188,7 +188,7 @@ const Navbar = ({ auth, children }) => {
                                 </div>
                                 <div className="grow text-center" style={open ? styleOpen : styleClose} >
                                     <strong className="text-4xl text-white md:inline min-[200px]:hidden bold font-mirza">
-                                        <abbr title='Resoluciones - Universidad Peruana Los Andes'className='no-underline'>R - UPLA</abbr>  
+                                        <abbr title='Resoluciones - Universidad Peruana Los Andes' className='no-underline'>R - UPLA</abbr>
                                     </strong>
                                 </div>
                             </div>
@@ -275,18 +275,31 @@ const Navbar = ({ auth, children }) => {
                         }
 
                         {// Plantillas
-                          //  <NavBarElement elementos={navBarLink.plantillas} estado={open} widthLista={'w-56'} />
-                          <li className='px-3'>
-                            <SideLink href={route('r.plantillas')} active={route().current('r.plantillas')}>
-                                <FontAwesomeIcon className="h-5 w-6" icon={faFileCirclePlus} />
-                                <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
-                                    <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
-                                        <strong>Plantillas</strong>
-                                    </span>
-                                </div>
-                            </SideLink>
-                        </li>
+                            //  <NavBarElement elementos={navBarLink.plantillas} estado={open} widthLista={'w-56'} />
+                            <li className='px-3'>
+                                <SideLink href={route('r.plantillas')} active={route().current('r.plantillas')}>
+                                    <FontAwesomeIcon className="h-5 w-6" icon={faFileCirclePlus} />
+                                    <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
+                                        <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
+                                            <strong>Plantillas</strong>
+                                        </span>
+                                    </div>
+                                </SideLink>
+                            </li>
 
+                        }
+
+                        {// Documentos
+                            <li className='px-3'>
+                                <SideLink href={route('r.documentos')} active={route().current('r.documentos')}>
+                                    <FontAwesomeIcon className="h-5 w-6" icon={faFileClipboard} />
+                                    <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
+                                        <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
+                                            <strong>Documentos</strong>
+                                        </span>
+                                    </div>
+                                </SideLink>
+                            </li>
                         }
 
                         <hr />

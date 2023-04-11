@@ -46,9 +46,9 @@ const paginationComponentOptions = {
     selectAllRowsItemText: 'Todos',
 };
 
-export default function DataTableResolucion({ datos, miembros, sesion, resolucion }) {
+export default function DataTableResolucion({ datos, miembros, sesion, resolucion , detalle }) {
 
-    //console.log(sesion)
+    //console.log(detalle.visto)
     //console.log(resolucion)
     //Eliminar svg de DataTable
     useEffect(() => {
@@ -112,8 +112,93 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
         }
     }
 
-    const mostrarAsunto = (id) => {
-    //console.log(id)
+    const mostrarVistaPrevia = (id) => {
+
+        const resolucion = datos.filter(
+            dato => dato.id_resolucion === id
+        )
+
+        const visto_resolucion = detalle.visto.filter(
+            dato => dato.id_resolucion === id
+        )
+
+        const considerando_resolucion  = detalle.considerando.filter(
+            dato => dato.id_resolucion === id
+        )
+
+        const asunto_resolucion  = detalle.asunto.filter(
+            dato => dato.id_resolucion === id
+        )
+
+        var titulo_vista_previa = `RESOLUCIÓN ${resolucion[0].nombreResolucion}` 
+        var fecha_vista_previa = resolucion[0].fechaResolucion.slice(0,10).replaceAll('-', '.')
+      
+        var elementoVisto = ''
+        elementoVisto += `<div style='padding-top: 5px; padding-bottom: 5px; text-align: justify;'>`
+        elementoVisto += `${visto_resolucion[0].descripcion_vistoResolucion}`
+        elementoVisto += ` y acuerdo de ${resolucion[0].nombreTipoResolucion} en Sesion Extraordinaria `
+        elementoVisto += ` de fecha ${fecha_vista_previa}, `
+        elementoVisto += `respectivamente; y,`
+        elementoVisto += `</div>`
+
+        var elementosConsiderando = ''
+        elementosConsiderando += `<div style='padding-top: 5px; padding-bottom: 5px; text-align: justify;'>`
+        elementosConsiderando += `<p>La Universidad Peruana Los Andes, se rige por sus principios y por las disposiciones pertinentes de la Constitución Política del Perú, Ley Universitaria N° 30220, Ley General de Educación N° 28044, el Estatuto, Reglamentos y demás normas conexas; asimismo, mediante Resolución del Consejo Directivo N° 025-2020-SUNEDU/CD de fecha 13.02.2020, se otorga la licencia, para ofrecer el servicio educativo superior universitario;</p>`
+        elementosConsiderando += `</div>`
+
+        considerando_resolucion.map(consid => {
+            elementosConsiderando += `<div style='padding-top: 5px; padding-bottom: 5px; text-align: justify;'>`
+            elementosConsiderando += `<p>${consid.descripcion_considerandoResolucion}</p>`
+            elementosConsiderando += `</div>`
+        })
+
+        var elementosAsunto = '';
+
+        var cont = 1;
+
+        asunto_resolucion.map(asunt => {
+            
+            elementosAsunto += `<div style='display:flex; padding-top: 5px; padding-bottom: 5px;'>`
+            
+            elementosAsunto += `<div style='width: 8%; text-align: left;'><strong>Art. ${cont}°</strong></div>`
+            
+            elementosAsunto += `<div style='width: 92%; text-align: justify;'><p><strong> APROBAR </strong>${asunt.descripcion_asuntoResolucion}</p>`
+
+            if(asunt.imagen_asuntoResolucion){
+                elementosAsunto += `<img src='${'/documentos/resoluciones/imagenes/'+asunt.imagen_asuntoResolucion}'>`
+            }
+            elementosAsunto += `</div></div>`
+            cont++
+        })
+
+        var codigoQr = `</br><div style='margin: auto; display:flex; width: 70%;'>
+        <div style='margin: auto; display:flex; justify-content: space-between; width: 100%;'> 
+         <img style='margin-top: auto; margin-bottom: auto;' src='${'/documentos/resoluciones/codigoBarras/'+resolucion[0].c_codigoBarras}' width="300" height="80">
+         <img src='${'/documentos/resoluciones/codigoQr/'+resolucion[0].c_codigoQr}'>
+        </div>
+        </div>`
+                    
+        Swal.fire({
+            title: `Resolución | ${resolucion[0].nombreResolucion}`,
+            html: `<div class="div-vista-previa-miembros">
+                    <h1 style='font-size: 25px;'><strong>${titulo_vista_previa}</strong></h1>
+                    <h3 style='text-align: right; margin-top:10px;'> Huancayo, ${fecha_vista_previa} </h3>
+                    <h3 style='text-align: left; margin-top:10px;'> <strong> VISTOS:</strong> </h3>
+                    ${elementoVisto}
+                    <h3 style='text-align: left; margin-top:10px;'> <strong> CONSIDERANDO:</strong> </h3>
+                    ${elementosConsiderando}
+                    <h3 style='text-align: left; margin-top:10px;'> <strong> SE RESUELVE:</strong> </h3>
+                    ${elementosAsunto}
+                    ${codigoQr}
+                    </div>`,
+            focusConfirm: false,
+            showCloseButton: true,
+            width: '1000px',
+            customClass: {
+                title: 'custom-title',
+            },
+            showConfirmButton: true,
+        })
     }
 
     const columns = [
@@ -123,10 +208,10 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
             sortable: true,
         },
         {
-            name: 'Asunto',
+            name: 'Vista Previa',
             cell: (row) => (
                 <div className='flex'>
-                    <Link onClick={() => mostrarAsunto(row.id)} className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
+                    <Link onClick={() => mostrarVistaPrevia(row.id)} className="text-center text-slate-400 hover:text-blue-900 focus:outline-none">
                         <FontAwesomeIcon className="h-6 w-6" id={row.id} icon={faArchive} />
                     </Link>
                 </div>

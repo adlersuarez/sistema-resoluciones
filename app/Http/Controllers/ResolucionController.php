@@ -13,6 +13,8 @@ use App\Models\TipoSesion;
 use App\Models\Documento;
 use App\Models\TipoDocumento;
 
+use App\Models\DetalleResolucionVisto;
+use App\Models\DetalleResolucionConsiderando;
 use App\Models\DetalleResolucionAsunto;
 
 use App\Models\TipoAsunto;
@@ -52,12 +54,17 @@ class ResolucionController extends Controller
 
         $tipo_sesion = TipoSesion::all();
         $tipo_resolucion = TipoResolucion::all();
+
+        $detalle_visto = DetalleResolucionVisto::all();
+        $detalle_considerando = DetalleResolucionConsiderando::all();
+        $detalle_asunto = DetalleResolucionAsunto::all();
  
         return Inertia::render('Admin/Resoluciones/Index',[
             'resoluciones' => $resoluciones,
             'miembros' => $miembros,
             'tipo_sesion' => $tipo_sesion,
             'tipo_resolucion' => $tipo_resolucion,
+            'detalles' => [ 'visto' => $detalle_visto , 'considerando' => $detalle_considerando , 'asunto' => $detalle_asunto ],
         ]);
     }
 
@@ -105,10 +112,14 @@ class ResolucionController extends Controller
             'miembros' => 'required',
             'asuntos' => 'required',
             //
+            'considerando' => 'required',
+
             'imagenQR64' => 'required',
         ]);
 
         $resolucion = $request->all();
+
+        //dd($resolucion['considerando']);
 
         $tipoRes = TipoResolucion::where('id_tipoResolucion',$resolucion['id_tipoResolucion'])
         ->first();
@@ -140,6 +151,21 @@ class ResolucionController extends Controller
         $idResolucion = Resolucion::query()
         ->orderBy('created_at','desc')
         ->first();
+
+        // Visto
+        DetalleResolucionVisto::create([
+            'id_resolucion' => $idResolucion->id_resolucion,
+            'descripcion_vistoResolucion' => $resolucion['visto_resolucion'],
+        ]);
+    
+        // Considerando
+        foreach ($resolucion['considerando'] as $considerando) {
+            //
+            DetalleResolucionConsiderando::create([
+                'id_resolucion' => $idResolucion->id_resolucion,
+                'descripcion_considerandoResolucion' => $considerando['descripcion'],
+            ]);
+        }
 
         $count = 0;
         // Lista Asuntos
@@ -244,12 +270,23 @@ class ResolucionController extends Controller
 
         $templateProcessor->setImageValue('codigo_qr', array('path' => 'documentos/resoluciones/codigoQr/'.$nombre_resolucion.'_'.$fecha_puntos.'.png', 'width' => '3cm', 'height' => '3cm', 'ratio' => true));
 
+        $considerandos = DetalleResolucionConsiderando::where('id_resolucion',$id)
+        ->get();
+
+        //$templateProcessor->cloneBlock('block_name', count($resuelves), true, true );
+        $templateProcessor->cloneBlock('block_considerando', count($considerandos), true, true );
+        
+        foreach ($considerandos as $key => $value) {
+            //dd($value->imagen_asuntoResolucion);
+            $templateProcessor->setValue('descripcion_considerando#'.($key+1), $value->descripcion_considerandoResolucion);
+        }
+
         $asuntos = DetalleResolucionAsunto::where('id_resolucion',$id)
         ->join('tipo_asuntos','tipo_asuntos.id_tipoAsunto','=','detalle_resolucion_asuntos.id_tipoAsunto')
         ->get();
 
         //$templateProcessor->cloneBlock('block_name', count($resuelves), true, true );
-        $templateProcessor->cloneBlock('block_name', count($asuntos), true, true );
+        $templateProcessor->cloneBlock('block_asunto', count($asuntos), true, true );
         
         foreach ($asuntos as $key => $value) {
             //dd($value->imagen_asuntoResolucion);
@@ -261,12 +298,7 @@ class ResolucionController extends Controller
                 $templateProcessor->setValue('imagen-asunto#'.($key+1),"");
             }
         }
-
         
-        //
-        //$templateProcessor->setImageValue('codigoQR', array('path' => 'images/personal/jefaturaORyM/codigoQR.png', 'width' => 165, 'height' => 165, 'ratio' => true));
-        //$templateProcessor->setImageValue('firma', array('path' => 'images/personal/jefaturaORyM/firma.png', 'width' => 100, 'height' => 100, 'ratio' => true));
-        //
 
         $direccion = 'documentos/resoluciones/';
         $fileName = $nombre;
