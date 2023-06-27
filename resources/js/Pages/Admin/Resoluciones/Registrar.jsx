@@ -257,6 +257,43 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             localStorage.setItem("visto_resolucion", vistoOficio + " ,y " + vistoProveido);
         }
     }
+    function eliminar_visto(id) {
+        var indiceBorrado = listaVisto.findIndex(item => item.id === id)
+        listaVisto.splice(indiceBorrado, 1)
+        localStorage.setItem("listaDocumentosSeleccionados", JSON.stringify(listaVisto));
+    }
+    function mover_arriba_visto(id) {
+        var indiceItem = listaVisto.findIndex(item => item.id === id)
+        const aux_pos1 = listaVisto[indiceItem]
+        const aux_pos2 = listaVisto[indiceItem - 1]
+
+        listaVisto.splice(indiceItem - 1, 1, aux_pos1)
+        listaVisto.splice(indiceItem, 1, aux_pos2)
+
+        localStorage.setItem("listaDocumentosSeleccionados", JSON.stringify(listaVisto));
+    }
+    function mover_abajo_visto(id) {
+        var indiceItem = listaVisto.findIndex(item => item.id === id)
+        const aux_pos1 = listaVisto[indiceItem]
+        const aux_pos2 = listaVisto[indiceItem + 1]
+
+        listaVisto.splice(indiceItem + 1, 1, aux_pos1)
+        listaVisto.splice(indiceItem, 1, aux_pos2)
+        localStorage.setItem("listaDocumentosSeleccionados", JSON.stringify(listaVisto));
+    }
+    function estado_lista_visto_inicio(id) {
+        var indiceItem = listaVisto.findIndex(item => item.id === id)
+        if (indiceItem == 0) {
+            return true
+        }
+    }
+    function estado_lista_visto_fin(id) {
+        var indiceItem = listaVisto.findIndex(item => item.id === id)
+        if (indiceItem == (listaVisto.length - 1)) {
+            return true
+        }
+    }
+
 
     function editar_considerando(id) {
         var indiceEditar = listaConsiderando.findIndex(item => item.id === id)
@@ -603,7 +640,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
     }
 
     if (localStorage.getItem('fecha_resolucion') != '') {
-        localStorage.setItem("muestra_fecha", data.fechaResolucion.replaceAll('-', '.'));
+        localStorage.setItem("muestra_fecha", data.fechaResolucion.replaceAll('-', '0.'));
     }
 
     function mostrar_sesion(id) {
@@ -894,7 +931,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
 
                                     {/* Número y Fecha de Resolución */}
                                     <div className='grid grid-cols-12 gap-4 my-4'>
-                                        
+
                                         <label className="col-span-2 my-auto ">Fecha </label>
                                         <div className="flex flex-col my-auto col-span-4">
                                             <input
@@ -1018,8 +1055,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                 <tr key={doc.id} className="">
                                                                     <td className='border-slate-400 border-[1px]'>
                                                                         <div className='flex m-auto h-6 text-slate-400'>
-                                                                            {!estado_lista_encargo_fin(doc.id) ?
-                                                                                <Link onClick={() => mover_abajo_encargo(doc.id)}
+                                                                            {!estado_lista_visto_fin(doc.id) ?
+                                                                                <Link onClick={() => mover_abajo_visto(doc.id)}
                                                                                     className='flex m-auto '>
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
                                                                                 </Link>
@@ -1028,8 +1065,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5" icon={faMinus} />
                                                                                 </p>
                                                                             }
-                                                                            {!estado_lista_encargo_inicio(doc.id) ?
-                                                                                <Link onClick={() => mover_arriba_encargo(doc.id)}
+                                                                            {!estado_lista_visto_inicio(doc.id) ?
+                                                                                <Link onClick={() => mover_arriba_visto(doc.id)}
                                                                                     className='flex m-auto '>
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
                                                                                 </Link>
@@ -1045,7 +1082,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                     <td className='text-center border-slate-400 border-[1px]'>{doc.nombre}</td>
                                                                     <td className='border-slate-400 border-[1px]'>
                                                                         <div className='flex m-auto text-red-500'>
-                                                                            <Link onClick={() => eliminar_encargo(doc.id)} className='flex m-auto w-7 h-6'>
+                                                                            <Link onClick={() => eliminar_visto(doc.id)} className='flex m-auto w-7 h-6'>
                                                                                 <FontAwesomeIcon className="m-auto h-4 hover:text-red-800" icon={faUserMinus} />
                                                                             </Link>
                                                                         </div>

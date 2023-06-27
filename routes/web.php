@@ -1,38 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-//use App\Http\Controllers\AdminSoftwareController;
-//use App\Http\Controllers\AdminEspecificacionEquipoController;
-//use App\Http\Controllers\AdminEspecificacionSoftwareController;
-//use App\Http\Controllers\AdminTipoEquipoController;
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-//use App\Http\Controllers\TipoEquipoController;
-//use App\Http\Controllers\UserTipoEquipoController;
-//use App\Http\Controllers\SoftwareController;
-//use App\Http\Controllers\AdminUsoEquipoController;
-//use App\Http\Controllers\InfoSoftwareController;
 
-//use App\Http\Controllers\AdminSolicitudController;
-//use App\Http\Controllers\AdminNotificacionController;
-
-//use App\Http\Controllers\SecretariaSolicitudController;
-//use App\Http\Controllers\JefaturaSolicitudController;
-
-//Estado no adeudo especifico
-//use App\Http\Controllers\ArchivoEstudiantilController;
-//use App\Http\Controllers\DursController;
-//use App\Http\Controllers\FacultadesController;
-//use App\Http\Controllers\OefcController;
-
-//use App\Http\Controllers\CartEquipoController;
-//use App\Http\Controllers\EspecificacionEquipoController;
-//use App\Http\Controllers\NotificacionController;
-//use App\Http\Controllers\OficinaController;
-//use App\Http\Controllers\RolController;
-//use App\Http\Controllers\SolicitudController;
-//use App\Http\Controllers\UserController;
-//use App\Http\Controllers\UserSoftwareController;
-//use App\Http\Controllers\UserSolicitudController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 //
@@ -40,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 //sistema resoluciones
 use App\Http\Controllers\ResolucionController;
+use App\Http\Controllers\FormatoController;
 
 use App\Http\Controllers\PlantillaController;
 use App\Http\Controllers\DocumentoController;
@@ -83,6 +55,41 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::get('/resoluciones-upla/resoluciones/descargar/{id}','descargarResolucion')->name('r.resoluciones.descargar');
         //Ver Documento
         Route::get('/resoluciones-upla/resoluciones/mostrar/{id}', 'verDocumento')->name('r.resoluciones.ver');
+    });
+
+    Route::controller(FormatoController::class)->group(function (){
+        Route::get('/resoluciones-upla/formatos', 'index')->name('r.formatos');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/auspicio-academico','createAuspicioAcademico')->name('r.formatos.registrar.AuspicioAcademico');
+        Route::post('/resoluciones-upla/formatos/storeAuspicioAcademico','storeAuspicioAcademico')->name('r.formatos.store.AuspicioAcademico');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/cambio-modalidad-ingreso','createCambioModalidadIngreso')->name('r.formatos.registrar.CambioModalidadIngreso');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/presupuesto-institucional-apertura','createPia')->name('r.formatos.registrar.Pia');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/presupuesto-institucional-apertura-modificado','createPiaModificado')->name('r.formatos.registrar.PiaModificado');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/por-navidad','createPorNavidad')->name('r.formatos.registrar.PorNavidad');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/por-uniforme','createPorUniforme')->name('r.formatos.registrar.PorUniforme');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/propuesta-jefe-of','createPropuestaJefe')->name('r.formatos.registrar.PropuestaJefe');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/calendario-academico-general','createCalendarioAcademicoGeneral')->name('r.formatos.registrar.CalendarioAcademicoGeneral');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/calendario-academico-internado-medico','createCalendarioAcademicoInternadoMedico')->name('r.formatos.registrar.CalendarioAcademicoInternadoMedico');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/cronograma-pagos','createCronogramaPagos')->name('r.formatos.registrar.CronogramaPagos');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/presupuesto-admision','createPresupuestoAdmision')->name('r.formatos.registrar.PresupuestoAdmision');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/aprobacion-directiva','createAprobacionDirectiva')->name('r.formatos.registrar.AprobacionDirectiva');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/aprobacion-expediente-tecnico','createAprobacionExpedienteTecnico')->name('r.formatos.registrar.AprobacionExpedienteTecnico');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/aprobacion-bases','createAprobacionBases')->name('r.formatos.registrar.AprobacionBases');
+        //
+        Route::get('/resoluciones-upla/formatos/registrar/otorgacion-buena-pro','createOtorgacionBuenaPro')->name('r.formatos.registrar.OtorgacionBuenaPro');
     });
 
     Route::controller(PlantillaController::class)->group(function (){
@@ -195,9 +202,6 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::delete('/resoluciones-upla/usuarios/{id}','destroy')->name('d.usuarios.destroy');
         Route::get('/resoluciones-upla/usuarios/excel','exportExcel')->name('excel');
     });
-
-
-
 
     //Route::get('/resoluciones-upla/especificacion/{id}', [EspecificacionEquipoController::class,'show'])->name('d.especificacion.show');*/
 

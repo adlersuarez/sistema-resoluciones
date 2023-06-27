@@ -197,11 +197,6 @@ const Navbar = ({ auth, children }) => {
                     </div>
                 </div>
 
-                <div onClick={() => setOpen(!open)} className='absolute md:block w-10 h-10 text-lx text-[#007CBC] cursor-pointer top-2 -right-12 flex items-center justify-center rounded-full pt-2'>
-                    <FontAwesomeIcon className=" h-5 w-10" icon={faBars} />
-                </div>
-
-
                 <div className="overflow-y-auto mt-3">
 
                     <ul className="space-y-2 ">
@@ -216,6 +211,17 @@ const Navbar = ({ auth, children }) => {
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
                                     <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
                                         <strong>Resolución</strong>
+                                    </span>
+                                </div>
+                            </SideLink>
+                        </li>
+
+                        <li className='px-3'>
+                            <SideLink href={route('r.formatos')} active={route().current('r.formatos')}>
+                                <FontAwesomeIcon className="h-5 w-6" icon={faFileClipboard} />
+                                <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
+                                    <span className='md:inline min-[200px]:hidden lg:text-left min-[200px]:text-center'>
+                                        <strong>Formatos</strong>
                                     </span>
                                 </div>
                             </SideLink>
@@ -317,61 +323,16 @@ const Navbar = ({ auth, children }) => {
             </div>
 
             <div className='bg-white' style={open ? { width: '87%' } : { width: '95%' }}>
-                <div className='flex py-5 pr-5 pl-16 justify-between items-center h-14 border-b border-neutral-100 shadow-md'>
-                    <div className='text-slate-400'>
-                        <label className='hidden md:block'>Bienvenido(a) {auth.user.username}</label>
+                <div className='flex p-5 justify-between items-center h-14 border-b border-neutral-100 shadow-md'>
+                    <div className='flex text-slate-400'>
+                        <div onClick={() => setOpen(!open)} className='m-auto w-10 h-10 text-lx text-[#007CBC] cursor-pointer flex items-center justify-center rounded-full'>
+                            <FontAwesomeIcon className=" h-5 w-10" icon={faBars} />
+                        </div>
+
+                        <label className='hidden md:block m-auto ml-5'>Bienvenido(a) {auth.user.username}</label>
                     </div>
 
                     <div className='flex flex-row gap-2 md:gap-6'>
-                        {/*
-                            <NotificacionBell 
-                                cantidad={auth.cantidad_secretaria}
-                                titulo={'Secretaría'}
-                                ruta ={'d.solicitud.secretaria'}
-                                texto = {'Pendientes'}
-                                datos={'no-adeudo'}
-                            />
-
-                            <NotificacionBell 
-                                cantidad={auth.cantidad_jefatura}
-                                titulo={'Jefatura'}
-                                ruta ={'d.solicitud.jefatura'}
-                                texto = {'Validadas | Jefatura'}
-                                datos={'no-adeudo'}
-                            />
-
-                            <NotificacionBell 
-                                cantidad={auth.cantidad_AE}
-                                titulo={'AE'}
-                                ruta ={'d.archivoEstudiantil'}
-                                texto = {'Archivo Estudiantil'}
-                                datos={'no-adeudo'}
-                            />
-
-                            <NotificacionBell 
-                                cantidad={auth.cantidad_FAC}
-                                titulo={'Facultades'}
-                                ruta ={'d.facultades'}
-                                texto = {'Facultades'}
-                                datos={'no-adeudo'}
-                            />
-
-                            <NotificacionBell 
-                                cantidad={auth.cantidad_PAI}
-                                titulo={'Proyección Social'}
-                                ruta ={'d.durs'}
-                                texto = {'Proyección social'}
-                                datos={'no-adeudo'}
-                            />
-
-                            <NotificacionBell 
-                                cantidad={auth.cantidad_OEFC}
-                                titulo={'Caja'}
-                                ruta ={'d.oefc'}
-                                texto = {'Caja'}
-                                datos={'no-adeudo'}
-                            />
-                            */}
 
                         <div className='rounded-md px-2 font-bold text-slate-200 text-md border border-[#007CBC]'>
                             <Dropdown>

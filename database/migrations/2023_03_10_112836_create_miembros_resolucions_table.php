@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('id_resolucion')->references('id_resolucion')->on('resolucions')->onUpdate('cascade')->onDelete('cascade');
             //id persona
             $table->unsignedBigInteger('id_persona');
-            $table->foreign('id_persona')->references('id_persona')->on('personas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_persona')->references('id_persona')->on('personas');
 
             $table->string('descripcionMiembro')->nullable();
 

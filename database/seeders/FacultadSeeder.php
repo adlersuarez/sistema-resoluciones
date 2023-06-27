@@ -42,7 +42,7 @@ class FacultadSeeder extends Seeder
         ]);
 
         $facultad = Facultad::create([
-            'c_nomFacultad'=>'Ciencias de la Salud',
+            'c_nomFacultad'=>'Facultad de Ciencias de la Salud',
             'c_acroFacultad'=>'CS',
         ]);
 
