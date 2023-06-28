@@ -64,6 +64,7 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::post('/resoluciones-upla/formatos/storeAuspicioAcademico','storeAuspicioAcademico')->name('r.formatos.store.AuspicioAcademico');
         //
         Route::get('/resoluciones-upla/formatos/registrar/cambio-modalidad-ingreso','createCambioModalidadIngreso')->name('r.formatos.registrar.CambioModalidadIngreso');
+        Route::post('/resoluciones-upla/formatos/storeCambioModalidadIngreso','storeAuspicioAcademico')->name('r.formatos.store.CambioModalidadIngreso');
         //
         Route::get('/resoluciones-upla/formatos/registrar/presupuesto-institucional-apertura','createPia')->name('r.formatos.registrar.Pia');
         //

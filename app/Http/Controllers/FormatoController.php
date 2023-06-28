@@ -8,6 +8,8 @@ use App\Models\Resolucion;
 use App\Models\DetalleResolucionVisto;
 use App\Models\DetalleResolucionConsiderando;
 use App\Models\DetalleResolucionAsunto;
+use App\Models\ModalidadIngreso;
+use App\Models\Persona;
 
 use Illuminate\Http\Request;
 
@@ -208,9 +210,125 @@ class FormatoController extends Controller
     //Formato Cambio de modalidad de ingreso
     public function createCambioModalidadIngreso() 
     {
+        $estudiantes = Persona::where('estudiantes.id_estudiante','<>',1)
+        ->join('detalle_tipo_personas','detalle_tipo_personas.id_persona','=','personas.id_persona')
+        ->join('estudiantes','detalle_tipo_personas.id_estudiante','=','estudiantes.id_estudiante')
+        ->join('especialidads','especialidads.id_especialidad','=','estudiantes.id_especialidad')
+        ->join('carrera_profesionals','carrera_profesionals.id_carreraProfesional','=','especialidads.id_carreraProfesional')
+        ->join('facultads','carrera_profesionals.id_facultad','=','facultads.id_facultad')
+        ->join('tipo_estudiantes','tipo_estudiantes.id_tipoEstudiante','=','estudiantes.id_tipoEstudiante')
+        ->get();
+
+        $modalidades = ModalidadIngreso ::all();
+
         return Inertia::render('Admin/Formatos/Tipos/CambioModalidadIngreso',[
+            'estudiantes' => $estudiantes,
+            'modalidades' => $modalidades
         ]);
     }
+
+    public function storeCambioModalidadIngreso(Request $request)
+    {
+        $request->validate([
+            'visto_resolucion' => 'required',
+            'numeroResolucion' => 'required',
+            'fechaResolucion' => 'required',
+            'modalidad_pre' => 'required',
+            'modalidad_pos' => 'required',
+
+            'asuntos' => 'required',
+            'considerando' => 'required',
+            'imagenQR64' => 'required',
+        ]);
+
+        //dd($request);
+
+        $resolucion = $request->all();
+
+        $year_fecha = date("Y",strtotime($resolucion['fechaResolucion']));
+
+        $numRes = $resolucion['numeroResolucion'];
+        $numRes = sprintf("%03d", $numRes);
+
+        $acroTipo = 'CU-UPLA';
+
+        $nombreRes= $numRes.'-'.$year_fecha.'-'.$acroTipo;
+
+        //Crear resolucion
+        Resolucion::create([
+            'id' => auth::user()->id,
+            'id_tipoSesion' => 1,
+            'id_tipoResolucion' => 3,
+            'id_carreraProfesional' => 1,
+            'id_sede' => 1,
+            'nombreResolucion' => $nombreRes,
+            'numeroResolucion' => $resolucion['numeroResolucion'],
+            'archivoResolucion' => $nombreRes.".docx",
+            'descripcion_vistoResolucion' => $resolucion['visto_resolucion'],
+            'fechaResolucion' => $resolucion['fechaResolucion'],
+        ]);
+
+        //ID resolucion
+        $idResolucion = Resolucion::query()
+        ->orderBy('created_at','desc')
+        ->first();
+
+        // Visto
+        DetalleResolucionVisto::create([
+            'id_resolucion' => $idResolucion->id_resolucion,
+            'descripcion_vistoResolucion' => $resolucion['visto_resolucion'],
+        ]);
+    
+        // Considerando
+        foreach ($resolucion['considerando'] as $considerando) {
+            //
+            DetalleResolucionConsiderando::create([
+                'id_resolucion' => $idResolucion->id_resolucion,
+                'descripcion_considerandoResolucion' => $considerando['descripcion'],
+            ]);
+        }
+
+        $count = 0;
+        // Lista Asuntos
+        foreach ($resolucion['asuntos'] as $asunto){
+            //dd($asunto);
+            DetalleResolucionAsunto::create([
+                'id_resolucion' => $idResolucion->id_resolucion,
+                'id_tipoAsunto' => $asunto['id'],
+                'descripcion_asuntoResolucion' => $asunto['descripcion'],
+                'imagen_asuntoResolucion' => '',
+            ]);
+        }
+
+
+        //fecha con puntos
+        $day_fecha = substr($resolucion['fechaResolucion'], 8, 2);
+        $mes_fecha = substr($resolucion['fechaResolucion'], 5, 2);
+        $year_fecha = substr($resolucion['fechaResolucion'], 0, 4);
+
+        $fecha_puntos = $day_fecha.".".$mes_fecha.".".$year_fecha;
+        //guardar img64 a png
+        $data64 = $resolucion['imagenQR64'];
+        list($type, $data64) = explode(';', $data64);
+        list(, $data64)      = explode(',', $data64);
+        $data64 = base64_decode($data64);
+        file_put_contents('documentos/resoluciones/codigoQr/'.$nombreRes.'_'.$fecha_puntos.'.png', $data64);
+
+        Resolucion::where('id_resolucion', $idResolucion->id_resolucion)
+        ->update([
+            'c_codigoQr' => $nombreRes.'_'.$fecha_puntos.'.png'
+        ]);
+
+        //CREAR DOCUMENTO
+        $funciones = New ResolucionController();
+        $funciones->generarBarcode($idResolucion->id_resolucion,$nombreRes);
+
+        $formatos_funciones = New FormatoController();
+        $formatos_funciones->generarAuspicioAcademicoWord($resolucion,$nombreRes,$idResolucion->id_resolucion);
+
+        return redirect()->route('r.resoluciones');
+    }
+
 
     //Formato PIA - Presupuesto Institucional
     public function createPia() 

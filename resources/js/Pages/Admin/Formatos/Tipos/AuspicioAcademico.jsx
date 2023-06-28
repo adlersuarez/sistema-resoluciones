@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '@/Layouts/Navbar'
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faArrowAltCircleLeft, faArrowDown, faArrowUp, faCheck, faCircle, faCircleDot, faEdit, faFileWord, faListCheck, faPencil, faPlus, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faArrowDown, faArrowUp, faCircle, faEdit, faFileWord, faPlus, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';

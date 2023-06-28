@@ -50,5 +50,9 @@ class TipoAsuntoSeeder extends Seeder
         $tipo_asunto = TipoAsunto::create([
             'c_nombreTipoAsunto'=>'Autorizar',
         ]);
+
+        $tipo_asunto = TipoAsunto::create([
+            'c_nombreTipoAsunto'=>'Rectificar',
+        ]);
     }
 }
