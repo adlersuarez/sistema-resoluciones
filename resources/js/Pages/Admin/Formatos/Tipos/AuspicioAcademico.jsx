@@ -2,11 +2,14 @@ import React from 'react'
 import Navbar from '@/Layouts/Navbar'
 import { Head, useForm, Link } from '@inertiajs/inertia-react';
 import TitlePages from '@/Components/Titulo/TitlePages';
-import { faArrowAltCircleLeft, faArrowDown, faArrowUp, faCircle, faEdit, faFileWord, faPlus, faRefresh, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleLeft, faCircle, faFileWord, faPlus, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
 import QRCode from 'react-qr-code';
+import VistoResolucion from '@/Components/VistaPreviaResoluciones/VistoResolucion';
+import ConsiderandoResolucion from '@/Components/VistaPreviaResoluciones/ConsiderandoResolucion';
+import AsuntoResolucion from '@/Components/VistaPreviaResoluciones/AsuntoResolucion';
 
 var num_resolucion = ''
 var fecha_resolucion = new Date().toISOString().split('T')[0]
@@ -532,7 +535,7 @@ const AuspicioAcademico = ({ auth, facultades }) => {
                                     <hr className='my-4' />
                                     <div className='flex justify-between mb-3'>
                                         <h1 className='font-bold'>VISTOS</h1>
-                                        {   localStorage.getItem('visto_resolucion') == '' &&
+                                        {localStorage.getItem('visto_resolucion') == '' &&
                                             <div className="flex text-white ">
                                                 <Link onClick={() => agregar_visto()} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
                                                     <div className='m-auto'>
@@ -697,7 +700,7 @@ const AuspicioAcademico = ({ auth, facultades }) => {
                                     <div className='pl-4'>
                                         <div>
                                             <strong>AUTORIZAR </strong>
-                                            el uso del emblema de la Universidad Peruana Los Andes al: 
+                                            el uso del emblema de la Universidad Peruana Los Andes al:
                                         </div>
                                         <textarea
                                             type="text"
@@ -742,28 +745,16 @@ const AuspicioAcademico = ({ auth, facultades }) => {
 
                             {
                                 (localStorage.getItem('visto_resolucion') != '' && localStorage.getItem('fecha_resolucion') != '') &&
-                                <div>
+                                <>
                                     <div className='flex text-left text-lg justify-between'>
                                         <strong> VISTOS:</strong>
                                         <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
                                             <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
                                         </Link>
                                     </div>
-                                    <div className='my-2 text-justify text-base' >
-                                        <div className='grid grid-cols-12 mt-2'>
-                                            <div className='col-span-11'>
-                                                <p> {localStorage.getItem('visto_resolucion')} </p>
-                                            </div>
-                                            <div className='col-span-1 flex'>
-                                                <Link onClick={() => editar_visto()}
-                                                    className='flex m-auto '>
-                                                    <FontAwesomeIcon className="h-5 mx-0.5 hover:text-green-700" icon={faEdit} />
-                                                </Link>
-                                            </div>
-                                        </div>
 
-                                    </div>
-                                </div>
+                                    <VistoResolucion />
+                                </>
                             }
 
                             {
@@ -777,16 +768,18 @@ const AuspicioAcademico = ({ auth, facultades }) => {
                                 listaConsiderando.length != 0 &&
                                 <>
                                     <hr className='my-4' />
-                                    <div className='flex mt-4'>
+                                    <div className='flex mt-4 justify-between'>
                                         <strong className='my-auto text-lg'>CONSIDERANDO:</strong>
-                                        {/*<Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
-                                       <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
-                                   </Link>*/}
+                                        <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
+                                            <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
+                                        </Link>
                                     </div>
+
+                                    <ConsiderandoResolucion listaConsiderando={listaConsiderando}/>
                                 </>
                             }
 
-                            {listaConsiderando.map((considerando) => {
+                            {/*listaConsiderando.map((considerando) => {
 
                                 return (
                                     <div className='grid grid-cols-12 mt-2' key={considerando.id}>
@@ -824,20 +817,24 @@ const AuspicioAcademico = ({ auth, facultades }) => {
                                     </div>
                                 )
                             })
-                            }
+                            */}
+                            
 
                             {
                                 listaAsuntos.length != 0 &&
                                 <>
                                     <hr className='my-4' />
-                                    <div className='flex gap-4 mt-4'>
+                                    <div className='flex gap-4 mt-4 justify-between'>
                                         <strong className='my-auto text-lg'>SE RESUELVE:</strong>
-
+                                        <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
+                                            <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
+                                        </Link>
                                     </div>
+                                    <AsuntoResolucion listaAsuntos={listaAsuntos}/>
                                 </>
                             }
 
-                            {listaAsuntos.map((asunto, index) => {
+                            {/*listaAsuntos.map((asunto, index) => {
 
                                 return (
                                     <div className='grid grid-cols-12 mt-2' key={asunto.cod}>
@@ -880,7 +877,7 @@ const AuspicioAcademico = ({ auth, facultades }) => {
                                 )
                             })
 
-                            }
+                            */}
 
                             {
                                 codigo_qr &&
