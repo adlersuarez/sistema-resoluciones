@@ -64,11 +64,13 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::post('/resoluciones-upla/formatos/storeAuspicioAcademico','storeAuspicioAcademico')->name('r.formatos.store.AuspicioAcademico');
         //
         Route::get('/resoluciones-upla/formatos/registrar/cambio-modalidad-ingreso','createCambioModalidadIngreso')->name('r.formatos.registrar.CambioModalidadIngreso');
-        Route::post('/resoluciones-upla/formatos/storeCambioModalidadIngreso','storeAuspicioAcademico')->name('r.formatos.store.CambioModalidadIngreso');
+        Route::post('/resoluciones-upla/formatos/storeCambioModalidadIngreso','storeCambioModalidadIngreso')->name('r.formatos.store.CambioModalidadIngreso');
         //
         Route::get('/resoluciones-upla/formatos/registrar/presupuesto-institucional-apertura','createPia')->name('r.formatos.registrar.Pia');
+        Route::post('/resoluciones-upla/formatos/storePia','storePia')->name('r.formatos.store.Pia');
         //
         Route::get('/resoluciones-upla/formatos/registrar/presupuesto-institucional-apertura-modificado','createPiaModificado')->name('r.formatos.registrar.PiaModificado');
+        Route::post('/resoluciones-upla/formatos/storePiaModificado','storePiaModificado')->name('r.formatos.store.PiaModificado');
         //
         Route::get('/resoluciones-upla/formatos/registrar/por-navidad','createPorNavidad')->name('r.formatos.registrar.PorNavidad');
         //
