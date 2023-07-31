@@ -74,6 +74,7 @@ const PiaModificado = ({ auth }) => {
         fechaResolucion: new Date().toISOString().split('T')[0],
     });
 
+    
     //VISTO
     function agregar_visto() {
         const visto_datos = `La Resolución N° ${numeroResolucion(data.num_res_visto)}-2023-CU-UPLA de fecha ${fecha(data.fecha_res_visto)}, Oficio Digital N° ${numeroResolucion(data.num_ofi_visto)}-2023-OPLAN-UPLA de fecha ${fecha(data.fecha_ofi_visto)}, Oficio Digital N° ${numeroResolucion(data.num_ofi_visto_2)}-2023-R-UPLA de fecha ${fecha(data.fecha_ofi_visto_2)} y acuerdo de Consejo Universitario en sesión extraordinaria de fecha ${fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,`

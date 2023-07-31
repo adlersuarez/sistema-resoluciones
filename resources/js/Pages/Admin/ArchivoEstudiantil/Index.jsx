@@ -11,6 +11,8 @@ import FooterTablaNotFound from '@/Components/Tablas/FooterTablaNotFound';
 
 export default function Index({auth,estado_adeudo}) {
 
+    console.log(estado_adeudo)
+
     return (
         <Navbar auth={auth}>
             <Head title='Archivo Estudiantil'/>
@@ -73,6 +75,11 @@ export default function Index({auth,estado_adeudo}) {
                           
                     </tbody>
                 </table>
+            </div>
+            <div>
+                {
+
+                }
             </div>
             
             <Pagination className="mt-2" links={estado_adeudo.links} />
