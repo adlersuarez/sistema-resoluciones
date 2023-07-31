@@ -1,7 +1,7 @@
 import React from 'react'
 import { Head } from '@inertiajs/inertia-react';
 import { faFilePen, faFolderTree, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
-import UserTarjetaLink from '@/Components/UserTarjetas/UserTarjetaLink';
+import UserTarjetaLink from '@/Components/Tarjetas/TarjetaLink';
 import NavbarUser from '@/Layouts/NavbarUser';
 
 const User = ({ auth }) => {
