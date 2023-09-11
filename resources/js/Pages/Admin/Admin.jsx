@@ -30,9 +30,11 @@ export default function Admin({auth}) {
                 RECTORADO
             </div>
             <hr className='my-4'/>
-            <div className='flex bg-white p-4 h-[590px]'>
+            {/*
+                <div className='flex bg-white p-4 h-[590px]'>
                 <img src="images/fondoPantalla/universidad.jpg" alt="" className='w-full object-cover' />
             </div>
+            */}
             
         </Navbar>
     );

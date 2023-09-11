@@ -30,3 +30,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     width: auto;
 } */
 
+/* Estilo para el tooltip */
+/*a[title]:hover::after {
+    content: attr(title);
+    background-color: #333;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }*/
