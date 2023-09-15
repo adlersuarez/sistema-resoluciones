@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import TableRowInputs from './TableRowInputs';
+import { Link } from '@inertiajs/inertia-react';
+import { faPlus, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 localStorage.setItem('componentes', JSON.stringify([]));
 
@@ -11,22 +14,25 @@ export default function TablaCalendario() {
     useEffect(() => {
         const storedComponentes = JSON.parse(localStorage.getItem('componentes'));
         if (storedComponentes) {
-          setComponentes(storedComponentes);
+            setComponentes(storedComponentes);
         }
-      }, []);
-    
-      // Función para manejar el clic en el botón
-      const handleAgregarClick = () => {
-        const newComponentes = [...componentes, <TableRowInputs index={componentes.length + 1} key={componentes.length + 1} 
+    }, []);
+
+    // Función para manejar el clic en el botón
+    const handleAgregarClick = () => {
+        const newComponentes = [...componentes, <TableRowInputs index={componentes.length + 1} key={componentes.length + 1}
         />];
         setComponentes(newComponentes);
         localStorage.setItem('componentes', JSON.stringify(newComponentes));
-      };
+    };
 
     return (
         <>
-            <button onClick={handleAgregarClick}>
-                Agregar Nuevo Componente
+            <button onClick={handleAgregarClick} className='flex bg-yellow-600 hover:bg-yellow-800 h-9 w-44 rounded-lg text-white'>
+                <div className='m-auto'>
+                    <strong className=' mr-2'>Agregar Actividad</strong>
+                    <FontAwesomeIcon className="m-auto h-4" icon={faPlusSquare} />
+                </div>
             </button>
 
             <table className="w-full border-collapse mt-10 h-0">
@@ -45,7 +51,7 @@ export default function TablaCalendario() {
                     </tr>
                 </thead>
                 <tbody>
-                    <TableRowInputs index={0}/>
+                    <TableRowInputs index={0} />
                     {/* Mostrar los componentes agregados */}
                     {componentes.map((componente, index) => (
                         componente

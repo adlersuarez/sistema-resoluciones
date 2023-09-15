@@ -756,7 +756,7 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                 <div className="">
                                     {/* Miembros Resolucion */}
                                     <div className='grid grid-cols-12 gap-4 my-4'>
-                                        <label className="col-span-2 my-auto">Estudiante </label>
+                                        <label className="col-span-2 my-auto">Persona </label>
                                         <div className="flex flex-col my-auto col-span-4">
                                             <input
                                                 type="text"

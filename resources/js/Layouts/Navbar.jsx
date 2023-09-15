@@ -65,7 +65,7 @@ const Navbar = ({ auth, children }) => {
                         {
                             'id': 0,
                             'nombre': 'Fecha',
-                            'ruta': 'admin',
+                            'ruta': 'admin.reporte',
                         },
                         {
                             'id': 1,
@@ -167,6 +167,9 @@ const Navbar = ({ auth, children }) => {
         ],
 
     };
+
+    const fechaActual = new Date();
+    const añoActual = fechaActual.getFullYear();
 
     return (
         <div className='flex justify-between relative '>
@@ -404,7 +407,7 @@ const Navbar = ({ auth, children }) => {
                 </div>
                 <div className=' h-14 flex items-center justify-center text-slate-400 border-t-2 border-neutral-100'>
                     <div>
-                        SISTEMA GESTIÓN RESOLUCIÓN   |   UPLA - 2023
+                        SISTEMA GESTIÓN RESOLUCIÓN   |   UPLA - {añoActual}
                     </div>
                 </div>
             </div>

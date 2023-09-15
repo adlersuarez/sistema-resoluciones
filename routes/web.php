@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ReporteController;
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -46,6 +47,10 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
        Route::get('/resoluciones-upla', 'index')->name('admin');
        //Route::get('/resoluciones-upla/exportReporte', 'generarReporte')->name('reporte');
     });
+
+    Route::controller(ReporteController::class)->group(function (){
+        Route::get('/resoluciones-upla/reportes', 'index')->name('admin.reporte');
+     });
 
     Route::controller(ResolucionController::class)->group(function (){
         Route::get('/resoluciones-upla/resoluciones', 'index')->name('r.resoluciones');
