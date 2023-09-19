@@ -254,7 +254,7 @@ const PiaModificado = ({ auth }) => {
         <Navbar auth={auth}>
             <Head title="Resoluciones" />
             <div className='w-full flex justify-between mt-10 mb-5'>
-                <TitlePages texto={'Registrar Resolución de Auspicio Académico'} icono={faFileWord} />
+                <TitlePages texto={'Registrar Resolución PIA modificado'} icono={faFileWord} />
                 <div className="flex items-center justify-between mb-6">
                     <Link className="pr-5 pl-3 py-2 text-white bg-[#007CBC] rounded-md focus:outline-none hover:bg-[#0064bc]"
                         //onClick={() => limpiar()}

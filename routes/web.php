@@ -84,6 +84,7 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         Route::get('/resoluciones-upla/formatos/registrar/propuesta-jefe-of','createPropuestaJefe')->name('r.formatos.registrar.PropuestaJefe');
         //
         Route::get('/resoluciones-upla/formatos/registrar/calendario-academico-general','createCalendarioAcademicoGeneral')->name('r.formatos.registrar.CalendarioAcademicoGeneral');
+        Route::post('/resoluciones-upla/formatos/storeCalendarioAcademicoGeneral','storeCalendarioAcademicoGeneral')->name('r.formatos.store.CalendarioAcademicoGeneral');
         //
         Route::get('/resoluciones-upla/formatos/registrar/calendario-academico-internado-medico','createCalendarioAcademicoInternadoMedico')->name('r.formatos.registrar.CalendarioAcademicoInternadoMedico');
         //

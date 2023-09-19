@@ -57,7 +57,10 @@ class ResolucionController extends Controller
 
         $detalle_visto = DetalleResolucionVisto::all();
         $detalle_considerando = DetalleResolucionConsiderando::all();
-        $detalle_asunto = DetalleResolucionAsunto::all();
+        // $detalle_asunto = DetalleResolucionAsunto::all();
+        $detalle_asunto = DetalleResolucionAsunto::query()
+        ->join('tipo_asuntos','tipo_asuntos.id_tipoAsunto','=','detalle_resolucion_asuntos.id_tipoAsunto')
+        ->get();
  
         return Inertia::render('Admin/Resoluciones/Index',[
             'resoluciones' => $resoluciones,
@@ -120,6 +123,7 @@ class ResolucionController extends Controller
         $resolucion = $request->all();
 
         //dd($resolucion['considerando']);
+
 
         $tipoRes = TipoResolucion::where('id_tipoResolucion',$resolucion['id_tipoResolucion'])
         ->first();

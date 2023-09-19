@@ -48,8 +48,12 @@ const paginationComponentOptions = {
 
 export default function DataTableResolucion({ datos, miembros, sesion, resolucion , detalle }) {
 
-    //console.log(detalle.visto)
-    //console.log(resolucion)
+    // console.log(datos)
+    // console.log(miembros)
+    // console.log(sesion)
+    // console.log(resolucion)
+    console.log(detalle)
+
     //Eliminar svg de DataTable
     useEffect(() => {
         var element = document.getElementsByClassName("sc-lnskGP");
@@ -66,7 +70,7 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
         const resolucion = datos.filter(
             dato => dato.id_resolucion === id
         )
-
+        
         const miembrosResolucion = miembros.filter(
             miembro => miembro.id_resolucion === id
         )
@@ -136,9 +140,9 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
         var elementoVisto = ''
         elementoVisto += `<div style='padding-top: 5px; padding-bottom: 5px; text-align: justify;'>`
         elementoVisto += `${visto_resolucion[0].descripcion_vistoResolucion}`
-        elementoVisto += ` y acuerdo de ${resolucion[0].nombreTipoResolucion} en Sesion Extraordinaria `
-        elementoVisto += ` de fecha ${fecha_vista_previa}, `
-        elementoVisto += `respectivamente; y,`
+        // elementoVisto += ` y acuerdo de ${resolucion[0].nombreTipoResolucion} en Sesion Extraordinaria `
+        // elementoVisto += ` de fecha ${fecha_vista_previa}, `
+        // elementoVisto += `respectivamente; y,`
         elementoVisto += `</div>`
 
         var elementosConsiderando = ''
@@ -162,7 +166,7 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
             
             elementosAsunto += `<div style='width: 8%; text-align: left;'><strong>Art. ${cont}°</strong></div>`
             
-            elementosAsunto += `<div style='width: 92%; text-align: justify;'><p><strong> APROBAR </strong>${asunt.descripcion_asuntoResolucion}</p>`
+            elementosAsunto += `<div style='width: 92%; text-align: justify;'><p><strong> ${asunt.c_nombreTipoAsunto.toUpperCase()} </strong>${asunt.descripcion_asuntoResolucion}</p>`
 
             if(asunt.imagen_asuntoResolucion){
                 elementosAsunto += `<img src='${'/documentos/resoluciones/imagenes/'+asunt.imagen_asuntoResolucion}'>`
