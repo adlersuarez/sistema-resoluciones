@@ -9,8 +9,8 @@ import { Inertia } from '@inertiajs/inertia';
 import QRCode from 'react-qr-code';
 import VistoResolucion from '@/Components/VistaPreviaResoluciones/VistoResolucion';
 import ConsiderandoResolucion from '@/Components/VistaPreviaResoluciones/ConsiderandoResolucion';
-import AsuntoResolucion from '@/Components/VistaPreviaResoluciones/AsuntoResolucion';
 import TablaCalendario from '@/Components/Tablas/TablaCalendario';
+import AsuntoResolucionCalendario from '@/Components/VistaPreviaResoluciones/AsuntoResolucionCalendario';
 
 var num_resolucion = ''
 var fecha_resolucion = new Date().toISOString().split('T')[0]
@@ -215,6 +215,26 @@ const CalendarioAcademicoInternadoMedico = ({ auth }) => {
     }
     function yearFecha(id) {
         return id.slice(0, 4)
+    }
+
+    function textoCodigoQR() {
+        var texto = ''
+
+        if (localStorage.getItem('num_resolucion') != '') {
+            texto += numeroResolucion(localStorage.getItem('num_resolucion'))
+        }
+
+        if (localStorage.getItem('fecha_resolucion') != '') {
+            texto += '-' + yearFecha(localStorage.getItem('fecha_resolucion'))
+        }
+
+        texto += '-CU'
+
+        if (localStorage.getItem('fecha_resolucion') != '') {
+            texto += ' ' + fecha(localStorage.getItem('fecha_resolucion'))
+        }
+
+        return texto
     }
 
     function textoCodigoQR() {
@@ -455,13 +475,99 @@ const CalendarioAcademicoInternadoMedico = ({ auth }) => {
                         </div>
                     </div>
                 </div>
-                <div className='w-4/12 bg-white shadow-sm sm:rounded-lg p-4 ml-4 overflow-hidden'>
+                <div className='bg-white shadow-sm sm:rounded-lg w-6/12 p-4 ml-4 overflow-hidden'>
                     <div className='h-[800px] border-black border-[1px] p-2 overflow-x-hidden max-h-[745px] max-[745px]:overflow-scroll'>
                         <div className='my-2 text-center text-xl'>
-                            <strong>RESOLUCIÓN
-
-
+                            <strong>RESOLUCIÓN DE CONSEJO UNIVERSITARIO
+                                {
+                                    localStorage.getItem('num_resolucion') != '' &&
+                                    '  N° ' + numeroResolucion(localStorage.getItem('num_resolucion'))
+                                }
+                                {
+                                    (localStorage.getItem('fecha_resolucion') != '' && localStorage.getItem('num_resolucion') != '') &&
+                                    '-' + yearFecha(localStorage.getItem('fecha_resolucion')) + '-CU-UPLA'
+                                }
                             </strong>
+                            {
+                                data.fechaResolucion &&
+                                <div className='my-2 text-right text-base '>
+                                    <label>Huancayo, {fecha(localStorage.getItem('fecha_resolucion'))}</label>
+                                </div>
+                            }
+
+                            {
+                                (localStorage.getItem('visto_resolucion') != '' && localStorage.getItem('fecha_resolucion') != '') &&
+                                <>
+                                    <div className='flex text-left text-lg justify-between'>
+                                        <strong> VISTOS:</strong>
+                                        <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
+                                            <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
+                                        </Link>
+                                    </div>
+
+                                    <VistoResolucion />
+                                </>
+                            }
+
+                            {
+                                (localStorage.getItem('visto_resolucion') == '' && listaConsiderando.length == 0) &&
+                                <div className='flex w-full h-8 bg-slate-500 text-center text-white justify-center'>
+                                    <strong className='m-auto'>VISTA PREVIA</strong>
+                                </div>
+                            }
+
+                            {
+                                listaConsiderando.length != 0 &&
+                                <>
+                                    <hr className='my-4' />
+                                    <div className='flex mt-4 justify-between'>
+                                        <strong className='my-auto text-lg'>CONSIDERANDO:</strong>
+                                        <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
+                                            <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
+                                        </Link>
+                                    </div>
+
+                                    <ConsiderandoResolucion listaConsiderando={listaConsiderando}/>
+                                </>
+                            }
+
+    
+
+                            {
+                                listaAsuntos.length != 0 &&
+                                <>
+                                    <hr className='my-4' />
+                                    <div className='flex gap-4 mt-4 justify-between'>
+                                        <strong className='my-auto text-lg'>SE RESUELVE:</strong>
+                                        <Link className='rounded-full bg-green-600 hover:bg-green-700 text-white h-7 w-7 flex'>
+                                            <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
+                                        </Link>
+                                    </div>
+                                    <AsuntoResolucionCalendario listaAsuntos={listaAsuntos}/>
+                                </>
+                            }
+
+
+                            {
+                                codigo_qr &&
+                                <div className='mt-4 text-center uppercase'>
+                                    <hr className='my-10' />
+
+                                    {<div className='w-40 h-40 m-auto' id='diagram_image'>
+                                        <QRCode
+                                            id='svblock'
+                                            size={256}
+                                            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                                            value={codigo_qr}
+                                            viewBox={`0 0 256 256`}
+                                            fgColor={'#007CBC'}
+                                        />
+                                    </div>}
+                                    <label className='text-[#007CBC] font-bold text-sm mt-4'>{codigo_qr}</label>
+                                    <img className='hidden' id="diagram_png" />
+
+                                </div>
+                            }
                         </div>
 
                     </div>
