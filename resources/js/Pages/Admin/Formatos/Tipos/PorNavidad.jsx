@@ -76,7 +76,7 @@ const PorNavidad = ({ auth }) => {
 
     //VISTO
     function agregar_visto() {
-        const visto_datos = `El Oficio N° ${numeroResolucion(data.num_res_visto)} DGA-2023-UPLA de fecha ${fecha(data.fecha_res_visto)}, Oficio Digital N° ${numeroResolucion(data.num_ofi_visto)}-2023-OPLAN-UPLA de fecha ${fecha(data.fecha_ofi_visto)}, Oficio Digital N° ${numeroResolucion(data.num_ofi_visto_2)}-2023-R-UPLA de fecha ${fecha(data.fecha_ofi_visto_2)} y acuerdo de Consejo Universitario en sesión extraordinaria de fecha ${fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,`
+        const visto_datos = `El Oficio N° ${numeroResolucion(data.num_res_visto)} DGA-2023-UPLA de fecha ${fecha(data.fecha_res_visto)}, Informe N° ${numeroResolucion(data.num_ofi_visto)}-2023-OPLAN-UPLA de fecha ${fecha(data.fecha_ofi_visto)}, Proveido N° ${numeroResolucion(data.num_ofi_visto_2)}-2023-UPLA de fecha ${fecha(data.fecha_ofi_visto_2)} y acuerdo de Consejo Universitario en sesión extraordinaria de fecha ${fecha(localStorage.getItem('fecha_resolucion'))}, respectivamente; y,`
 
         localStorage.setItem("visto_resolucion", visto_datos);
 
@@ -87,37 +87,52 @@ const PorNavidad = ({ auth }) => {
     //CONSIDERANDO
     function agregar_considerando() {
         listaConsiderando.push({
-            descripcion: "Ley Universitaria Ley N° 30220, en su artículo 59°, Numeral 59.3, establece que el Consejo Universitario tiene atribuciones; entre otros, aprobar el Presupuesto General de la Universidad, y resolver todo lo pertinente a su economía;",
+            descripcion: "Que, la Universidad Peruana Los Andes, se rige por sus principios y por las disposiciones pertinentes de la Constitución Política del Perú, Ley Universitaria N° 30220, Ley General de Educación N° 28044, el presente Estatuto, su Reglamento de Organización y Funciones (ROF), el Manual de Organización y Funciones (MOF); y demás reglamentos y normas conexas;",
             id: "1",
             nombre: "Estatuto",
             tipo: "General"
         })
 
         listaConsiderando.push({
-            descripcion: "El artículo 23° inc. b) y v) del Estatuto de la Universidad Peruana Los Andes, establece que el Consejo Universitario tiene atribución para aprobar a propuesta del Rector el (…) Presupuesto Institucional de Apertura (PIA), (…); y, conocer y resolver todos los demás asuntos que no están encomendados a las autoridades universitarias;",
+            descripcion: "El Estatuto de la Universidad Peruana Los Andes en su Artículo 177° de las bonificaciones adicionales que tienen derecho a percibir los Docentes Ordinarios son las siguientes: Gratificaciones: Gratificación de un haber mensual en cada uno de los siguientes casos: Por Fiestas Patrias; Por Navidad; y Por retorno vacacional.",
             id: "2",
             nombre: "Resolución",
             tipo: "General"
         })
 
         listaConsiderando.push({
-            descripcion: `La Resolución N° ${numeroResolucion(localStorage.getItem('num_res_visto'))}-2023-CU-UPLA de fecha ${fecha(localStorage.getItem('fecha_res_visto'))}, mediante la cual aprueba el Presupuesto Institucional de Apertura UPLA – 2023;`,
+            descripcion: `El Oficio N° ${numeroResolucion(localStorage.getItem('num_res_visto'))}-DGA-2023-UPLA de fecha ${fecha(localStorage.getItem('fecha_res_visto'))}, mediante la cual el Director General de Administración pone en conocimiento, al Rector respecto al pago por el Concepto de Navidad en el mes de Diciembre para los Decentes y no Docentes y con contrato indeterminado;`,
             id: "3",
             nombre: "Miembros",
             tipo: "General"
         })
 
         listaConsiderando.push({
-            descripcion: `El Oficio Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-R-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))}, del Rector, mediante el cual presenta el Presupuesto Institucional de Apertura UPLA – 2023 al Consejo Universitario, considerando el Oficio Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto'))};
-            `,
+            descripcion: `El Informe Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))} mediante la cual el Jefe de la Oficina de Planificación Informa al Director General sobre el presupuesto para el pago de por Navidad a los trabajadores Docente y no Docente de la UPLA;`,
+            // descripcion: `El Informe Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))}, del Rector, mediante el cual presenta el Presupuesto Institucional de Apertura UPLA – 2023 al Consejo Universitario, considerando el Oficio Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto'))};`,
             id: "4",
             nombre: "Agregado",
             tipo: "General"
         })
 
         listaConsiderando.push({
-            descripcion: `Los Miembros del Consejo Universitario en sesión extraordinaria de fecha ${fecha(localStorage.getItem('fecha_resolucion'))}, toman conocimiento del expediente y después del debate pertinente, en atención a los fundamentos señalados y en uso a las atribuciones otorgadas por ley;`,
+            descripcion: "Que, la Universidad Peruana Los Andes goza de autonomía normativa, de gobierno, académica, administrativa y económica, de conformidad con la Constitución y la Ley Universitaria N° 30220 y demás normas aplicables;",
             id: "5",
+            nombre: "Resolución",
+            tipo: "General"
+        })
+
+        listaConsiderando.push({
+            descripcion: `El Proveido N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-UPLA-R de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))} mediante la cual el Rector, traslada el Expediente al Secretario General Oficio n° 000000 para ser puesto a consideración de Consejo Universitario;`,
+            // descripcion: `El Informe Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))}, del Rector, mediante el cual presenta el Presupuesto Institucional de Apertura UPLA – 2023 al Consejo Universitario, considerando el Oficio Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto'))};`,
+            id: "6",
+            nombre: "Agregado",
+            tipo: "General"
+        })
+
+        listaConsiderando.push({
+            descripcion: `Los Miembros del Consejo Universitario en sesión extraordinaria de fecha ${fecha(localStorage.getItem('fecha_resolucion'))}, toman conocimiento del expediente y después del debate pertinente, en atención a los fundamentos señalados y en uso a las atribuciones otorgadas por ley;`,
+            id: "7",
             nombre: "Miembros",
             tipo: "General"
         })
@@ -133,19 +148,19 @@ const PorNavidad = ({ auth }) => {
                 'cod': 1,
                 'id': 1,
                 'nombre': 'APROBAR',
-                'descripcion': `el Presupuesto Institucional de Apertura Modificado 2023 en su fase programática, formulado por el Jefe de la Oficina de Planificación, la propuesta obedece a raíz de otorgar Asignación a los Planes Institucionales 2022, de Bienestar, Mantenimiento y Adquisiciones para el Retorno a las Actividades Académicas Presenciales, en merito Oficio Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-R-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))}, Instrumento de Gestión que se detalla a continuación:`,
+                'descripcion': `el pago por concepto de Navidad aprobado por el Consejo Universitario correspondiente a un sueldo a todos los trabajadores Docentes y no Docentes y con contrato indeterminado de la Universidad Peruana Los Andes.`,
             },
             {
                 'cod': 2,
                 'id': 3,
                 'nombre': 'ENCARGAR',
-                'descripcion': `al Rector, a los Vicerrectores Académico y de Investigación, a los decanos de las Facultades, al Director de la Escuela de Posgrado, a los directores generales, al Director de la Filial Chanchamayo, a los jefes de las oficinas de Economía y Finanzas, Planificación, Auditoría y Control Interno, y demás instancias académicas y administrativas, el cumplimiento de la presente resolución.`,
+                'descripcion': `al Vicerrector Académico, al Director General de Administración, a los Jefes de las Oficinas Universitarias de Bienestar Universitario, Recursos Humanos, y demás Instancias Académicas y Administrativas el cumplimiento de la presente Resolución.`,
             },
             {
                 'cod': 3,
                 'id': 5,
                 'nombre': 'TRANSCRIBIR',
-                'descripcion': `la presente resolución a las oficinas correspondientes para su conocimiento y fines pertinentes.`,
+                'descripcion': `la presente Resolución a las instancias correspondientes, para su conocimiento y fines pertinentes.`,
             },
         )
 
@@ -182,7 +197,6 @@ const PorNavidad = ({ auth }) => {
             showConfirmButton: false,
             timer: 1500,
         })
-
     }
 
     if (localStorage.getItem('fecha_resolucion') != '') {
@@ -270,8 +284,8 @@ const PorNavidad = ({ auth }) => {
                             <hr className='my-4' />
 
                             <form name="createForm" onSubmit={handleSubmit}>
-                                 {/* empieza el form*/}
-                                 <div className=''>
+                                {/* empieza el form*/}
+                                <div className=''>
                                     <div className='flex justify-between'>
                                         <div className='flex'>
                                             <h1 className='font-bold m-auto pr-2 text-xl'>RESOLUCIÓN</h1>
@@ -404,7 +418,7 @@ const PorNavidad = ({ auth }) => {
 
 
                                     <hr className='my-4' />
-                                  
+
                                     <div className="flex mx-auto mt-4 justify-center">
                                         <button type="submit" className="px-6 py-2 font-bold w-40 text-white bg-[#007CBC] rounded hover:bg-[#0064bc]">
                                             Registrar
@@ -465,11 +479,11 @@ const PorNavidad = ({ auth }) => {
                                         </Link>
                                     </div>
 
-                                    <ConsiderandoResolucion listaConsiderando={listaConsiderando}/>
+                                    <ConsiderandoResolucion listaConsiderando={listaConsiderando} />
                                 </>
                             }
 
-{
+                            {
                                 listaAsuntos.length != 0 &&
                                 <>
                                     <hr className='my-4' />
@@ -479,11 +493,11 @@ const PorNavidad = ({ auth }) => {
                                             <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
                                         </Link>
                                     </div>
-                                    <AsuntoResolucion listaAsuntos={listaAsuntos}/>
+                                    <AsuntoResolucion listaAsuntos={listaAsuntos} />
                                 </>
                             }
 
-{
+                            {
                                 codigo_qr &&
                                 <div className='mt-4 text-center uppercase'>
                                     <hr className='my-10' />
@@ -504,7 +518,6 @@ const PorNavidad = ({ auth }) => {
                                 </div>
                             }
                         </div>
-                        
                     </div>
                 </div>
             </div >
