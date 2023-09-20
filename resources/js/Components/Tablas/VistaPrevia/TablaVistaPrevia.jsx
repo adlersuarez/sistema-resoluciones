@@ -43,7 +43,7 @@ export default function TablaVistaPrevia({ datos }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {
+                    {   datos &&
                         datos.map((dato , index) => (
                             <TablaCeldasVistaPrevia celdas={dato} key={index}/>
                         ))

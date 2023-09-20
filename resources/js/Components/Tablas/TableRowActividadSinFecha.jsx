@@ -4,7 +4,16 @@ import { Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 
 var elementoActividad = {
+  tipo: 3,
   actividad: '',
+  datos: [
+    {
+      fechaDel: '',
+      fechaAl: '',
+      duracion: '',
+      detalle: '',
+    },
+  ],
   general: '',
 }
 

@@ -230,7 +230,7 @@ const Navbar = ({ auth, children }) => {
                             </SideLink>
                         </li>
 
-                        <li className='px-3'>
+                        {/*<li className='px-3'>
                             <SideLink href={route('r.contratos')} active={route().current('r.contratos')}  >
                                 <FontAwesomeIcon className="h-5 w-6" icon={faSuitcase} />
                                 <div style={open ? styleOpen : styleClose} className="flex-1 lg:ml-3 min-[200px]:ml-0">
@@ -272,7 +272,7 @@ const Navbar = ({ auth, children }) => {
                                     </span>
                                 </div>
                             </SideLink>
-                        </li>
+                        </li>*/}
 
 
                         {// Tipos
@@ -311,13 +311,13 @@ const Navbar = ({ auth, children }) => {
                             </li>
                         }
 
-                        <hr />
+                        {/*<hr />
 
                         <div style={open ? styleOpen : styleClose} className='text-white font-play ml-5 text-xl'>
                             <strong>Reportes</strong>
-                        </div>
+                    </div>*/}
                         {// Reportes
-                            <NavBarElement elementos={navBarLink.reporte} estado={open} widthLista={'w-56'} />
+                           // <NavBarElement elementos={navBarLink.reporte} estado={open} widthLista={'w-56'} />
                         }
 
                     </ul>

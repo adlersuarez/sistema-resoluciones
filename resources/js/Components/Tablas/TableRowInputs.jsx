@@ -4,6 +4,7 @@ import { Link } from '@inertiajs/inertia-react';
 import React, { useEffect, useState } from 'react';
 
 var elementoActividad = {
+  tipo: 1,
   actividad: '',
   datos: [
     {
@@ -113,7 +114,6 @@ const TableRowInputs = ({ index }) => {
               }}
               className="h-full w-full bg-transparent focus:outline-none"
             />
-
 
             <div className='w-10 flex flex-col'>
               <Link className="text-[#999999] focus:outline-none hover:text-[#3149d2] m-auto"

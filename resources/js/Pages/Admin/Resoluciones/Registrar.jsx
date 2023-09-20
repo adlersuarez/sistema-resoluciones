@@ -125,33 +125,49 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
             }
         }
 
-        Inertia.post(route('r.resoluciones.store'), {
-            _method: 'post',
-
-            id_tipoSesion: '2',
-            //id_tipoSesion: localStorage.getItem('id_sesion'),
-            id_tipoResolucion: localStorage.getItem('id_resolucion'),
-            visto_resolucion: localStorage.getItem('visto_resolucion'),
-            //id_carreraProfesional: data.id_carreraProfesional,
-            //id_sede: data.id_sede,
-            numeroResolucion: localStorage.getItem('num_resolucion'),
-            fechaResolucion: localStorage.getItem('fecha_resolucion'),
-            miembros: data.miembros,
-            asuntos: listaAsuntos,
-            //
-            considerando: listaConsiderando,
-            //imagen64
-            imagenQR64: localStorage.getItem('imagenQR_base64'),
-        })
-
         Swal.fire({
-            icon: 'success',
-            title: 'Resolución creada',
-            showConfirmButton: false,
-            timer: 1500,
+            title: 'SE CREARÁ UNA RESOLUCIÓN',
+            text: "¿Está seguro(a) de que los datos son correctos?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirmar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Inertia.post(route('r.resoluciones.store'), {
+                    _method: 'post',
+
+                    id_tipoSesion: '2',
+                    //id_tipoSesion: localStorage.getItem('id_sesion'),
+                    id_tipoResolucion: localStorage.getItem('id_resolucion'),
+                    visto_resolucion: localStorage.getItem('visto_resolucion'),
+                    //id_carreraProfesional: data.id_carreraProfesional,
+                    //id_sede: data.id_sede,
+                    numeroResolucion: localStorage.getItem('num_resolucion'),
+                    fechaResolucion: localStorage.getItem('fecha_resolucion'),
+                    miembros: data.miembros,
+                    asuntos: listaAsuntos,
+                    //
+                    considerando: listaConsiderando,
+                    //imagen64
+                    imagenQR64: localStorage.getItem('imagenQR_base64'),
+                })
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Resolución creada',
+                    showConfirmButton: false,
+                    timer: 1500,
+                })
+
+                limpiar()
+            }
         })
 
-        limpiar()
+
+
+        
     }
 
     //VISTO
@@ -789,7 +805,10 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                         </div>
 
                                         <div className="flex flex-col my-auto col-span-1 text-slate-400">
-                                            <Link onClick={() => agregar_participantes(data.id_persona)} className='flex m-auto hover:text-slate-600'>
+                                            <Link
+                                                onClick={() => agregar_participantes(data.id_persona)}
+                                                title="Agregar Usuario"
+                                                className='flex m-auto hover:text-slate-600'>
                                                 <FontAwesomeIcon className="h-6" icon={faUserPlus} />
                                             </Link>
                                         </div>
@@ -818,8 +837,10 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                     <td className='border-slate-400 border-[1px]'>
                                                                         <div className='flex m-auto h-6 text-slate-400'>
                                                                             {!estado_lista_miembro_fin(miembro.id) ?
-                                                                                <Link onClick={() => mover_abajo_participante(miembro.id)}
-                                                                                    className='flex m-auto '>
+                                                                                <Link
+                                                                                    onClick={() => mover_abajo_participante(miembro.id)}
+                                                                                    className='flex m-auto'
+                                                                                    title="Mover abajo">
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
                                                                                 </Link>
                                                                                 :
@@ -829,7 +850,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                             }
                                                                             {!estado_lista_miembro_inicio(miembro.id) ?
                                                                                 <Link onClick={() => mover_arriba_participante(miembro.id)}
-                                                                                    className='flex m-auto '>
+                                                                                    className='flex m-auto'
+                                                                                    title="Mover arriba">
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
                                                                                 </Link>
                                                                                 :
@@ -845,7 +867,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                     <td className='text-left pl-4 border-slate-400 border-[1px]'>{miembro.nombre}</td>
                                                                     <td className='border-slate-400 border-[1px]'>
                                                                         <div className='flex m-auto text-red-500'>
-                                                                            <Link onClick={() => eliminar_participante(miembro.id)} className='flex m-auto w-7 h-6'>
+                                                                            <Link onClick={() => eliminar_participante(miembro.id)} className='flex m-auto w-7 h-6'
+                                                                                title="Eliminar">
                                                                                 <FontAwesomeIcon className="m-auto h-4 hover:text-red-800" icon={faUserMinus} />
                                                                             </Link>
                                                                         </div>
@@ -952,7 +975,9 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                     {/* Asunto Resolucion */}
                                     <div className='flex justify-between '>
                                         <strong className="my-auto">Visto: </strong>
-                                        <Link className='text-green-600 hover:text-green-700 h-7 w-7 flex'>
+                                        <Link
+                                            title="Agregar Visto"
+                                            className='text-green-600 hover:text-green-700 h-7 w-7 flex'>
                                             <FontAwesomeIcon className="h-6 m-auto" icon={faFolderPlus} />
                                         </Link>
 
@@ -1022,12 +1047,14 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                 {
                                                     listaVisto.length != 0 &&
                                                     <div className="flex text-white ">
-                                                        <Link onClick={() => agregar_visto()} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
+                                                        <Link onClick={() => agregar_visto()} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-auto px-4 rounded-lg'
+                                                        //title='Confirmar'
+                                                        >
                                                             <div className='m-auto'>
                                                                 <strong className=' mr-2'>
                                                                     {
                                                                         localStorage.getItem('visto_resolucion') == '' ?
-                                                                            'Agregar'
+                                                                            'Confirmar documentos'
                                                                             :
                                                                             'Editar'
 
@@ -1057,7 +1084,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                         <div className='flex m-auto h-6 text-slate-400'>
                                                                             {!estado_lista_visto_fin(doc.id) ?
                                                                                 <Link onClick={() => mover_abajo_visto(doc.id)}
-                                                                                    className='flex m-auto '>
+                                                                                    className='flex m-auto'
+                                                                                    title="Mover abajo">
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
                                                                                 </Link>
                                                                                 :
@@ -1067,7 +1095,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                             }
                                                                             {!estado_lista_visto_inicio(doc.id) ?
                                                                                 <Link onClick={() => mover_arriba_visto(doc.id)}
-                                                                                    className='flex m-auto '>
+                                                                                    className='flex m-auto'
+                                                                                    title="Mover arriba">
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
                                                                                 </Link>
                                                                                 :
@@ -1082,7 +1111,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                     <td className='text-center border-slate-400 border-[1px]'>{doc.nombre}</td>
                                                                     <td className='border-slate-400 border-[1px]'>
                                                                         <div className='flex m-auto text-red-500'>
-                                                                            <Link onClick={() => eliminar_visto(doc.id)} className='flex m-auto w-7 h-6'>
+                                                                            <Link onClick={() => eliminar_visto(doc.id)} className='flex m-auto w-7 h-6'
+                                                                                title="Eliminar">
                                                                                 <FontAwesomeIcon className="m-auto h-4 hover:text-red-800" icon={faUserMinus} />
                                                                             </Link>
                                                                         </div>
@@ -1106,9 +1136,12 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                         {
                                             (data.id_asunto != '') &&
                                             <div className="flex text-white ">
-                                                <Link onClick={() => agregar_asunto(data.id_asunto)} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
+                                                <Link
+                                                    onClick={() => agregar_asunto(data.id_asunto)}
+
+                                                    className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-auto px-4 rounded-lg'>
                                                     <div className='m-auto'>
-                                                        <strong className=' mr-2'>Agregar </strong>
+                                                        <strong className=' mr-2'>Agregar acuerdos</strong>
                                                         <FontAwesomeIcon className="m-auto h-4" icon={faPencil} />
                                                     </div>
                                                 </Link>
@@ -1188,10 +1221,10 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                             listaEncargo.length != 0 &&
                                             <div className="flex text-white ">
                                                 <Link onClick={() => agregar_asunto_encargo()}
-                                                    className='flex mx-auto bg-yellow-500 hover:bg-yellow-600 h-9 w-28 rounded-lg'>
+                                                    className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-auto px-4 rounded-lg'>
                                                     <div className='m-auto'>
                                                         <strong className=' mr-2'>
-                                                            Agregar
+                                                            Confirmar autoridades
                                                         </strong>
                                                         <FontAwesomeIcon className="m-auto h-4" icon={faPencil} />
                                                     </div>
@@ -1224,7 +1257,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                         <div className='flex m-auto h-6 text-slate-400'>
                                                                             {!estado_lista_encargo_fin(miembro.id) ?
                                                                                 <Link onClick={() => mover_abajo_encargo(miembro.id)}
-                                                                                    className='flex m-auto '>
+                                                                                    className='flex m-auto'
+                                                                                    title="Mover abajo">
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowDown} />
                                                                                 </Link>
                                                                                 :
@@ -1234,7 +1268,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                             }
                                                                             {!estado_lista_encargo_inicio(miembro.id) ?
                                                                                 <Link onClick={() => mover_arriba_encargo(miembro.id)}
-                                                                                    className='flex m-auto '>
+                                                                                    className='flex m-auto'
+                                                                                    title="Mover arriba">
                                                                                     <FontAwesomeIcon className="h-4 mx-0.5 hover:text-blue-700" icon={faArrowUp} />
                                                                                 </Link>
                                                                                 :
@@ -1248,7 +1283,8 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                                                     <td className='text-center border-slate-400 border-[1px]'>{miembro.nombre}</td>
                                                                     <td className='border-slate-400 border-[1px]'>
                                                                         <div className='flex m-auto text-red-500'>
-                                                                            <Link onClick={() => eliminar_encargo(miembro.id)} className='flex m-auto w-7 h-6'>
+                                                                            <Link onClick={() => eliminar_encargo(miembro.id)} className='flex m-auto w-7 h-6'
+                                                                                title="Eliminar">
                                                                                 <FontAwesomeIcon className="m-auto h-4 hover:text-red-800" icon={faUserMinus} />
                                                                             </Link>
                                                                         </div>
@@ -1297,7 +1333,9 @@ const Registrar = ({ auth, persona, tipo_resolucion, tipo_sesion, tipo_asunto, a
                                         </div>
 
                                         <div className="flex flex-col my-auto col-span-1 text-slate-400">
-                                            <Link onClick={() => agregar_encargo(data.id_autoridad)}
+                                            <Link
+                                                onClick={() => agregar_encargo(data.id_autoridad)}
+                                                title="Agregar autoridad"
                                                 className='flex m-auto hover:text-slate-600'>
                                                 <FontAwesomeIcon className="h-8 w-10" icon={faPersonCirclePlus} />
                                             </Link>

@@ -4,12 +4,17 @@ import { Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 
 var elementoActividad = {
+  tipo: 4,
   actividad: 'FECHA DE ACTA',
   datos: [
     {
       fechaDel: '',
+      fechaAl: '',
+      duracion: '',
+      detalle: '',
     },
   ],
+  general: '',
 }
 
 const fechaActual = new Date();

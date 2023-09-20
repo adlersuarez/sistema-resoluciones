@@ -5,7 +5,17 @@ import { Link } from '@inertiajs/inertia-react';
 import React, { useState } from 'react';
 
 var elementoActividad = {
+  tipo: 2,
   actividad: '',
+  datos: [
+    {
+      fechaDel: '',
+      fechaAl: '',
+      duracion: '',
+      detalle: '',
+    },
+  ],
+  general: '',
 }
 
 localStorage.setItem('formActividadGeneral', 'PRESENTACIÓN DE INFORMES FINALES Y FICHAS DE EVALUACIÓN A LAS ESCUELAS PROF.  Y LA COORDINACIÓN DE PRÁCTICAS PRE PROFESIONALES (30 DÍAS DESPUÉS DE LA CULMINACIÓN) SOLO PARA PRÁCTICAS PRE PROFESIONALES II Y/O INTERNADO II');

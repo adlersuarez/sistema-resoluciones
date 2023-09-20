@@ -85,7 +85,9 @@ Route::middleware(['auth','verified','soloadmin'])->group(function () {
         //
         Route::get('/resoluciones-upla/formatos/registrar/calendario-academico-general','createCalendarioAcademicoGeneral')->name('r.formatos.registrar.CalendarioAcademicoGeneral');
         //
+        
         Route::get('/resoluciones-upla/formatos/registrar/calendario-academico-internado-medico','createCalendarioAcademicoInternadoMedico')->name('r.formatos.registrar.CalendarioAcademicoInternadoMedico');
+        Route::post('/resoluciones-upla/formatos/storeCalendarioAcademicoInternadoMedico','storeCalendarioAcademicoInternadoMedico')->name('r.formatos.store.CalendarioAcademicoInternadoMedico');
         //
         Route::get('/resoluciones-upla/formatos/registrar/cronograma-pagos','createCronogramaPagos')->name('r.formatos.registrar.CronogramaPagos');
         //

@@ -63,6 +63,7 @@ localStorage.setItem("num_ofi_visto_2", num_ofi_visto_2)
 localStorage.setItem("muestra_fecha", muestra_fecha)
 
 const CalendarioAcademicoInternadoMedico = ({ auth }) => {
+    
 
     const { data, setData, errors, put, progress } = useForm({
         numeroResolucion: '',
@@ -179,13 +180,13 @@ const CalendarioAcademicoInternadoMedico = ({ auth }) => {
             }
         }
 
-        Inertia.post(route('r.formatos.store.AuspicioAcademico'), {
+        Inertia.post(route('r.formatos.store.CalendarioAcademicoInternadoMedico'), {
             _method: 'post',
 
             visto_resolucion: localStorage.getItem('visto_resolucion'),
             numeroResolucion: localStorage.getItem('num_resolucion'),
             fechaResolucion: localStorage.getItem('fecha_resolucion'),
-
+            calendario: JSON.parse(localStorage.getItem('actividadesFormulario')),
             asuntos: listaAsuntos,
             considerando: listaConsiderando,
 
