@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Formato;
 use App\Models\Facultad;
+use App\Models\Modalidad;
 use App\Models\Resolucion;
 use App\Models\DetalleResolucionVisto;
 use App\Models\DetalleResolucionConsiderando;
 use App\Models\DetalleResolucionAsunto;
 use App\Models\ModalidadIngreso;
 use App\Models\Persona;
+use App\Models\CarreraProfesional;
 
 use Illuminate\Http\Request;
 
@@ -674,7 +676,17 @@ class FormatoController extends Controller
     //Formato Calendario académico a nivel general
     public function createCalendarioAcademicoGeneral() 
     {
+        $carrera = CarreraProfesional::query()
+        ->where('id_carreraProfesional','<>',1)
+        ->get();
+
+        $modalidad = Modalidad::query()
+        ->where('id_modalidad','<>',1)
+        ->get();
+
         return Inertia::render('Admin/Formatos/Tipos/CalendarioAcademicoGeneral',[
+            'carrera'=>$carrera,
+            'modalidad'=>$modalidad,                              
         ]);
     }
 
@@ -1091,14 +1103,24 @@ class FormatoController extends Controller
     //Formato Aprobación de Bases
     public function createAprobacionBases() 
     {
+        $facultad = Facultad::query()
+        ->where('id_facultad','<>',1)
+        ->get();
+
         return Inertia::render('Admin/Formatos/Tipos/AprobacionBases',[
+            'facultad' => $facultad,
         ]);
     }
 
     //Formato Otorgación de buena pro
     public function createOtorgacionBuenaPro() 
     {
+        $facultad = Facultad::query()
+        ->where('id_facultad','<>',1)
+        ->get();
+
         return Inertia::render('Admin/Formatos/Tipos/OtorgacionBuenaPro',[
+            'facultad' => $facultad,
         ]);
     }
 

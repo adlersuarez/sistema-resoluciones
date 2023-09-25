@@ -33,6 +33,9 @@ localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));
 var imagenQR_base64 = ''
 localStorage.setItem("imagenQR_base64", imagenQR_base64);
 
+var carrera_prof = ''
+var modalidad = ''
+
 var fecha_res_visto = ''
 var num_res_visto = ''
 var fecha_ofi_visto = ''
@@ -46,6 +49,9 @@ localStorage.setItem("visto", visto)
 localStorage.setItem("num_resolucion", num_resolucion)
 localStorage.setItem("fecha_resolucion", fecha_resolucion)
 
+localStorage.setItem("carrera_prof", carrera_prof)
+localStorage.setItem("modalidad", modalidad)
+
 localStorage.setItem("fecha_res_visto", fecha_res_visto)
 localStorage.setItem("num_res_visto", num_res_visto)
 localStorage.setItem("fecha_ofi_visto", fecha_ofi_visto)
@@ -55,8 +61,10 @@ localStorage.setItem("num_ofi_visto_2", num_ofi_visto_2)
 
 localStorage.setItem("muestra_fecha", muestra_fecha)
 
-const CalendarioAcademicoGeneral = ({ auth }) => {
+const CalendarioAcademicoGeneral = ({ auth, modalidad , carrera }) => {
 
+    // console.log(carrera)
+    // console.log(modalidad)
 
     const { data, setData, errors, put, progress } = useForm({
         numeroResolucion: '',
@@ -64,6 +72,9 @@ const CalendarioAcademicoGeneral = ({ auth }) => {
 
         fecha_res_visto: '',
         num_res_visto: '',
+
+        carrera_prof:'',
+        modalidad:'',
 
         fecha_ofi_visto: '',
         num_ofi_visto: '',
@@ -88,7 +99,7 @@ const CalendarioAcademicoGeneral = ({ auth }) => {
     //CONSIDERANDO
     function agregar_considerando() {
         listaConsiderando.push({
-            descripcion: "Que, la Universidad Peruana Los Andes, se rige por sus principios y por las disposiciones pertinentes de la Constitución Política del Perú, Ley Universitaria N° 30220, Ley General de Educación N° 28044, el presente Estatuto, su Reglamento de Organización y Funciones (ROF), el Manual de Organización y Funciones (MOF); y demás reglamentos y normas conexas;",
+            descripcion: "La Ley Universitaria N° 30220, en su artículo 8°, numeral 8.3, establece que el Estado reconoce la autonomía universitaria. Esta autonomía se manifiesta entre otros en el siguiente régimen: Académico, implica la potestad autodeterminativa para fijar el marco del proceso de enseñanza-aprendizaje dentro de la institución universitaria. Supone el señalamiento de los planes de estudios, programas de investigación, formas de ingreso y egreso de la institución, etc. Es formalmente dependiente del régimen normativo y es la expresión más acabada de la razón de ser de la actividad universitaria;",
             id: "1",
             nombre: "Estatuto",
             tipo: "General"
@@ -103,23 +114,15 @@ const CalendarioAcademicoGeneral = ({ auth }) => {
 
         listaConsiderando.push({
             descripcion: "El artículo 13º del Reglamento Académico, establece que el Consejo Universitario, aprueba el Calendario Académico para cada semestre académico, a propuesta del Vicerrector Académico, el mismo que es elaborado por la Oficina Universitaria de Registros y Matriculas, con participación de los coordinadores de asuntos académicos de las facultades;",
-            id: "2",
+            id: "3",
             nombre: "Resolución",
             tipo: "General"
         })
 
         listaConsiderando.push({
             descripcion: `El Oficio Digital Nº ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-R-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))}, mediante el cual el Rector remite el Calendario Académico ${yearFecha(localStorage.getItem('fecha_resolucion'))}, Modalidad de Educación Presencial - Sede Huancayo y Filial Chanchamayo, al Secretario General, para ser puesto a consideración del Consejo Universitario por contar con opinión favorable del Vicerrector Académico;`,
-            id: "3",
-            nombre: "Miembros",
-            tipo: "General"
-        })
-
-        listaConsiderando.push({
-            descripcion: `El Proveido N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-UPLA-R de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))} mediante la cual el Rector, traslada el Expediente al Secretario General Oficio n° 000000 para ser puesto a consideración de Consejo Universitario;`,
-            // descripcion: `El Informe Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto_2'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto_2'))}, del Rector, mediante el cual presenta el Presupuesto Institucional de Apertura UPLA – 2023 al Consejo Universitario, considerando el Oficio Digital N° ${numeroResolucion(localStorage.getItem('num_ofi_visto'))}-2023-OPLAN-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto'))};`,
             id: "4",
-            nombre: "Agregado",
+            nombre: "Miembros",
             tipo: "General"
         })
 
@@ -141,7 +144,7 @@ const CalendarioAcademicoGeneral = ({ auth }) => {
                 'cod': 1,
                 'id': 1,
                 'nombre': 'APROBAR',
-                'descripcion': `el pago por concepto de Navidad aprobado por el Consejo Universitario correspondiente a un sueldo a todos los trabajadores Docentes y no Docentes y con contrato indeterminado de la Universidad Peruana Los Andes.`,
+                'descripcion': `el Calendario Académico ${yearFecha(localStorage.getItem('fecha_resolucion'))}, Modalidad de ${localStorage.getItem('carrera_prof')} ${localStorage.getItem('modalidad')} - Sede Huancayo y Filial Chanchamayo, según se detalla a continuación:`,
             },
             {
                 'cod': 2,
@@ -315,6 +318,44 @@ const CalendarioAcademicoGeneral = ({ auth }) => {
                                                 required
                                             />
                                         </div>
+                                    </div>
+                                    <hr className='my-4' />
+                                    {/*CARRERA PROFESIONAL Y MODALIDAD */}
+                                    <div className='flex justify-around py-2'>
+                                        <div className='my-auto mx-2'>Carrera Profesional:</div>
+                                        <select 
+                                            id="select-carrera-prof"
+                                            defaultValue={'0'}
+                                            onChange={(e)=>{
+                                                setData('carrera_prof',e.target.value);
+                                                localStorage.setItem("carrera_prof", e.target.value)
+                                            }}>
+                                            <option className='text-gray-400 bold' value='0' disabled>Seleccione</option>
+                                            {
+                                                carrera.map(carrera_pro => {
+                                                    return (
+                                                        <option key={carrera_pro.id_carreraProfesional} value={carrera_pro.c_nomCarreraProf}>{carrera_pro.c_nomCarreraProf}</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                        <div className='my-auto mx-2'>Modalidad:</div>
+                                        <select 
+                                            id="select-modalidad"
+                                            defaultValue={'0'}
+                                            onChange={(e)=>{
+                                                setData('modalidad',e.target.value);
+                                                localStorage.setItem("modalidad", e.target.value)
+                                            }}>
+                                            <option className='text-gray-400 bold' value='0' disabled>Seleccione</option>
+                                            {
+                                                modalidad.map(mod => {
+                                                    return (
+                                                        <option key={mod.id_modalidad} value={mod.c_nomModalidad}>{mod.c_nomModalidad}</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
                                     </div>
                                     <hr className='my-4' />
                                     <div className='flex justify-between mb-3'>

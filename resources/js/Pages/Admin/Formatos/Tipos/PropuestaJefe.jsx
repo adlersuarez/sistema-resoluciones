@@ -142,7 +142,7 @@ const PropuestaJefe = ({ auth }) => {
                 'cod': 1,
                 'id': 1,
                 'nombre': 'APROBAR',
-                'descripcion': `la designación del profesional Mtro. ${fecha(localStorage.getItem('nom_maestro'))}, como Docente Universitario con la Dedicación a Tiempo Completo (40 Horas), a partir del ${fecha(localStorage.getItem('fecha_jefe_inicio'))} hasta ${fecha(localStorage.getItem('fecha_jefe_fin'))}, como jefe de la Oficina de Registros y Matriculas de la Universidad Peruana Los Andes, dependiente de Vicerrectorado Académico, en atención al Oficio Digital N° ${fecha(localStorage.getItem('num_ofi_visto'))}-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto'))}.`,
+                'descripcion': `la designación del profesional Mtro. ${localStorage.getItem('nom_maestro')}, como Docente Universitario con la Dedicación a Tiempo Completo (40 Horas), a partir del ${fecha(localStorage.getItem('fecha_jefe_inicio'))} hasta ${fecha(localStorage.getItem('fecha_jefe_fin'))}, como jefe de la Oficina de Registros y Matriculas de la Universidad Peruana Los Andes, dependiente de Vicerrectorado Académico, en atención al Oficio Digital N° ${fecha(localStorage.getItem('num_ofi_visto'))}-UPLA de fecha ${fecha(localStorage.getItem('fecha_ofi_visto'))}.`,
             },
             {
                 'cod': 2,
