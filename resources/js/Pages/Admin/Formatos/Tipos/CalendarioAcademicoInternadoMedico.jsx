@@ -15,6 +15,8 @@ import AsuntoResolucionCalendario from '@/Components/VistaPreviaResoluciones/Asu
 var num_resolucion = ''
 var fecha_resolucion = new Date().toISOString().split('T')[0]
 
+
+
 var listaAsuntos = []
 var listaEncargo = []
 var listaConsiderando = []
@@ -29,6 +31,10 @@ localStorage.setItem("considerando_resolucion", considerando_resolucion);
 localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
 localStorage.setItem("listaEncargo", JSON.stringify(listaEncargo));
 localStorage.setItem("listaConsiderando", JSON.stringify(listaConsiderando));
+
+//
+localStorage.setItem("actividadesFormulario", JSON.stringify([]));
+//.
 
 
 var imagenQR_base64 = ''
