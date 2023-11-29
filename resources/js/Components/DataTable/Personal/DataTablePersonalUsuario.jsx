@@ -65,7 +65,7 @@ export default function DataTablePersonalUsuario({ datos, rol }) {
         var valor_select_1 = "";
         var valor_select_2 = "";
 
-        console.log(row.rol)
+        //console.log(row.rol)
 
         switch (row.rol) {
             case 1:

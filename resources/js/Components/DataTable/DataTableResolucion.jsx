@@ -52,7 +52,7 @@ export default function DataTableResolucion({ datos, miembros, sesion, resolucio
     // console.log(miembros)
     // console.log(sesion)
     // console.log(resolucion)
-    console.log(detalle)
+    //console.log(detalle)
 
     //Eliminar svg de DataTable
     useEffect(() => {

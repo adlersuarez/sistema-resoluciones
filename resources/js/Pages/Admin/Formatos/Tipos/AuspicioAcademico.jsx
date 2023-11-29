@@ -334,7 +334,7 @@ const AuspicioAcademico = ({ auth, facultades }) => {
                 listaAsuntos.splice(indiceEditar, 1, aux)
                 localStorage.setItem("listaAsuntos", JSON.stringify(listaAsuntos));
 
-                console.log(listaAsuntos)
+                //console.log(listaAsuntos)
 
                 Swal.fire({
                     icon: 'success',
