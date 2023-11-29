@@ -227,22 +227,6 @@ Route::middleware(['auth', 'verified','solouser'])->group(function () {
     /*Route::get('/inicio/{id}',[UsuarioController::class,'show'])//tipoequipocontroller
         ->name('inicio.show');*/
 
-
-    /*
-    Route::controller(UserSolicitudController::class)->group(function(){
-        Route::get('/user/solicitud/tramitar','show')->name('cargarsolicitud');
-        Route::post('/user/fut','store')->name('guardarsolicitud');
-        Route::get('/user/solicitud','index')->name('mostrarsolicituds');
-        Route::get('/user/solicitud','mostrarSolicitud')->name('verSolicitud');
-        Route::get('/user/solicitud/vista/{id}','vistaSolicitud')->name('vistaSolicitud');
-        Route::get('/user/solicitud/generarFUT/{id}','generarSolicitudFUT')->name('generarFUT');
-        Route::get('/user/solicitud/descargarFUT/{id}','downloadFUT')->name('downloadPDFFUT');
-        Route::put('/user/solicitud/cargarBoucher/{id}','cargarBoucher')->name('subirBoucher');
-        Route::get('/user/documentos','verDocumentos')->name('mostrarDocumentos');
-        Route::put('/user/documentos/subirDocumento/{id_persona}','subirDocumentos')->name('actulizarDocumentos');
-
-    });*/
-
 });
 
 require __DIR__.'/auth.php';
