@@ -69,7 +69,7 @@ localStorage.setItem("num_ofi_visto_2", num_ofi_visto_2)
 localStorage.setItem("muestra_fecha", muestra_fecha)
 
 const CalendarioAcademicoInternadoMedico = ({ auth }) => {
-    
+
 
     const { data, setData, errors, put, progress } = useForm({
         numeroResolucion: '',
@@ -455,7 +455,8 @@ const CalendarioAcademicoInternadoMedico = ({ auth }) => {
 
                                     <div className='flex justify-between mb-3'>
                                         <h1 className='font-bold'>CALENDARIO ACADÉMICO</h1>
-                                        {listaConsiderando.length == 0 &&
+                                        {
+                                            listaConsiderando.length == 0 &&
                                             <div className="flex text-white ">
                                                 <Link onClick={() => agregar_considerando()} className='flex mx-auto bg-green-600 hover:bg-green-800 h-9 w-28 rounded-lg'>
                                                     <div className='m-auto'>
@@ -534,11 +535,11 @@ const CalendarioAcademicoInternadoMedico = ({ auth }) => {
                                         </Link>
                                     </div>
 
-                                    <ConsiderandoResolucion listaConsiderando={listaConsiderando}/>
+                                    <ConsiderandoResolucion listaConsiderando={listaConsiderando} />
                                 </>
                             }
 
-    
+
 
                             {
                                 listaAsuntos.length != 0 &&
@@ -550,7 +551,7 @@ const CalendarioAcademicoInternadoMedico = ({ auth }) => {
                                             <FontAwesomeIcon className="h-4 m-auto" icon={faRefresh} />
                                         </Link>
                                     </div>
-                                    <AsuntoResolucionCalendario listaAsuntos={listaAsuntos}/>
+                                    <AsuntoResolucionCalendario listaAsuntos={listaAsuntos} />
                                 </>
                             }
 

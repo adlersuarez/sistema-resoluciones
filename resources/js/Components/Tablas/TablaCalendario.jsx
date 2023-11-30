@@ -32,28 +32,28 @@ export default function TablaCalendario() {
     return (
         <>
             <div className='flex gap-6'>
-                <button onClick={() => mostrarContenido(1)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
+                <button type="button" onClick={() => mostrarContenido(1)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
                     <div className='m-auto'>
                         <strong className=' mr-2'>Actividad</strong>
                         <FontAwesomeIcon className="m-auto h-4" icon={faPlusSquare} />
                     </div>
                 </button>
 
-                <button onClick={() => mostrarContenido(2)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
+                <button type="button" onClick={() => mostrarContenido(2)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
                     <div className='m-auto'>
                         <strong className=' mr-2'>Actividad (Sin fecha)</strong>
                         <FontAwesomeIcon className="m-auto h-4" icon={faPlusSquare} />
                     </div>
                 </button>
 
-                <button onClick={() => mostrarContenido(3)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
+                <button type="button" onClick={() => mostrarContenido(3)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
                     <div className='m-auto'>
                         <strong className=' mr-2'>Culminación de grupo</strong>
                         <FontAwesomeIcon className="m-auto h-4" icon={faPlusSquare} />
                     </div>
                 </button>
 
-                <button onClick={() => mostrarContenido(4)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
+                <button type="button" onClick={() => mostrarContenido(4)} className='flex bg-yellow-400 hover:bg-yellow-800 h-9 px-4 rounded-lg text-white'>
                     <div className='m-auto'>
                         <strong className=' mr-2'>Fecha acta</strong>
                         <FontAwesomeIcon className="m-auto h-4" icon={faPlusSquare} />
