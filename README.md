@@ -9,9 +9,9 @@
 
 ____________________________________________________________________________________________________________________________
 
-<h1 align="center"> SISTEMA DE ESPECIFICACIONES TECNICAS </h1>
+<h1 align="center"> SISTEMA DE RESOLUCIONES </h1>
 
 ____________________________________________________________________________________________________________________________
 
  
- >Este sistema será implementado en la Oficina de Informacion y Comunicaciones de la Universidad Nacional del Centro del Perú
+ >Este sistema será implementado generar y gestionar las resoluciones de la UPLA
